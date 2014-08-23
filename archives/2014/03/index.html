@@ -1,0 +1,226 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2014/3 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/public/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/public/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/public/">null</a></h1>
+  <img src='//localhost/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2014/3</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-03-21T01:44:27.000Z"><a href="/public/2014/03/20/tilemill-polygon-compositing-operations/">Mar 20 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/public/2014/03/20/tilemill-polygon-compositing-operations/">Tilemill - polygon compositing operations</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Tilemill is a pretty great map rendering engine IMHO.  The compositing options really help avoid extraneous datasets that are often used purely for cartography hacks in Arcmap.</p>
+<p>The mxd for a ‘heavy jungles’ map service has three layers 1) jungle polygons within a given study area, 2) the study area area (polygon) - just symbolized on the outline and, 3) A polygon ‘mask’ layer that covers any other features outside the study area. (basically the inverse of the study area).</p>
+<p>I’m not sure how the ‘mask’ was created but it is essentially a giant rectangle stretching well beyond the extent of the service with a study area hole cut out of it.  Is there any way to simply use the study area itself to mask features outside it?  I don’t think it’s possible in ArcMap, but in Tilemill, the polygon-comp-op rocks it!</p>
+<p>The jungles layer:<br><img src="/images/26194d9021bcecba01c884be555d6b973816114c.png" alt="glog"></p>
+<p>The study area:<br><img src="/images/297a44200d4c402bae269d1ea67b381e78517101.png" alt="study_area"></p>
+<p>The ‘mask’:<br><img src="/images/096eb05d0e8c2d71e2ae7f4b2eda524ffb2ff01f.png" alt="mask"></p>
+<p>The first two layers are stored in our enterprise environment, but the third exists solely for cartographic purposes.  So how can we make this work in Tilemill with just the ‘valid’ datasets?</p>
+<p>The <a href="https://www.mapbox.com/tilemill/docs/guides/comp-op/" target="_blank" rel="external">Tilemill carto documentation</a> describes ‘src’ as:</p>
+<blockquote>
+<p>The src and dst composite operations show only the source and destination layers, respectively. Neither are of much use in TileMill (where you can just as easily hide the layers). The src-over comp-op is another one you won’t be uding much. It draws the source and destination normally, the same as not applying a comp-op at all. The rest of the alpha blending compositing operations may be useful for cartography, however.</p>
+</blockquote>
+<p>“Neither are of much use in Tilemill” unless used in conjunction with polygon-comp-op and in a scenario as I’ve described.</p>
+<p>Here’s the carto css and output with the jungle polygons and the study area. Note that I’ve made the map background red to drive the point home. Also note that I simplified the jungle symbology for brevity here, obviously the thumbnails have different symbology - please try your hardest to look past this inconsistency ;)</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="code"><pre><span class="tag">Map</span><span class="rules">{<span class="rule"><span class="attribute">background-color</span>:<span class="value">red//<span class="function">rgba(<span class="number">233</span>,<span class="number">233</span>,<span class="number">202</span>,.<span class="number">3</span>)</span></span></span>;
+<span class="rule">}</span></span>
+
+<span class="id">#jungles</span><span class="rules">{
+    <span class="rule"><span class="attribute">polygon-fill</span>:<span class="value"><span class="hexcolor">#FBF190</span></span></span>;
+    <span class="rule"><span class="attribute">line-color</span>:<span class="value"><span class="hexcolor">#FBF190</span></span></span>;
+    <span class="rule"><span class="attribute">line-width</span>:<span class="value">.<span class="number">7</span></span></span>;
+<span class="rule">}</span></span>
+
+<span class="id">#study_area</span> <span class="rules">{
+  <span class="rule"><span class="attribute">line-color</span>:<span class="value"><span class="hexcolor">#999</span></span></span>;
+  <span class="rule"><span class="attribute">line-width</span>:<span class="value"><span class="number">2</span></span></span>;
+  <span class="rule"><span class="attribute">line-dasharray</span>:<span class="value"><span class="number">3</span>,<span class="number">3</span></span></span>;
+  <span class="rule"><span class="attribute">line-opacity</span>:<span class="value">.<span class="number">5</span></span></span>;
+  <span class="rule"><span class="attribute">line-join</span>:<span class="value">round</span></span>;
+  <span class="rule"><span class="attribute">polygon-opacity</span>:<span class="value"><span class="number">0</span></span></span>;
+<span class="rule">}</span></span>
+</pre></td></tr></table></figure>
+
+<p>For this to work, we need the study area underneath the jungles:<br><img src="/images/b7eb5917265e107a03ecf4ca1653259a19eecc5a.png" alt="toc"></p>
+<p>Output with red background<br><img src="/images/497d8373bc0d7927ab0775bde6da85f2d6d72a04.png" alt="redback"><br>Add the polygon-comp-op:src; to the studyarea mss:<br><img src="/images/45325e7a457411869e09fa560e2d970de7f8add5.png" alt="polygoncompop"><br>Make the map background the preferred mask color:<br><img src="/images/7264d133ea0e1a1b6c5ef8485b6aebb9220123d6.png" alt="final"><br>Voila! no more need for a mask layer. Thanks Tilemill!</p>
+<p><a href="https://soundcloud.com/aeges/roaches" target="_blank" rel="external">Don’t you want to know what I’m listening to?</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:localhost/public">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/public/categories/General-GIS-Warfare/">General GIS Warfare</a><small>2</small></li>
+  
+    <li><a href="/public/categories/Snippets++/">Snippets++</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/public/2014/03/20/tilemill-polygon-compositing-operations/">Tilemill - polygon compositing operations</a>
+      </li>
+    
+      <li>
+        <a href="/public/2010/10/26/10-26-2010/">10.26.2010</a>
+      </li>
+    
+      <li>
+        <a href="/public/2010/10/05/2-ways-to-add-a-row-to-a-standalone-table-programatically/">2 ways to add a row to a standalone table programatically.</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/public/js/jquery.imagesloaded.min.js"></script>
+<script src="/public/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/public/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/public/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
