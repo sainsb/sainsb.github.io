@@ -1,0 +1,747 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2010/9 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2010/9</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-30T01:40:00.000Z"><a href="/2010/09/29/naip-server-side-tiling/">Sep 29 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/29/naip-server-side-tiling/">NAIP Server-side tiling</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>As a clearer follow up to <a href="http://mis3007-2zn1p81/Blog/post/Server-side-tiling.aspx" target="_blank" rel="external">this blogpost</a>:</p>
+<p>Problem A: MrSID tiled imagery is only realistically viewable at scales of &lt; 1:50,000.</p>
+<p>Problem B: In order to optimize viewing of imagery for the web it is best to tile imagery according to pre-set scales (e.g. the Google Maps/ESRI/Virtual Earth tiling scheme) - this is a rather time and space consuming chore. It also mandates that the imagery layer be considered an ArcGISTiledMapService for the intents and purposes of ESRI web-APIs</p>
+<p>Solution: Server-side tiling.&nbsp; In order to optimize NAIP imagery viewing:</p>
+<ol>
+<li>Create an empty GDB</li>
+<li>Create 4 empty unmanaged raster catalogs labeled L1, L2, L3, L4</li>
+<li>Created 3 fishnets at the same extent as the county bounds. L1 = 2x2, L2=4x4, and L3=8x8.</li>
+<li>Ran a script (see below) to create bookmarks out of features</li>
+<li>Exported JPGs based on bookmarks (this is kind of like a quick and dirty DSMapBook)</li>
+<li>Imported JPGs into each of the above corresponding Raster Catalogs</li>
+<li>For L4 I imported the sid files</li>
+<li>Created an MXD with 4 groups corresponding to the fishnet/raster catalogs and set their scales accordingly</li>
+</ol>
+<p>End result - a dynamic map service that should draw equally fast at all scales and will allow for custom scales.</p>
+<p>The code below includes the createBookmark function and the export image method.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/09/ExportCode.zip" target="_blank" rel="external">ExportCode</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-29T07:41:00.000Z"><a href="/2010/09/29/a-few-corkscrews-for-the-day/">Sep 29 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/29/a-few-corkscrews-for-the-day/">A few corkscrews for the day.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>What to do when acting in the best interest of the planet(or species) is acting in the worst interest of self-preservation (And vice-versa)</p>
+<p>Sometimes removing is progress. (this one needs work)</p>
+<p>The more education one has, the more one should realize how little one knows.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-29T02:56:00.000Z"><a href="/2010/09/28/steps-involved-in-getting-the-asrlogbook-running-on-ntintwebd/">Sep 28 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/28/steps-involved-in-getting-the-asrlogbook-running-on-ntintwebd/">Steps involved in getting the assessor&#39;s logbook app running on Test</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>There were a number of steps involved in getting the Parcel ID Maintenance/ASR Logbook running on Test (See Figure 1). Couldn’t a done it w/out Sean’s help.</p>
+<p>1) Had to bump the .NET Framework down to 3.5 from 4.0 in the .Web wrapper project. (FYI - the .Web wrapper uses the .XAP file that lies in the ClientBin directory that is a direct compile from the Silverlight App project.</p>
+<p>2) In bumping down the Framework, the WCF service became cryptically unhappy and so I decided to create a fresh project targeting the 3.5 framework from the start.&nbsp; I then imported the XAML files from the 4.0 version and renamed their namespaces to reflect the new project name, had to re-add all the references and created a WCF Service from scratch.</p>
+<p>3) In recreating the WCF Service, I discovered a major difference in the structure WCF Services.&nbsp; With the 4.0 framework, the WCF Service.svc file is very similar to an asmx file - e.g. single page, with WebMethod/OperationContract attributes preceding the classes/methods.&nbsp; Going back to 3.5 the WCF Service wants to be a Public Interface IService1 with the &lt;operationcontract&gt; attributes pointing to function declarations but not the methods themselves.&nbsp; In the Service1.svc.vb, under the class declaration you include ‘Inherits IService1’ and drop your methods and classes in here WITHOUT and contract attributes. Needless to say discovering this and fixing it was a pain in the ass.</p>
+<p>4) Needed to include a clientaccesspolicy.xml file in the root of the folder</p>
+<p>5) In the ServiceReferences.ClientConfig file you need to change the endpoint address to the effective URL of your deployment - in this case I changed it from <a href="http://localhost:4932/Service1.svc" target="_blank" rel="external">http://localhost:4932/Service1.svc</a> to <a href="http://countynetappsdev/parcelIDMaintenance/Service1.svc.&amp;nbsp" target="_blank" rel="external">http://countynetappsdev/parcelIDMaintenance/Service1.svc.&amp;nbsp</a>; I commented out the local endpoint because I <strong>still want to develop</strong>. <em>Smack Head</em></p>
+<p>5) Added a connectionstring entry to the web.config, deleted the hardcoded connection string in the Service1.svc.vb file and pointed the SQLConn to the Dev server.</p>
+<p>6) Used a SQL Server Authenticated user to access the database with &lt;identity impersonate=”true”/&gt; in the web.config. (Not sure this last is necessary since the connection string includes user and pass?<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/09/brickwalls.jpg" target="_blank" rel="external"><img src="/images/863a6f069e655d4390566970bf7c5494f3fbaa30.jpg" alt="" title="brickwalls"></a></p><p></p>
+<p><strong>Figure 1.</strong> Various types of brick walls.</p>
+<p>7) Had the app up and running but overwrote directory with a new build and started getting this:</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/09/aaaa.bmp" target="_blank" rel="external"><img src="/images/f50d5f61caf221008ce625f832a7c4b6a0b5f8f8.bmp" alt="" title="aaaa"></a></p>
+<p>Looked at Stack Overflow and apparently there is <a href="http://weblogs.asp.net/scottgu/archive/2007/04/11/public-hotfix-patch-available-for-asp-net-compilation-issues.aspx" target="_blank" rel="external">a hotfix</a>.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-24T13:27:00.000Z"><a href="/2010/09/24/iis-on-vista/">Sep 24 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/24/iis-on-vista/">IIS on Vista</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Was trying to start up Apache (WAMP) on Vista - kept telling me that port 80 was being used by ‘Microsoft IIS/7.0’ - yet viewing the services showed no trace of IIS - running or not.  Came across a <a href="http://stackoverflow.com/questions/108387/apache-and-iis-side-by-side-both-listening-to-port-80-on-windows2003" target="_blank" rel="external">Stack Overflow stub</a>.</p>
+<p>I then discovered netstat. - reports all the ports that the computer is listening on (netstat -ano) you can then use the PID that it reports and kill it using taskkill /pid 4 /F (f is for force)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-18T03:33:00.000Z"><a href="/2010/09/17/eating-your-own-dogfood/">Sep 17 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/17/eating-your-own-dogfood/">Eating your own dogfood...</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A rather humorous wiki entry applying to software…</p>
+<p><a href="http://en.wikipedia.org/wiki/Eat_one%27s_own_dog_food" target="_blank" rel="external">http://en.wikipedia.org/wiki/Eat_one%27s_own_dog_food</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-08T05:37:00.000Z"><a href="/2010/09/07/beauty/">Sep 7 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/07/beauty/">Beauty</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>For a while now I’ve been searching for an HTML beautifier - I’m aware of TIDY but that seems like trying to squash a bug with a sledge hammer….or maybe I’m missing something there..</p>
+<p>At any rate - found this great website today that solves my problem.</p>
+<p><a href="http://www.webmastergate.com/html-beautifier/" target="_blank" rel="external">HTML Beautifier</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-08T04:08:00.000Z"><a href="/2010/09/07/js-api-get-scale-function/">Sep 7 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/07/js-api-get-scale-function/">JS API get scale function</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Ever need to know the scale your working at using the ESRI JS API?</p>
+<pre lang="javascript">function convertExtentToScale(){
+    var scale = ((map.extent.xmax - map.extent.xmin)/map.width)*96;
+    var units;
+    for (var j=0, jl=map.layerIds.length; j&lt;jl; j++) {
+      var layer = map.getLayer(map.layerIds[j]);
+     if (yourMapLayer == layer.id) {
+        units = layer.units;
+      }
+    }
+    scale = scale * 12
+        //don't like decimals in my scales:
+    scale = scale.toFixed(0)
+    return scale;
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-08T00:47:00.000Z"><a href="/2010/09/07/what-is-tmdl-you-ask/">Sep 7 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/07/what-is-tmdl-you-ask/">What is TMDL you ask?</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A <strong>Total Maximum Daily Load</strong> (TMDL) is a regulatory term in the U.S. <a href="http://en.wikipedia.org/wiki/Clean_Water_Act" title="Clean Water Act" target="_blank" rel="external">Clean Water Act</a> (CWA), describing a value of the maximum amount of a <a href="http://en.wikipedia.org/wiki/Pollutant" title="Pollutant" target="_blank" rel="external">pollutant</a> that a <a href="http://en.wikipedia.org/wiki/Body_of_water" title="Body of water" target="_blank" rel="external">body of water</a> can receive while still meeting <a href="http://en.wikipedia.org/wiki/Clean_Water_Act#Water_Quality_Standards_Program" title="Clean Water Act" target="_blank" rel="external">water quality standards</a>.<sup class="reference"><a href="http://en.wikipedia.org/wiki/Total_maximum_daily_load#cite_note-0" target="_blank" rel="external"><span>[</span>1<span>]</span></a></sup> Alternatively, TMDL is an allocation of that <a href="http://en.wikipedia.org/wiki/Water_pollutant" title="Water pollutant" target="_blank" rel="external">water pollutant</a> deemed acceptable to the subject <a href="http://en.wikipedia.org/wiki/Surface_water" title="Surface water" target="_blank" rel="external">receiving waters</a>.</p>
+<p>TMDLs have been used extensively by the <a href="http://en.wikipedia.org/wiki/United_States_Environmental_Protection_Agency" title="United States Environmental Protection Agency" target="_blank" rel="external">United States Environmental Protection Agency</a> (EPA) and state environmental agencies in implementing the CWA by establishing maximum pollution limits for <a href="http://en.wikipedia.org/wiki/Industrial_wastewater_treatment" title="Industrial wastewater treatment" target="_blank" rel="external">industrial wastewater</a> dischargers. EPA published regulations in 1992 establishing TMDL procedures.<sup class="reference"><a href="http://en.wikipedia.org/wiki/Total_maximum_daily_load#cite_note-1" target="_blank" rel="external"><span>[</span>2<span>]</span></a></sup> Application of TMDL has broadened significantly in the last decade to  include many watershed-scale efforts. This process incorporates both <a href="http://en.wikipedia.org/wiki/Point_source_pollution" title="Point source pollution" target="_blank" rel="external">point source</a> and <a href="http://en.wikipedia.org/wiki/Nonpoint_source_pollution" title="Nonpoint source pollution" target="_blank" rel="external">nonpoint source</a> pollutants within a <a href="http://en.wikipedia.org/wiki/Drainage_basin" title="Drainage basin" target="_blank" rel="external">watershed</a>.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-08T00:29:00.000Z"><a href="/2010/09/07/asp-net-website-types/">Sep 7 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/07/asp-net-website-types/">ASP.NET website types</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Thought I’d make a written note about differences in ASP.NET web sites in Visual Studio.<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/09/test.PNG" target="_blank" rel="external"><img src="/images/2547cb1ed6770d3f62de85b9541d2bab92db0c40.PNG" alt="" title="test"></a></p>
+<p>The ASP.NET Web Application is a <em>compiled</em> version of a website - implying that you don’t need to include classes along with the deployment - the binary directory will contain a compiled version of these classes.</p>
+<p>VIS-A-VIS<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/09/asdfsdf.PNG" target="_blank" rel="external"><img src="/images/93e34f9f20c61bd9c2eff7270ec71855d1630aae.PNG" alt="" title="asdfsdf"></a></p>
+<p>The ASP.NET Web Site is a non-compiled version implying you must include classes and ancillary files with the deploy.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-04T02:07:00.000Z"><a href="/2010/09/03/linkroll/">Sep 3 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/03/linkroll/">Linkroll</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Haven’t blogged for awhile but some interesting links here:</p>
+<p><a href="http://msdn.microsoft.com/en-us/library/bb384767.aspx" target="_blank" rel="external">Anonymous types in VB and quick object declaration</a></p>
+<p><a href="http://www.soyos.net/aerowindow-jquery.html" target="_blank" rel="external">Jquery AeroWindow plugin</a></p>
+<p><a href="http://en.wikipedia.org/wiki/Ternary_operation#Visual_Basic" target="_blank" rel="external">VB Ternary operator Syntax</a></p>
+<p><a href="http://jqueryribbon.codeplex.com/" target="_blank" rel="external">JQuery Ribbon Plugin</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Decrypting ArcGIS Server Tokens | </title>
+  <meta name="author" content="Che Geovara">
+  
+  <meta name="description" content="First, some context:
+
+We’re developing some python-based web services - no maps, just data to accompany our AGS map services.
+We want to use the same ">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Decrypting ArcGIS Server Tokens"/>
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-19T06:00:36.000Z"><a href="/2012/07/18/decrypting-arcgis-server-tokens/">Jul 18 2012</a></time>
+      
+      
+  
+    <h1 class="title">Decrypting ArcGIS Server Tokens</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>First, some context:</p>
+<ul>
+<li>We’re developing some python-based web services - no maps, just data to accompany our AGS map services.</li>
+<li>We want to use the same security context as ArcGIS Server.</li>
+<li>We use token-based authentication, for better or worse.</li>
+</ul>
+<p>Based on <a href="http://forums.arcgis.com/threads/42857-Validate-ArcGIS-Server-Token-From-External-Web-Service" target="_blank" rel="external">this forum post</a>, if I want to validate a token outside of ArcGIS Server, I have to <em>“use the token and ask ArcGIS Server something trivial”</em>.  ‘Bullshit’ I tell myself and those in surrounding cubicles - there must be a more direct method.</p>
+<p>So, I start reading up on tokens in the <a href="http://webhelp.esri.com/arcgisserver/9.3/java/index.htm#token_service.htm" target="_blank" rel="external">9.3 docs</a>: </p>
+<blockquote>
+<p>“The shared key for the Token Service is used to encrypt the token. … The server then uses the shared key to decrypt the token. … The shared key ensures that the server has created the token.</p>
+<p>Since the shared key is critical to ensuring the identity and authorization of the client, the key must be set to a unique value of proper length. To set the shared key, go to Security-Settings in Manager, and under the Security for GIS Services tab, click the Configure button (when you have chosen ArcGIS Token based Authentication). In the Settings dialog that appears, set the Shared key value. <strong>The key should be set to sixteen (16) characters (any characters beyond 16 are not used).</strong> It is recommended to use a set of random characters for the key. Any characters may be used, including non-alphanumeric characters. …</p>
+<p><strong>The token is encrypted with the key using the encryption method known as Advanced Encryption Standard (AES), also known as Rijndael.</strong> The 16 characters in the key represent the 128 bits used for encryption.”</p>
+</blockquote>
+<p>Note the part about the key needing to be 16 characters long.<br>I didn’t.<br>And it cost me several hours of my life.<br>Ours was 10 characters.</p>
+<p>So - I got my key and I got my Rijndael method - whatever the hell that is…let me just google “python Rijndael’ and I should have this thing nailed in a few minutes.</p>
+<p>After about an hour of fumbling about getting pyCrypto working on my box, (not straightforward)(hint: use pip)(and don’t try importing ‘pycrypto’ like i did - the module is ‘crypto’) and failing at some basic statements, I ran across this <a href="http://forums.arcgis.com/threads/16499-Looking-inside-AGS-Security-Tokens" target="_blank" rel="external">extremely useful ESRI forum post</a>.</p>
+<p>So, here’s how you’d do it in .Net:</p>
+<pre lang="csharp">
+using System;
+using ESRI.ArcGIS.TokenService;
+
+namespace AGSTokenDecryptor
+{
+   class Program
+  {
+    static void Main(string[] args)
+    {
+        if (args.Length != 2)
+        {
+            Console.WriteLine("Usage: AGSTokenDecryptor.exe [token] [secret key]");
+            return;
+        }
+
+        var token = args[0];
+        var key = args[1];
+        token = token.Replace("-", "+");
+        token = token.Replace("_", "/");
+
+        Console.WriteLine("Decrypting '" + token + "'");
+        var result = AesEncryptor.Decrypt(token, key);
+
+        Console.WriteLine("Decrypted: " + result);
+    }
+  }
+}
+</pre>
+(Grab the ESRI.ArcGIS.TokenService.dll here: `C:\Windows\assembly\GAC_32\ESRI.ArcGIS.TokenService`
+And yes, the OP was astute enough to realize that the hyphens and underscores are to be replaced as coded.
+
+Converting this to Python should be pretty easy RIGHT??????>>>????
+
+Not so much - I needed to make a trip to .Net reflector-land and decompile the above dll to better understand what was going on.
+here's the actual AesEncryptor.Decrypt() method:
+<pre lang="csharp">
+public static string Decrypt(string text, string password)
+{
+    RijndaelManaged managed = new RijndaelManaged {
+        Mode = CipherMode.CBC,
+        Padding = PaddingMode.PKCS7,
+        KeySize = 0x80,
+        BlockSize = 0x80
+    };
+    byte[] inputBuffer = Convert.FromBase64String(text);
+    byte[] bytes = Encoding.UTF8.GetBytes(password);
+    int length = bytes.Length;
+    byte[] destinationArray = new byte[0x10];
+    if (length > destinationArray.Length)
+    {
+        length = destinationArray.Length;
+    }
+    Array.Copy(bytes, destinationArray, length);
+    managed.Key = destinationArray;
+    managed.IV = m_IV;
+    try
+    {
+        byte[] buffer4 = managed.CreateDecryptor().TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
+        return Encoding.UTF8.GetString(buffer4);
+    }
+    catch
+    {
+    }
+    return "";
+}
+</pre>
+
+<p>And oh yeah, you’ll need the secret ESRI AesEncryptor m_IV variable or “Initialization Vector” as well.<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/capture2.png" target="_blank" rel="external"><img src="/images/476350e38dbeb687a4a7dcf71c826f1946f04562.png" alt="" title="capture2"></a></p>
+<iframe width="560" height="315" src="http://www.youtube.com/embed/JSZTPuJ14Ro" frameborder="0" allowfullscreen></iframe>
+
+<p>So - armed with the decompiled method and the IV we should now have what we need.</p>
+<pre lang="python">
+from Crypto.Cipher import AES
+from base64 import *
+
+iv =  '\x01'+ '\x02'+ '\x03'+ '\x04'+ '\x05'+ '\x06'+ '\x07'+ '\x08'+
+       '\x09'+ '\x0A'+ '\x0B'+ '\x0C'+ '\x0D'+ '\x0E'+ '\x0F' + '\x10'
+token = 'jUryRT9UkP8tK+dQKlJZUYWEfY3x2i2eZHYVfnIBxCVMlNfYZ/QcBsAqKPnMlsPM'
+token = b64decode(token, '-_')
+mode = AES.MODE_CBC
+#Make sure your key is 16 chars. if it's shorter pad it with 0s
+# longer then trim it at 16.
+key = <yourkey> # padding if needed +('\x00'*6)
+cipher = AES.new(key, mode, iv)
+print(cipher.decrypt(token))
+</yourkey></pre>
+
+<p>And here’s your guerilla for the day:</p>
+<pre lang="python">
+>>> cipher = AES.new(key, mode, iv)
+>>> print(cipher.decrypt(token))
+darkhelmet:1342637544150: :ref.testing
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Python/">Python</a>
+  </div>
+
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

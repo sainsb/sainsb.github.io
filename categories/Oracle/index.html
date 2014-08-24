@@ -1,0 +1,917 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Oracle | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">Oracle</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-05-20T04:36:05.000Z"><a href="/2014/05/19/erd-relationship-symbols/">May 19 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>AKA Crow’s foot symbols.<br>A great graphic I found on <a href="http://stackoverflow.com/questions/1154382/anyone-have-an-erd-symbols-quick-reference" target="_blank" rel="external">Stack Overflow</a>.<br><img src="/images/9a496cc10b50994ed1c90b6075a894c173d967cd.png" alt="relationship_symbols"></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-03-14T00:27:30.000Z"><a href="/2014/03/13/spatial-views-in-oracle/">Mar 13 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/03/13/spatial-views-in-oracle/">Spatial views in Oracle</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Creating spatial views in Oracle SDE is pretty easy and can provide a slick means of limiting access to features, fields, spatial extents etc..<br>Following <a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/Creating_a_spatial_view_in_Oracle_using_SQL/002n000000t3000000/" target="_blank" rel="external">ESRI’s guidelines</a> on the creation of a spatial view, I cruised in to the database and whispered some primitive incantations.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">create</span> <span class="keyword">view</span> white_hats_vw <span class="keyword">as</span> <span class="keyword">select</span> * 
+<span class="keyword">from</span> nsa_employees <span class="keyword">where</span> alignment <span class="keyword">in</span> (<span class="string">'Lawful Good'</span>,<span class="string">'Neutral Good'</span>,<span class="string">'Chaotic Good'</span>)</span>
+</pre></td></tr></table></figure>
+
+<p><em>Note that you could do a lot more with the above statement, limit the spatial extent, join to other tables etc.
+</em>Note also that if this view is used for security-ish purposes, you’ll want to grant the appropriate (SELECT) privileges to your target user.</p>
+<p>Behold, a view is born:<br><img src="/images/d988c28c4f28e1766d405ab295a4a934490cfad3.png" alt="view21"></p>
+<p>So what can we do with this view?<br>When we ‘view’ it (pun intended) in ArcCatalog it looks like this:<br><img src="/images/8aa7253a272da3b8c33506d88f3fc62845991ca2.png" alt="view3"><br>A table with a square in it, to suggest that there is something ‘spatial’ about it.</p>
+<p>Can we preview it?<br>Yes, we can.<br><img src="/images/e18647e917f4af46a7c7dd69b6d186cead445e5f.png" alt="view9"><br>But that’s funny… the table with a square in it now resembles a polygon feature class… ok. innocent until proven guilty I guess.</p>
+<p>Can we ArcMap it? Yes we can. But since it’s not registered, ArcMap will need a unique ID to support selecting.  It’ll also need to know a few details about the geometry but it can infer these from the ST_Geometry field. </p>
+<p><img src="/images/0a1557381748533386a3254a36316c23dd135c19.png" alt="view5"></p>
+<p>Once we get past that dialog we seem to be golden with support for spatial selections, select by attributes, viewing the attribute table etc. etc.<br><img src="/images/7a63fe5bd18628355e8c037ddb115921a92d5d4e.png" alt="view10"></p>
+<p>So now what about distributing this view? Will your constituents need to deal with the likely confusing previous dialog?<br>Nope. Just save the view as a layer file and the Objectid and geom operators will be stored for future use.</p>
+<p>Note that another way to create a view is to right click on the database connection in ArcCatalog. - &gt;New -&gt; View<br><img src="/images/80d11a74d665d36e757a742968f7fe8b09bcf91f.png" alt="view7"></p>
+<p>We then receive this dialog:<br><img src="/images/a27ce7b8cb6629bc23c24c6688727d4fad884374.png" alt="view11"></p>
+<p>View name I can dig but ‘view definition’? I think a better name might be in order like SQL SELECT STATEMENT.  At any rate this is the select statement that the view will be based on.  Whereas above we began our sql statement with ‘CREATE VIEW’, here we merely include the select bits.  I haven’t played around with this one as much but my hunch is that some sparks might fly if you try to utilize st_geometry relational operators etc. etc.</p>
+<p>Good stuff, all is good except for the leftover uncertainty about registering views with SDE and then registering them with the geodatabase.  When right-clicking a view in ArcCatalog, we don’t have the option to register with the geodatabase.  Presumably due to the fact that it’s not registered with SDE.  Curiously, the <a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/Creating_a_spatial_view_in_Oracle_using_SQL/002n000000t3000000/" target="_blank" rel="external">10.0 version of this method</a> includes the sdelayer - o register command line bits (at the very bottom of the page) to register with SDE while the 10.1 stub (link above) does not (mysterious!).  Until I need more functionality than being able to view, select and easily distribute my layer file, I will avoid that bridge.</p>
+<p>have fun, be safe.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-03-13T03:33:01.000Z"><a href="/2014/03/12/get-the-date-a-table-was-created-in-oracle/">Mar 12 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/03/12/get-the-date-a-table-was-created-in-oracle/">Get the date a table was created in Oracle</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>An interesting read if you’re into Oracle.<br>SDE kinda messes with this approach what with the delta tables, but it’s still an interesting read…<br><a href="http://stackoverflow.com/questions/4442323/how-to-find-out-when-a-particular-table-was-created-in-oracle" target="_blank" rel="external">http://stackoverflow.com/questions/4442323/how-to-find-out-when-a-particular-table-was-created-in-oracle</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-08-09T00:29:05.000Z"><a href="/2013/08/08/creating-an-auto-increment-primary-key-in-oracle/">Aug 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/08/08/creating-an-auto-increment-primary-key-in-oracle/">Creating an auto-increment primary key in Oracle</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Coming from SQL Server this seems odd…but it’s not too hard.</p>
+<p>Step 1. Create Table (or skip to Step 2 if you’ve already accomplished this momentous task.)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> departments (
+  ID           <span class="keyword">NUMBER</span>(<span class="number">10</span>)    <span class="keyword">NOT</span> <span class="keyword">NULL</span>,
+  DESCRIPTION  VARCHAR2(<span class="number">50</span>)  <span class="keyword">NOT</span> <span class="keyword">NULL</span>);</span>
+
+<span class="operator"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> departments <span class="keyword">ADD</span> (
+  <span class="keyword">CONSTRAINT</span> dept_pk <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (ID));</span>
+</pre></td></tr></table></figure>
+
+<p>Step 2a. Create a sequence</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> SEQUENCE dept_seq;</span>
+</pre></td></tr></table></figure>
+
+<p>OR</p>
+<p>Step 2b. If you’re retroactively creating a sequence you can include some special sauce to bring it up to speed.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> SEQUENCE dept_seq
+  MINVALUE <span class="number">1</span>
+  <span class="keyword">START</span> <span class="keyword">WITH</span> <span class="number">8008</span>
+  INCREMENT <span class="keyword">BY</span> <span class="number">1</span>;</span>
+</pre></td></tr></table></figure>
+
+<p>And there are 2 ways to utilize this sequence:</p>
+<p>1. Reference it in your inserts:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> departments
+(id, description)
+<span class="keyword">VALUES</span>
+(dept_seq.nextval, <span class="string">'Fraggle Rock'</span>);</span>
+</pre></td></tr></table></figure>
+
+<p>Or, if you like, you can create a trigger so that you don’t have to reference the PK in the insert query.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">OR</span> <span class="keyword">REPLACE</span> <span class="keyword">TRIGGER</span> dept_bir
+<span class="keyword">BEFORE</span> <span class="keyword">INSERT</span> <span class="keyword">ON</span> departments 
+<span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="keyword">ROW</span>
+
+<span class="keyword">BEGIN</span>
+  <span class="keyword">SELECT</span> dept_seq.NEXTVAL
+  <span class="keyword">INTO</span>   :new.id
+  <span class="keyword">FROM</span>   dual;</span>
+<span class="operator"><span class="keyword">END</span>;</span>
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-05-15T00:04:30.000Z"><a href="/2013/05/14/oracle-full-text-index-and-optimizer-suggestion/">May 14 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/14/oracle-full-text-index-and-optimizer-suggestion/">Oracle Full Text Index and Optimizer Suggestion</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>— Create a full text index::</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> INDEX t2FTX <span class="keyword">ON</span> t2(addr) INDEXTYPE <span class="keyword">IS</span> CTXSYS.CONTEXT;</span>
+</pre></td></tr></table></figure>
+
+<p>— Optimizer suggestion</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">select</span> * /*+ INDEX(t2, t2FTX) */ <span class="keyword">from</span> t2 <span class="keyword">where</span> upper(addr) <span class="keyword">like</span> <span class="string">'99%'</span> <span class="keyword">and</span> rownum &lt; <span class="number">8</span></span>
+</pre></td></tr></table></figure>
+
+<p>—Keep in mind that Upper casing a target match field can be exponentially expensive, the more the table is scanned.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-05-02T02:51:45.000Z"><a href="/2013/05/01/oracle-empty-unicode-string/">May 1 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/01/oracle-empty-unicode-string/">Oracle empty unicode string</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>In a stored proc I recently wrote I kept getting hit with a character type mismatch on the ELSE part of the case statements.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>CASE
+  WHEN FIELD1='No VALUE' then ''
+  WHEN FIELD1='GARBAGE' then ''
+  ELSE FIELD1
+<span class="operator"><span class="keyword">END</span></span>
+</pre></td></tr></table></figure>
+
+<p>If FIELD1 is a unicode field (NVARCHAR) then the above will not compile unless you either explicitly make your custom strings unicode or cast final [FIELD1] to non-unicode (VARCHAR)</p>
+<p>IMHO, this is the easier of the two:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>CASE
+  WHEN FIELD1='No VALUE' then N''
+  WHEN FIELD1='GARBAGE' then N''
+  ELSE FIELD1
+<span class="operator"><span class="keyword">END</span></span>
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-20T03:18:15.000Z"><a href="/2013/04/19/oracle-st_geom-notes/">Apr 19 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/19/oracle-st_geom-notes/">Oracle ST_GEOM notes</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Here’s the scenario:</p>
+<ul>
+<li><span style="line-height: 1.714285714; font-size: 1rem;">I’ve got a big feature class that I’m storing in the </span><a href="http://gis.stackexchange.com/questions/12646/why-has-web-mercator-auxiliary-sphere-become-the-web-map-standard" title="Web Mercator Auxiliary" target="_blank" rel="external">one true projection</a> in Oracle<span style="line-height: 1.714285714; font-size: 1rem;">.</span></li>
+<li>The data is stored in ST_Geometry == queryable spatially via SQL.</li>
+<li><span style="line-height: 1.714285714; font-size: 1rem;">I’m writing a stored function against the feature class to do a point in poly query.</span></li>
+<li><span style="line-height: 1.714285714; font-size: 1rem;">I want the stored function to take lat long.</span></li>
+<li>Since I can assume that the incoming data is in decimal degrees, I can use WGS 84 as the incoming point coord sys.</li>
+<li>Since Web Merc. Aux is associated with WGS 84 I can use the ST_TRANSFORM method.<br>This is what I came up with:<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">OR</span> <span class="keyword">replace</span> FUNCTION Optintriangleid (lng <span class="keyword">IN</span> <span class="keyword">NUMBER</span>, 
+                                            lat <span class="keyword">IN</span> <span class="keyword">NUMBER</span>) 
+RETURN <span class="keyword">NUMBER</span> 
+<span class="keyword">IS</span> 
+  rslt  <span class="keyword">NUMBER</span>(<span class="number">11</span>);</span> 
+  point ST_POINT; 
+<span class="operator"><span class="keyword">BEGIN</span> 
+    --assign the incoming lat lng point <span class="keyword">to</span> an ST_POINT <span class="keyword">in</span> WEB Merc projection 
+    <span class="keyword">SELECT</span> ST_POINT((sde.ST_ASTEXT(sde.ST_TRANSFORM(ST_POINT (lng, lat, <span class="number">4326</span>), 
+                                    <span class="number">300006</span>)) ), <span class="number">300006</span>) 
+    <span class="keyword">INTO</span>   point 
+    <span class="keyword">FROM</span>   dual;</span> 
+
+    <span class="comment">--spatial query the intersecting triangle out of the database </span>
+    <span class="operator"><span class="keyword">SELECT</span> tri_id 
+    <span class="keyword">INTO</span>   rslt 
+    <span class="keyword">FROM</span>   (<span class="keyword">SELECT</span> * 
+            <span class="keyword">FROM</span>   optintriangles 
+            <span class="keyword">WHERE</span>  sde.ST_ENVINTERSECTS (shape, point) = <span class="number">1</span>) 
+    <span class="keyword">WHERE</span>  sde.ST_RELATION_OPERATORS.ST_CONTAINS_F(shape, point) = <span class="number">1</span>;</span> 
+
+    RETURN rslt; 
+EXCEPTION 
+  WHEN no_data_found THEN 
+             RETURN -99; 
+<span class="operator"><span class="keyword">END</span>;</span>
+</pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>On a separate note,<br>To recompile a stored function in oracle via sql use this syntax:</p>
+<p><figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">ALTER</span> FUNCTION myfunc COMPILE;</span>
+</pre></td></tr></table></figure><br>too easy.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-01-15T03:11:01.000Z"><a href="/2013/01/14/oracle-inner-join-update/">Jan 14 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/01/14/oracle-inner-join-update/">Oracle Inner Join Update</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Syntax for Oracle Inner Join Update:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">update</span> x <span class="keyword">SET</span> (x.coord_x,x.coord_y)=
+	(<span class="keyword">SELECT</span> y.POINT_X, y.POINT_Y <span class="keyword">from</span> y <span class="keyword">where</span> y.id = x.id)</span>
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-01-09T05:16:41.000Z"><a href="/2013/01/08/oracle-spatial-index-commands/">Jan 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/01/08/oracle-spatial-index-commands/">Oracle Spatial Index Commands</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Oracle Spatial index commands:</p>
+<p>Get Spatial Reference ID of FC:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">select</span> sde.ST_SRID(shape) <span class="keyword">from</span> MYSTGEOMFC <span class="keyword">where</span> rownum &lt; <span class="number">2</span></span>
+</pre></td></tr></table></figure>
+
+<p>Query Average Feature size:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">SELECT</span> (<span class="aggregate">AVG</span>(SDE.ST_MAXX.shape – SDE.ST_MINX.shape) +
+ <span class="aggregate">AVG</span>(SDE.ST_MAXY.shape – SDE.ST_MINY.shape)) / <span class="number">2</span>  <span class="keyword">from</span> MYSTGEOMFC</span>
+</pre></td></tr></table></figure>
+
+<p>Create an Index:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">create</span> index sa_idx <span class="keyword">on</span> MYSTGEOMFC(shape) indextype <span class="keyword">is</span>
+ sde.st_spatial_index parameters(<span class="string">'st_grids=1700 st_srid=2913'</span>)</span>
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-12-28T04:10:48.000Z"><a href="/2012/12/27/oracle-stored-functions/">Dec 27 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/12/27/oracle-stored-functions/">Oracle Stored Functions</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>When you see the following warning:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/12/2012-12-27_120700.png" target="_blank" rel="external"><img src="/images/a5af66ea566f5bb4486333f70579c26115ef98d5.png" alt="" title="2012-12-27_120700"></a><br>Don’t ignore it!!!</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">OR</span> <span class="keyword">REPLACE</span>
+FUNCTION GETHOUSEGEOM
+(intlid <span class="keyword">IN</span> VARCHAR2) RETURN CLOB <span class="keyword">IS</span> rdata CLOB;</span>
+<span class="operator"><span class="keyword">BEGIN</span>
+  <span class="keyword">SELECT</span> sde.st_astext(sde.st_transform(shape, <span class="number">4152</span>)) <span class="keyword">into</span> 
+  	rdata <span class="keyword">from</span> buildings.houses <span class="keyword">where</span> tlid = intlid;</span>
+  return rdata;
+<span class="operator"><span class="keyword">END</span> GETHOUSEGEOM;</span>
+</pre></td></tr></table></figure>
+
+<p>I was getting this warning on the input parameter intlid.  Turns out the field is actually NVARCHAR.  By simply changing the in param type from VAR… to NVAR… the response was improved by .1 second. (yes, that is a lot).  Surprise, surprise.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+    <a href="/categories/Oracle/page/2/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

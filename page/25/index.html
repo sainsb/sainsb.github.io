@@ -1,0 +1,781 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 25 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-12T06:16:00.000Z"><a href="/2010/08/11/server-variable-values/">Aug 11 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/11/server-variable-values/">Server Variable values</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Every so often I find myself needing to display all server variable name/value pairs:</p>
+<pre lang="vb">
+For Each var As String In Request.ServerVariables("LOGON_USER")
+Response.Write(var & " " & Request(var) & "
+")
+Next</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-11T01:12:00.000Z"><a href="/2010/08/10/flood-control/">Aug 10 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/10/flood-control/">Flood control</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>The new flood control data looks pretty good.&nbsp; I checked it for performance, density and size.<br><strong>Performance</strong><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/08/2500.png" target="_blank" rel="external"><img src="/images/33c15fd0ed8fd26276d884fa2879a41b83640056.png" alt="" title="2500"></a><br><em><strong>1:2500 - 46 second draw time</strong></em><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/08/20000.png" target="_blank" rel="external"><img src="/images/93afef282a665b430e208445731eea1192553e7d.png" alt="" title="20000"></a><br><em><strong>1:20,000 1 minute 7 second draw time.</strong></em><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/08/35000.png" target="_blank" rel="external"><img src="/images/fd34c4128f977c1124900878f7eb17ac477cbc2a.png" alt="" title="35000"></a><br><em><strong>1:35,000 nearly 2 minute draw time.</strong></em><br>The 20 ft YC contours I recently created draw at less than a second at the above extents and scales.</p>
+<h2 id="Density">Density</h2>
+<p>In order to compare density I created a subset of both my 20 ft contours and the new 10 ft contours.&nbsp; Visually and as expected, one can see significantly more detail in the 10 ft contours.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/08/Untitled.png" target="_blank" rel="external"><img src="/images/9575934e4995d33d8f1509dd476362a8ebb6e6d4.png" alt=""></a><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/08/stats.bmp" target="_blank" rel="external"><img src="/images/72a9924ff33a89090269f421102c5595e58363fb.bmp" alt=""></a></p>
+<p>As expected, the 10 ft contours are double in number for the sample area. However, rather than double the density(number of vertices), we see a <em><strong>1:8 ratio of vertices</strong></em>. This may indicate that the 10ft contours could be generalized without losing much detail.</p>
+<h2 id="Size">Size</h2>
+<p>Size of the new county-wide 20ft contours: 891 MB<br> Size of the new Flood Control 10ft contours: 2.1 GB</p>
+<p>In order to test possible generalization of the data, I created a copy of the sample and generalized at a 1 ft max. allow. offset.</p>
+<p><img src="/images/eaed5e4661f41370d3487ebf628d0437904489e7.png" alt=""><br>For a closer look (1:200) at what is happening here:</p><br><img src="/images/9eccc55b9849c8c0ee4f3851f15918198860096a.png" alt=""><br>Here is the breakdown of how these two samples compare in density:<br><img src="/images/a5a59df9701f2ee4cfbe17ed519edb39851943fa.png" alt=""><br><strong>Summary</strong><br>Resampling 30ft raster data (10M NED) down to 10ft contours is not, in my experience, an acceptable practice. However, if choosing to do so and performance in ArcMap is an issue I would recommend:<br>1) Generalizing the contours down to 1 ft Max. Allow. offset. (This will likely halve the size of the data with little detail lost (see above))<br>2) Intersecting/slicing contours up using an intersect with 100-200 tiles. (This will improve draw time significantly)<p></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-07T06:30:00.000Z"><a href="/2010/08/06/js-regex-replace/">Aug 6 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/06/js-regex-replace/">JS Regex replace</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Just a friendly reminder</p>
+<p>Perform a case-insensitive search:</p>
+<pre lang="javascript">var str="Visit Microsoft!";
+document.write(str.replace(/microsoft/i, "W3Schools"));</pre>
+
+<p>The output of the code above will be:</p>
+<p><strong>Visit W3Schools! </strong></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-07T01:02:00.000Z"><a href="/2010/08/06/generalizing-polygons-2/">Aug 6 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/06/generalizing-polygons-2/">Generalizing polygons</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I was thinking of generalizing parcels for small-scales on the web-app to improve performance…guess not…</p>
+<p><em>…This is taken from ET Geowizards regarding polygon generalization…just found it interesting</em></p>
+<p><strong>Smoothing/Generalizing polygons. Why it is so difficult?</strong><br>In the Shapefiles and GeoDatabases (not in the coverages) each polygon has its own outline. This means that the common boundary between two adjacent polygons is represented by two coincident polylines. If we smooth/generalize these adjacent&nbsp; polygons each of the outlines will be smoothed/generalized&nbsp; separately and DIFFERENTLY. As a result we will get gaps and/or overlaps on the boundary. With other words we will end up with destroyed topology.<br>Further in this document all the examples and explanations will be based on the Smoothing, because the effect is more pronounced, but everything is applicable for the generalization process as well.</p>
+<p><img src="/images/50d8dd437e5122169d42dd58184e2c8977a494ba.jpg" alt=""><img src="/images/3319855ca156bbc3a91d80e4062786f654330afc.jpg" alt=""></p>
+<p>Original polygons vs polygons smoothed directly</p>
+<p>The example above visualizes the gaps resulting from Smoothing the polygons directly.<br><strong>So, how to smooth polygons?</strong><br>Lets think a bit in the good old Coverage way, where all the geometries were stored as arcs and the polygons were build from these arcs (no duplicate geometry on the boundary of two adjacent polygons). If something was changed in the geometry of the Arcs it reflected in the polygons built from them. If we smooth/generalize an Arc, the two polygons in which this Arc participates will be smoothed/generalized EQUALLY.</p>
+<p>Here is the ArcGIS procedure that emulates this behavior. All the functions are available in ET GeoWizards.<br>&bull;&nbsp;&nbsp;&nbsp; Convert the polygons to polylines (this just creates a polyline shapefile from the polygon boundaries). Polygon To Polyline function<br>&bull;&nbsp;&nbsp;&nbsp; Clean the polylines (this will create all intersections and remove the duplicate polylines on the boundaries between two adjacent polygons). Clean Polyline function<br>&bull;&nbsp;&nbsp;&nbsp; Smooth the polylines (there is no duplicate polylines, so no topological problems will be introduced). Smooth Polyline function<br>&bull;&nbsp;&nbsp;&nbsp; Build new polygons from smoothed polylines (this will give us smoothed&nbsp; topologically correct polygons). Build Polygons function</p>
+<p>1. polygon to polyline</p>
+<p><img src="/images/2ea2b928eaf3526f4d3817ab51984234d3ad0445.jpg" alt=""></p>
+<p>2. Clean polylines</p>
+<p><img src="/images/a6b2d8403eb7818d5cb14b0951229e695dac4616.jpg" alt=""></p>
+<p>3. Smooth polylines (B-Spline method)</p>
+<p><img src="/images/d3550a83ecc9e9221125493af6453c8d52f4b27c.jpg" alt=""></p>
+<p>4. Build polygons</p>
+<p><img src="/images/6f8140dc836dc39aed289d32ebae197f9c9bf816.jpg" alt=""></p>
+<p><strong>How to restrict the Smoothing and remove the unnecessary vertices after smoothing?</strong><br>The  degree of smoothing can be controlled by the parameters used in the  Smooth function. In some cases however due to the lack of enough  vertices the parameters used can not restrict the smoothing too much. In  such cases, we can introduce new vertices to the cleaned polylines  (Densify function) before proceeding with smoothing. After smoothing we  can remove the unnecessary vertices before building the polygons.&nbsp;</p>
+<p><a href="http://www.ian-ko.com/ET_GeoWizards/WhitePapers/gw_smooth_generalize.htm#Smoothing/Generalizing%20polygons.%20Why%20it%20is%20so%20difficult?" target="_blank" rel="external">more on this here.</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-06T02:03:00.000Z"><a href="/2010/08/05/tiled-vectors-and-arcmap-2/">Aug 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/05/tiled-vectors-and-arcmap-2/">Tiled Vectors and ArcMap</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><em>Special thanks to Brian and MS Research for enlightening me on this one</em></p>
+<p><strong>Tiling is not only for raster data but can also be used to improve the performance of vector data in web and desktop GIS. </strong>If you’re still interested, read on…</p>
+<p>As you all most likely recall I recently created a county-wide 20 ft. contour feature class. By all of my measures this new layer I had created should draw much faster than the existing 20ft contour layer (AgTopo20). I ran summary statistics on number of vertices for a comparative sample and came up with an exponentially greater number of vertices in the existing feature class…So how was it drawing so much faster than my new contours layer???</p>
+<p>The other obvious difference I noticed between the two was that the existing FC (AgTopo20) has roughly twice the number of features and 1/3 less coverage.</p>
+<p>hmmm….As mentioned above, Brian clued me in to the fact that even though ArcMap only draws the features in the viewing area, if the extent of the features drawn spreads beyond the viewing area, <em>it has to draw that also</em>.&nbsp; Aha!</p>
+<p>Continuing along this line of thought…I had been wondering why the public lands layer was drawing so slowly in the web app.&nbsp; The polygons weren’t that complicated.&nbsp; but again, even if the user was centered over Prescott with just a corner of a polygon in view, the engine would be drawing said polygon up near Ash Fork!!!&nbsp; Checked the Public Lands layer in SDE (AgLandUseWk) and sure enough: 10 total features.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/08/pub.bmp" target="_blank" rel="external"><img src="/images/554a63ca52615bdc3454e191065a56fef69eea9a.bmp" alt="" title="pub"></a></p>
+<p>Discovered a new tool in Data Management:Features- Multipart to Singlepart. Ran this tool on the Public Lands FC and resulted in 1400 records.&nbsp; Sure enough, draw time in ArcMap was much improved.</p>
+<p>Several years ago I experimented with tiling vectors for improving vector display in the Virtual Earth (now Bing) mapping API. See <a href="http://research.microsoft.com/en-us/um/redmond/projects/mapcruncher/TiledVectors/TiledVectorsDemo-1.1/description.html" target="_blank" rel="external">this link</a> for more on this concept.&nbsp; I never thought then that this same principle could be applied to improve draw times in ArcMap.</p>
+<p>If you have a county-wide dataset that is displaying EQUALLY AS FAST(SLOW) AT LARGE SCALES AS SMALL SCALES - think about exploding or tiling your features.&nbsp; If exploding doesn’t work, follow this workflow to tile your vectors:</p>
+<ol>
+<li>Create a fishnet (Data Management::Feature Class) a 10x10 worked for me for the contours. (Yes, 100 tiles)</li>
+<li>Convert the ouput fishnet to polygons.</li>
+<li>Split the polygons into indiv. feature classes using a split by attribute tool</li>
+<li>Batch intersect your target feature class with the polygon feature classes</li>
+<li>Merge together intersect outputs.</li>
+</ol>
+<p>There are probably other (perhaps better) ways to do this but this worked well for me.</p>
+<p><strong>Moral of the story: Tiling is not only for raster data but can also be used to improve the performance of vector data in web and desktop GIS.</strong></p>
+<p><strong><span style="color:#AA1111;">UPDATE - The Public Lands Layer was drawing pretty well on the web but there was still a lag..why? Oh yeah, because the layer in the labels service was still pointing to the old Public Lands layer - re-pointed it and it sped up (although this doesn’t make entire sense since none of the features were being drawn.&nbsp; It was probably due to the labeling engine needing to quasi-draw the features in order to know where to label.<br></span></strong></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-03T08:36:00.000Z"><a href="/2010/08/03/gpx-conversion-tool-for-arc-2/">Aug 3 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/03/gpx-conversion-tool-for-arc-2/">GPX Conversion Tool for Arc</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I have converted a GPX VBA App I wrote some time ago to VB.NET and pushed it out to our Dev GIS server.&nbsp; It is called GPX Suite and is available under the customize commands. </p>
+<p></p><p>GPX stands for GPS Exchange format - it is an XML-based standard to which every home-user mapping application worth it’s nickel should be able to export to.&nbsp; With the data interoperability extensions, ESRI recognizes the format similar to the way it recognizes coverages… without it, it doesn’t know GPX from Pac-Man.</p>
+<p>The caveats with the tool are this: It is only intended for polylines and GPS tracks, it does not support waypoints nor routes.</p>
+<p>The functionality goes something like this:</p>
+<ol>
+<li>Decide whether you want to import or export.</li>
+<li>If importing, you may select to either load the selected GPX files into the first layer in the TOC (must be a shapefile), or have it create a new shapefile for you</li>
+<li>You may select more than one GPX file in the ‘Open File(s)’ dialog.</li>
+<li>You may change the output folder.</li>
+<li>If exporting, you may select the layer in the TOC and it’s field for a name attribute for each track in the exported GPX</li>
+<li>You may specify to only export selected features.</li>
+<li>I didn’t build a lot of intelligence nor error catching into it as I felt I had better ways to spend my day, but I have supplied the source code in the above directory.<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/08/sdfsdf.bmp" target="_blank" rel="external"><img src="/images/a824688ac399c298f152432cd4c6e35c91f5baca.bmp" alt="" title="sdfsdf"></a></li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-03T08:21:00.000Z"><a href="/2010/08/03/arcgis-10-dev-frustrations/">Aug 3 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/03/arcgis-10-dev-frustrations/">ArcGIS 10 dev frustrations...</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>What started as an innocent mission to push some GPX tools I wrote some time ago out to our Dev GIS server turned into a horrible black hole when I discovered that yes, VBA is supported at 10 but it is a separate installation and requires some change/additions to the license.&nbsp; I guess because VBA is going away, ESRI has no choice…fair enough…This really sucks though for multiple reasons which I will of course outline here:</p>
+<p>1) Debugging ArcObjects in the VBA/Macro editor in ArcMap is fast.&nbsp; You don’t have to fire up ArcMap each time you make a change to the code.</p>
+<p>2) While I haven’t looked into it, there really doesn’t seem to be much support for GUI apps with python - I’m assuming it is more intended for models/geoprocessing etc.(?)</p>
+<p>3) ESRI claims that building mods in Visual Studio is less complicated than in VBA - apparently they’ve never built a mod before because that is total BS.&nbsp; The com registration, form window handles, inheritance, references etc. make it far more complicated - at least if all you need is a simple gui form. I allow that a) VBA is not very sophisticated and b) mod deployment is easier.</p>
+<p>Ok - well there’s three…</p>
+<p>Terri found <a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/conceptualhelp/index.html#//0001000000w2000000" target="_blank" rel="external">this link</a> for us the other day detailing ESRI’s new workflow for mod development in Visual Studio…looks harmless enough…if it works.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/08/computer.gif" target="_blank" rel="external"><img src="/images/813d0b59f2604018dd91a70a4a9adb0ea1bd2bae.gif" alt="" title="computer"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-31T06:52:00.000Z"><a href="/2010/07/30/arcgis-temp-user-directory/">Jul 30 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/30/arcgis-temp-user-directory/">ArcGIS temp user directory</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Running some intersects on contours and a fishnet on our production GIS server today I apparently gobbled up 10gb of temp space on the D drive - which just happened to be all that was left :-0&nbsp; This was solved by creating a user environmental variable on the box called Arctmpdir and pointing it to somewhere with more available space (X:\workspace).</p>
+<p><a href="http://resources.arcgis.com/content/kbase?fa=articleShow&amp;d=29559" target="_blank" rel="external">Here’s an ESRI KB stub.
+</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-31T06:42:00.000Z"><a href="/2010/07/30/newmapserver-hiccups/">Jul 30 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/30/newmapserver-hiccups/">New production GIS web server hiccups</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>So far the ArcGIS Server 10 install on newmapserver has been relatively painless.&nbsp; The only hiccups we’ve run into so far are:</p>
+<p>1) Problem with the token service settings. Evidently, since we’re not running SSL, it was necessary to remove the s from the token service URL protocol and instert a tag <em><strong>&lt;add key=”RequireSSL” value=”False” /&gt;</strong></em> while leaving the RequireToken value to True.&nbsp; This seemed to solve the problems.</p>
+<p>2) Problem creating a web site in IIS - due to the default behavior of the application pools.&nbsp; In Windows Server 2008 R2, IIS 7.5 associates an AppPool’s identity with the ApplicationPoolIdentity.&nbsp; This identity is meant to infer a ‘virtual user’ so as not to get networkservice process bungled when IIS is really cooking. The problem with this is that then when you go to publish a site, it barks at you saying the ApplicationPoolIdentity doesn’t have read permissions on the physical location of your app.&nbsp; How are we supposed to set permissions for a virtual user? As Jim mentioned, this ‘virtual user’ should be a member of the Authenticated Users group but is apparently not. The solution is to set the Application pool identity to Network Service which is the IIS6 default.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/untitledsdfsdfsdf.bmp" target="_blank" rel="external"><img src="/images/f94f90bd1c72d5a1da6ca6a96eb758eedc539ad4.bmp" alt="" title="untitledsdfsdfsdf"></a></p>
+<p><strong>Translation: Cannot verify access to path because I don’t know who I’m accessing this as.</strong><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/sdfdf.bmp" target="_blank" rel="external"><img src="/images/f73af88b0896ba36667a66a6273e90ea1f9902ed.bmp" alt="" title="sdfdf"></a><br><strong>Solution: set the Application Pool Identity to NetworkService as IIS 6 did by default.</strong></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-28T00:24:00.000Z"><a href="/2010/07/27/js-object-dump/">Jul 27 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/27/js-object-dump/">JS Object dump...</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>An extremely useful JS function to get at an object’s members.</p>
+<pre lang="javascript">var msg="";
+function dumpProps(obj, parent) {
+   // Go through all the properties of the passed-in object
+   for (var i in obj) {
+      if (parent) { msg += parent + "." + i + "
+
+" + obj[i]; } else { msg += i + "
+" + obj[i]; }
+      if (typeof obj[i] == "object") {
+         if (parent) { dumpProps(obj[i], parent + "." + i); } else { dumpProps(obj[i], i); }
+      }
+   }
+   document.write(msg);
+}</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+<nav id="pagination">
+  
+    <a href="/page/24/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/page/26/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

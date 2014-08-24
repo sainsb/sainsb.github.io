@@ -1,0 +1,302 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Tiled Vectors and ArcMap | </title>
+  <meta name="author" content="Che Geovara">
+  
+  <meta name="description" content="Special thanks to Brian and MS Research for enlightening me on this one
+Tiling is not only for raster data but can also be used to improve the perform">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Tiled Vectors and ArcMap"/>
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-06T02:03:00.000Z"><a href="/2010/08/05/tiled-vectors-and-arcmap-2/">Aug 5 2010</a></time>
+      
+      
+  
+    <h1 class="title">Tiled Vectors and ArcMap</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><em>Special thanks to Brian and MS Research for enlightening me on this one</em></p>
+<p><strong>Tiling is not only for raster data but can also be used to improve the performance of vector data in web and desktop GIS. </strong>If you’re still interested, read on…</p>
+<p>As you all most likely recall I recently created a county-wide 20 ft. contour feature class. By all of my measures this new layer I had created should draw much faster than the existing 20ft contour layer (AgTopo20). I ran summary statistics on number of vertices for a comparative sample and came up with an exponentially greater number of vertices in the existing feature class…So how was it drawing so much faster than my new contours layer???</p>
+<p>The other obvious difference I noticed between the two was that the existing FC (AgTopo20) has roughly twice the number of features and 1/3 less coverage.</p>
+<p>hmmm….As mentioned above, Brian clued me in to the fact that even though ArcMap only draws the features in the viewing area, if the extent of the features drawn spreads beyond the viewing area, <em>it has to draw that also</em>.&nbsp; Aha!</p>
+<p>Continuing along this line of thought…I had been wondering why the public lands layer was drawing so slowly in the web app.&nbsp; The polygons weren’t that complicated.&nbsp; but again, even if the user was centered over Prescott with just a corner of a polygon in view, the engine would be drawing said polygon up near Ash Fork!!!&nbsp; Checked the Public Lands layer in SDE (AgLandUseWk) and sure enough: 10 total features.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/08/pub.bmp" target="_blank" rel="external"><img src="/images/554a63ca52615bdc3454e191065a56fef69eea9a.bmp" alt="" title="pub"></a></p>
+<p>Discovered a new tool in Data Management:Features- Multipart to Singlepart. Ran this tool on the Public Lands FC and resulted in 1400 records.&nbsp; Sure enough, draw time in ArcMap was much improved.</p>
+<p>Several years ago I experimented with tiling vectors for improving vector display in the Virtual Earth (now Bing) mapping API. See <a href="http://research.microsoft.com/en-us/um/redmond/projects/mapcruncher/TiledVectors/TiledVectorsDemo-1.1/description.html" target="_blank" rel="external">this link</a> for more on this concept.&nbsp; I never thought then that this same principle could be applied to improve draw times in ArcMap.</p>
+<p>If you have a county-wide dataset that is displaying EQUALLY AS FAST(SLOW) AT LARGE SCALES AS SMALL SCALES - think about exploding or tiling your features.&nbsp; If exploding doesn’t work, follow this workflow to tile your vectors:</p>
+<ol>
+<li>Create a fishnet (Data Management::Feature Class) a 10x10 worked for me for the contours. (Yes, 100 tiles)</li>
+<li>Convert the ouput fishnet to polygons.</li>
+<li>Split the polygons into indiv. feature classes using a split by attribute tool</li>
+<li>Batch intersect your target feature class with the polygon feature classes</li>
+<li>Merge together intersect outputs.</li>
+</ol>
+<p>There are probably other (perhaps better) ways to do this but this worked well for me.</p>
+<p><strong>Moral of the story: Tiling is not only for raster data but can also be used to improve the performance of vector data in web and desktop GIS.</strong></p>
+<p><strong><span style="color:#AA1111;">UPDATE - The Public Lands Layer was drawing pretty well on the web but there was still a lag..why? Oh yeah, because the layer in the labels service was still pointing to the old Public Lands layer - re-pointed it and it sped up (although this doesn’t make entire sense since none of the features were being drawn.&nbsp; It was probably due to the labeling engine needing to quasi-draw the features in order to know where to label.<br></span></strong></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/ArcGIS-Server/">ArcGIS Server</a>
+  </div>
+
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

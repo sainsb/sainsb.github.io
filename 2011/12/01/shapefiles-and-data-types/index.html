@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Don&#39;t waste your time with Precision and Scale | </title>
+  <meta name="author" content="Che Geovara">
+  
+  <meta name="description" content="In writing a tool to parse the data types out of a dbf for a shapefile comparison I’m working on - I’m getting some rather odd behavior…As good ol’ Ia">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Don&#39;t waste your time with Precision and Scale"/>
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-02T02:14:03.000Z"><a href="/2011/12/01/shapefiles-and-data-types/">Dec 1 2011</a></time>
+      
+      
+  
+    <h1 class="title">Don&#39;t waste your time with Precision and Scale</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>In writing a tool to parse the data types out of a dbf for a shapefile comparison I’m working on - I’m getting some rather odd behavior…As good ol’ <a href="http://forums.esri.com/Thread.asp?c=93&amp;f=982&amp;t=75881" target="_blank" rel="external">Ianko explains it</a> in the forums:</p>
+<blockquote>
+<p>From the help:<br>“Precision is the number of digits in a number.”<br>“Scale is the number of digits to the right of the decimal point in a number”<br>Precision of 10 should store numbers with max 10 digits:1234567890<br>Precision of 10 and Scale of 5 should store<br>12345.12345<br>**<br>The interesting fact is that these rules behave differently on shapefiles(dbf) and Geodatabases and some times the results are strange.<br>For example:</p>
+<ul>
+<li>a field defined as Long with precision of 10 on GDB will not accept a value of 12345678901 (correct), on a shapefile(dbf) it will be calculated to 1230000000.</li>
+<li>field defined as Double with precision of 10 and scale of 5 will convert 123456.12345 to 123500 on a dbf file and will be accepted if the table is in a GDB. In fact the same field in a GDB will accept 1234567890.12345 !!!</li>
+</ul>
+<p>Another interesting fact is that a field defined in ArcCatalog as Double with Precision of 10 and Scale of 5 will be reported in ArcMap as follows:</p>
+<ul>
+<li>if the table is DBF - correctly</li>
+<li>if the table is in a personal GDB - precision of 0 and scale of 0 **</li>
+</ul>
+</blockquote>
+<p>To add to this I’m seeing ESRI call a Double with 19 Precision and 11 scale (The SHAPE_AREA and SHAPE_LENGTH fields specifically) a Double with 0 precision and 0 scale.<a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/fieldAnomaly.png" target="_blank" rel="external"><img src="/images/723c726ed70abe35d07774ef1547b1ecb6bd73f5.png" alt="" title="fieldAnomaly"></a><br>WOW is that black magic or what?<br>When parsed under the hood the dbf reports that this field is actually a float with a precision of 19 and a scale of 11.<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/reailityNites.png" target="_blank" rel="external"><img src="/images/25a179cc15d08c492ccc54a1e287cf27f3286c19.png" alt="" title="reailityNites"></a><br>We know that scale can at most be precision-1.<br>Here’s some more black magic:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/precScale.png" target="_blank" rel="external"><img src="/images/7c82b1ef2f9ae6237011f29ee246bf494af795c7.png" alt="" title="precScale"></a><br>So to rehash this, why does ESRI let you create a Double type with 0 precision and 0 scale?</p>
+<p>maybe <a href="http://forums.esri.com/thread.asp?c=93&amp;f=987&amp;t=98086" target="_blank" rel="external">this</a> explains it:</p>
+<blockquote>
+<p>Field precision and scale<br>The precision and scale of a field describe the maximum size and precision of data that can be stored in the field. The precision describes the number of digits that can be stored in the field, while the scale describes the number of decimal places for float and double fields. When creating a new field in a geodatabase feature class or table, you can specify the field’s type, precision, and scale. When the field is actually created in the database, the field type may be changed based on the precision and scale values you specify.</p>
+<p>Use the following guidelines for choosing the correct field type for a given precision and scale:</p>
+<p><strong>When you create a float, double, or integer field and specify 0 for precision and scale, the geodatabase will attempt to create a binary type field if the underlying database supports it. Personal geodatabases support only binary type fields, and precision and scale are ignored.</strong><br>When you create float and double fields and specify a precision and scale, if your precision is greater than 6, use a double; otherwise use a float. If you create a double field and specify a precision of 6 or less, a float field is created in the database. If you create a float field and specify a precision greater than 6, a double field is created.<br>If you specify a scale of 0 and a precision of 10 or less, you should be creating integer fields. When creating integer fields, your precision should be 10 or less or your field may be created as double.</p>
+</blockquote>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/General-GIS-Warfare/">General GIS Warfare</a>
+  </div>
+
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

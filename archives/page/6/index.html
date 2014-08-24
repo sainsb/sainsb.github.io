@@ -1,0 +1,917 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 6 | Archives | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">Archives</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-22T06:19:40.000Z"><a href="/2012/06/21/run-a-python-script-remotely-with-psexec/">Jun 21 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/21/run-a-python-script-remotely-with-psexec/">Run a python script remotely with psexec</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is a handy little tidbit using <a href="http://technet.microsoft.com/en-us/sysinternals/bb897553.aspx" target="_blank" rel="external">psexec</a>.</p>
+<p>If you have a python script you’d like to run on a remote server (with which you have elevated rights) just go like this:</p>
+<p><pre lang="c"><br>C:/&gt; psexec \machinename python mypythonscript.py<br></pre><br>easy.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-22T04:29:19.000Z"><a href="/2012/06/21/changing-column-values-in-a-dataframe-using-the-sample-function/">Jun 21 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/21/changing-column-values-in-a-dataframe-using-the-sample-function/">R - Changing column values in a dataframe using the sample function</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Ran into a bit of a headache this morning trying to update a sample of rows in a dataframe.  Here is the correct way to do it:</p>
+<pre lang="python">
+DU[DU$BTYPE=='H1x',][sample(1:nrow(DU[DU$BTYPE=='H1x',]),100),]$MODE = "MF"
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-03T12:33:09.000Z"><a href="/2012/06/03/generalize-your-shapefile-online/">Jun 3 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/03/generalize-your-shapefile-online/">Generalize your shapefile online</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I found this site years ago and while it isn’t quite as cool nowadays — it was light years ahead of it’s time when it arrived.  Upload a shapefile, choose a generalization algorithm - adjust your gen level (between 0 and 100) and save out your results.  The output comes as a .shp and .shx file - I dropped it right back in with the dbf file of origin and was good to go…</p>
+<p>MapShaper<br><a href="http://mapshaper.com/test/MapShaper.swf" target="_blank" rel="external">http://mapshaper.com/test/MapShaper.swf</a></p>
+<p>Whoever you are, you rock.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-03T12:28:12.000Z"><a href="/2012/06/03/nes-controller-code/">Jun 3 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/03/nes-controller-code/">NES Controller + Teensy + JNES</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Picked up a Nintendo Entertainment System (NES) controller the other day at Goodwill and wanted to test it out as a controller for a servo project.  Since I had some time to kill, I wired it up to my Teensy and cobbled together some code to use it via USB with Windows 7 and the pretty solid <a href="http://jabosoft.com/index.php?categoryid=1" target="_blank" rel="external">NES emulator JNes</a>. (<a href="http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1254964306" target="_blank" rel="external">This Arduino Forum post</a> made it very easy).  Including the controller class that is several posts down made writing the driver pretty easy.  The trick was the fact that USB keyboards allow for 6 simultaneous inputs so we’re really only concerned with capturing change via the isPressed and isReleased properties.  Learned a little about constructors in C. I kept trying to call:</p>
+<pre lang="c">
+Controller con = new Controller(2,3,4);
+</pre>
+but kept getting hit with something about requested conversion to a scalar variable...
+I then realized I wasn't calling the constructor correctly:
+<pre lang="c">
+Controller con(2,3,4);
+</pre>
+
+<p>Here’s the constructor method signature:</p>
+<pre lang="c">
+Controller::Controller(int clock, int latch, int datin)
+</pre>
+
+<p>Now I know that the new keyword returns a pointer variable.<br>I also picked up a little on writing libraries for Arduino outlined <a href="http://arduino.cc/en/Hacking/LibraryTutorial" target="_blank" rel="external">here</a>.</p>
+<p>Here’s the pinout on a nintendo controller BTW.<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/06/images.jpg" target="_blank" rel="external"><img src="/images/d03c4b5f5c8839d66c488866339ccdd7cae54ac5.jpg" alt="" title="images"></a></p>
+<iframe width="560" height="315" src="http://www.youtube.com/embed/gLs3bBmUPMU" frameborder="0" allowfullscreen></iframe>
+
+<p>Here is the incredibly simple code I used as a driver:</p>
+<pre lang="c">
+#include <controller.h>
+
+Controller cbar(2,3,4);
+
+/* SETUP */
+void setup() {
+
+}
+
+void loop() {
+cbar.update();
+if (cbar.isPressed(A)){
+ Keyboard.set_key1(KEY_F);
+ }
+ else if(cbar.isReleased(A))
+ {
+   Keyboard.set_key1(0);
+ }
+
+ if (cbar.isPressed(B)){
+ Keyboard.set_key2(KEY_D);
+ }
+ else if(cbar.isReleased(B))
+ {
+   Keyboard.set_key2(0);
+ }
+
+  if (cbar.isPressed(LEFT)){
+ Keyboard.set_key3(KEY_LEFT);
+  }
+  else if(cbar.isReleased(LEFT))
+ {
+   Keyboard.set_key3(0);
+ }
+
+ if (cbar.isPressed(DOWN)){
+ Keyboard.set_key4(KEY_DOWN);
+ }
+ else if(cbar.isReleased(DOWN))
+ {
+   Keyboard.set_key4(0);
+ }
+
+ if (cbar.isPressed(UP)){
+ Keyboard.set_key5(KEY_UP);
+ }
+ else if(cbar.isReleased(UP))
+ {
+   Keyboard.set_key5(0);
+ }
+
+ if (cbar.isPressed(RIGHT)){
+ Keyboard.set_key6(KEY_RIGHT);
+ }
+ else if(cbar.isReleased(RIGHT))
+ {
+   Keyboard.set_key6(0);
+ }
+
+  if (cbar.isPressed(SELECT)){
+   Keyboard.set_key1(KEY_A);
+  }
+  else if(cbar.isReleased(SELECT))
+ {
+   Keyboard.set_key1(0);
+ }
+
+  if (cbar.isPressed(START)){
+    Keyboard.set_key1(KEY_S);
+ }
+ else if(cbar.isReleased(START))
+ {
+   Keyboard.set_key1(0);
+ }
+
+ Keyboard.send_now();
+
+delay(10);
+}
+</controller.h></pre>
+
+<p>Code:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/06/NESController.zip" target="_blank" rel="external">NESController Class for Arduino</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-01T13:35:25.000Z"><a href="/2012/06/01/gws-s125-code/">Jun 1 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/01/gws-s125-code/">GWS s125 code</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>  myservo.write(102);<br>  Serial.println(“back”);<br>  delay(1650);<br>  myservo.write(0);<br>  Serial.println(“forth”);<br>  delay(1650);</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-05-28T06:30:25.000Z"><a href="/2012/05/27/bitwise-brain-dump-part-1/">May 27 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/05/27/bitwise-brain-dump-part-1/">Bitwise Brain Dump - Part. 1</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is a personal brain dump on binary numbers, bitwise operators and bitshifting.  This stuff has eluded me for quite some time and it feels good to have a better handle on it.   So…let’s dive on in.</p>
+<p><strong><span style="color:#555555;font-size:16px;">Numeric datatypes in C#</span></strong></p>
+<p>The <strong>int</strong> datatype is an alias for the System.Int32, a signed 32-bit integer.<br>This is what the number 1(as an <strong>int</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>00000000 00000000 00000000 00000001</em><br>This is what the number -2147483648 (the minimum value of an <strong>int</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>10000000 00000000 00000000 00000000</em><br>The <strong>long</strong> datatype is an alias for the System.Int64, a signed 64-bit integer.<br>Hence, this is what the 1(as a <strong>long</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001</em><br>And this is what 9223372036854775807 (the maximum value of a <strong>long</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>01111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111</em></p>
+<p>Here are the functions I used to extract and display each bit in the numbers above:</p>
+<pre lang="csharp">
+private static string showBits(int x)
+{
+    string s=x+": ";
+    int mask = 1 << 31;
+    for (var cnt = 1; cnt <= 0="" 8="=" 32;="" ++cnt)="" {="" s+="((x" &="" mask)="=" 0)="" ?="" '0'="" :="" '1';="" x="" <<="1;" if="" (cnt="" %="" &&="" cnt="" !="32)" ;="" }="" return="" s;="" private="" static="" string="" showbits(long="" x)="" s="x" +="" ":="" ";="" long="" mask="1L" 63;="" for="" (var="" <="64;" pre="">
+
+<p>Note the use of the variable <strong>mask</strong> here - known as a ‘bitmask’ we use the bitwise AND operation to ‘mask’ out all bits except the ones we care about….so our mask value in the int version of the showBits function looks like this: 10000000 00000000 00000000 00000000. </p>
+<p>Keep in mind the bitwise &amp; operator works like this:</p>
+<blockquote>
+<p>0 &amp; 0 == 0<br>    0 &amp; 1 == 0<br>    1 &amp; 0 == 0<br>    1 &amp; 1 == 1</p>
+</blockquote>
+<p>As we enter the loop with our integer value we mask out all bits except the far left.  Once we’ve used the ternary conditional to determine the value of the bit, we left-shift-assign (&lt;&lt;=) the value of x 1 bit.  Again, using the same mask, we are only looking at the left-most bit, apply the conditional, shift left 1 again etc. etc.</p>
+<p><strong><span style="color:#555555;font-size:16px;">In Action</span></strong></p>
+<p>I’ve recently run into several cases where these kind of bit-level operations came in handy.  The first, using the writeableBitmap class in C#. Without going into too much detail, we needed to convert an ARGB value in int form to a .Net Color type - so we needed the constituent RGB values.  Here’s the function:</p>
+<pre lang="csharp"> 
+public static Color ConvertIntToRGB(int rgb)
+{
+      return Color.FromArgb(255, (byte) ((rgb >> 16) & 0xff), (byte) ((rgb >> 8) & 0xff), (byte) ((rgb) & 0xff));
+}
+</pre>
+
+<p>So what’s going on here? For the Alpha value, we’re always using 255 so we can skip that; for the red value or, the second byte from the left, we shift the bits right 16 (2 bytes worth), apply (bitwise &amp;) a mask that looks like this: <em>00000000 00000000 00000000 11111111</em> in order to set all other bytes except the right-most to 0 and convert to a byte-length number.  For the green value, we do the same but we only shift the byte right one, and for blue, we don’t need to shift at all.</p>
+<p>These 2 links were invaluable for understanding this:</p>
+<ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/s1ax56ch" target="_blank" rel="external">Value Types (C# reference)</a></li>
+<li><a href="http://www.arduino.cc/playground/Code/BitMath" target="_blank" rel="external">Arduino Playground - Bit Math Tutorial</a></li>
+</ul>
+<p>Stay tuned for part 2.</p>
+</=></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-05-23T11:33:05.000Z"><a href="/2012/05/23/this-dude-is-a-badass/">May 23 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/05/23/this-dude-is-a-badass/">This dude is a badass...</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Just found this brilliant blog post:<br><a href="http://worrydream.com/ABriefRantOnTheFutureOfInteractionDesign/" target="_blank" rel="external">http://worrydream.com/ABriefRantOnTheFutureOfInteractionDesign/</a></p>
+<p>I love where he’s going with this!! Seems like if you play out the ‘pictures under glass’ technology for generations you arrive at humans with one long, skinny finger squinting at their little mobile devices.  Yuck.  I’m pretty sure the virtual reality VR era will be arriving soon with a use for data gloves, head mounted displays and much, much more..<br>Check these out:<br><a href="http://www.nytimes.com/2012/02/23/technology/google-glasses-will-be-powered-by-android.htmlhttp://" target="_blank" rel="external">http://www.nytimes.com/2012/02/23/technology/google-glasses-will-be-powered-by-android.html</a></p>
+<p><a href="http://www.5dt.com/products/pdataglove14.html" target="_blank" rel="external">http://www.5dt.com/products/pdataglove14.html</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-05-19T00:33:37.000Z"><a href="/2012/05/18/shapefile-dbf-data-types/">May 18 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/05/18/shapefile-dbf-data-types/">Shapefile (DBF) Data types.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>The ESRI does not support integer nor double data types in DBF files.  I got to thinking about storage efficiencies and started slinging some code but kept running into this:</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/05/image1.png" target="_blank" rel="external"><img src="/images/54c7e981a141db7eb9bbd0b5d8b13125e1dbe6d9.png" alt="" title="image1"></a><br>even after reading this in the <a href="www.esri.com/library/whitepapers/pdfs/shapefile.pdf">shapefile whitepaper</a>:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/05/spec.png" target="_blank" rel="external"><img src="/images/6d1f4a00faca1bc9adb3b28735453e239fc95df1.png" alt="" title="spec"></a></p>
+<p>Sure enough in looking at this page about <a href="http://help.arcgis.com/en/arcgisserver/10.0/help/arcgis_server_dotnet_help/index.html#//0093000000vz000000" target="_blank" rel="external">ESRI data-type conversions in .NET</a> I don’t see the double nor integer dbf data types.  I’m sick of storing my doubles as 19-bytes…</p>
+<p>Anyone is welcome to correct me if I’m wrong.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-05-12T06:48:22.000Z"><a href="/2012/05/11/the-cat-empire-cinema/">May 11 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/05/11/the-cat-empire-cinema/">The Cat Empire - Cinema</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>New album from the Cat Empire (ok it’s a few years old now and I wasn’t paying attention)….anywho…very cool album…</p>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/E-VOaAV-9es" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-05-06T04:37:20.000Z"><a href="/2012/05/05/one-more-teensy7seg4dig-sketch/">May 5 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/05/05/one-more-teensy7seg4dig-sketch/">One more Teensy/7Seg4Dig sketch</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This circuit isn’t too different from the previous one but I’m posting it for my own benefit/recordkeeping.  Basically, I wanted to connect the rotary encoder up to the numeric display and be able to roll through digits, both positive and negative. One of the major problems with this setup is the way single digits appear brighter than dual digits.</p>
+<p>Fritz: <a href="http://blog.guerrillagis.net/wp-content/uploads/2012/05/rotCapture.png" target="_blank" rel="external"><img src="/images/6c6b38b3faff62b03e874763da112c6fa94a5941.png" alt="" title="rotCapture"></a></p>
+<p>Vid:</p>
+<iframe src="http://player.vimeo.com/video/41636285" width="500" height="281" frameborder="0" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen></iframe>
+
+<p>Code:</p>
+<pre lang="c">
+
+#include <encoder.h>
+
+Encoder myEnc(20, 19);
+
+int digit0 = 7; 
+byte numbers[10] =
+{
+  B11000000, // 0
+  B11111001, // 1
+  B10100100, // 2
+  B10110000, // 3
+  B10011001, // 4
+  B10010010, // 5
+  B10000010, // 6
+  B11111000, // 7
+  B10000000, // 8
+  B10010000  // 9
+};
+
+void setup()
+{
+  DDRB=0xff;
+  PORTB=0x00;
+  for (byte digit = 0; digit < 4; digit++)
+    pinMode(digit0+digit,OUTPUT);
+}
+
+int digitPosition = 1;
+
+long value = 0;
+int powerOfTen[] = {1,10,100,1000};
+
+void RefreshDisplay()
+{
+  digitalWrite(digit0 + digitPosition, LOW);
+  digitPosition++;
+  if (digitPosition > 3) digitPosition = 0;
+
+  if ((abs(value)<10 &&="" digitposition="=1)" ||="" (abs(value)<100="" (abs(value)<1000="" {="" digitcheck(digitposition);="" return;="" }="" int="" digitvalue="abs(value)" %="" poweroften[="" digitposition+1="" ]="" poweroften[digitposition];="" number="numbers[" ];="" if="" ((number=""> 0) || (value < powerOfTen[ digitPosition+1 ]))
+  {
+  PORTB=number;
+  digitalWrite(digit0 + digitPosition, HIGH);
+  delay(4);
+  }
+}
+
+void DigitCheck(int dPos)
+{ 
+  byte checks[3]=
+  {0,9,99};
+
+  if(value<0 &&="" abs(value)="">checks[dPos-1])
+    {
+      PORTB=B10111111;
+      digitalWrite(digit0 + dPos, HIGH);
+      delay(4);
+    }
+}
+
+long oldPosition  = -999;
+void loop()
+{
+ long newPosition = myEnc.read();
+  if (newPosition != oldPosition) {
+    oldPosition = newPosition;
+    value=newPosition/4;
+  }
+  RefreshDisplay();
+}
+</0></10></encoder.h></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/page/5/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/archives/page/7/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

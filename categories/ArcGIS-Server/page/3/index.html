@@ -1,0 +1,762 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 3 | ArcGIS Server | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">ArcGIS Server</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-05T06:02:00.000Z"><a href="/2010/10/04/google-earth-arcgis-server/">Oct 4 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/04/google-earth-arcgis-server/">Google Earth + ArcGIS Server</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Awhile back I created a test app that would pull KML from ArcGIS Server for use in Google Earth. I wrapped this in a webpage along with the draggable marker control I developed.</p>
+<p>This is what it looks like:</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/fufsldkj.png" target="_blank" rel="external"><img src="/images/b2fd12b609fd6327aa0394de5f94321d8e544e32.png" alt="" title="GE_plus_AGS"></a></p>
+<p>This stuff could pretty easily be built up to include a TOC for some ArcGIS Server Layers. Or alternatively could be used for Public Works or Health Workers to drag and drop incidents/assets on the map and annotate them.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/GEarth_+_ArcGISServer.zip" target="_blank" rel="external">GEarth_+_ArcGISServer</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-30T01:40:00.000Z"><a href="/2010/09/29/naip-server-side-tiling/">Sep 29 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/29/naip-server-side-tiling/">NAIP Server-side tiling</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>As a clearer follow up to <a href="http://mis3007-2zn1p81/Blog/post/Server-side-tiling.aspx" target="_blank" rel="external">this blogpost</a>:</p>
+<p>Problem A: MrSID tiled imagery is only realistically viewable at scales of &lt; 1:50,000.</p>
+<p>Problem B: In order to optimize viewing of imagery for the web it is best to tile imagery according to pre-set scales (e.g. the Google Maps/ESRI/Virtual Earth tiling scheme) - this is a rather time and space consuming chore. It also mandates that the imagery layer be considered an ArcGISTiledMapService for the intents and purposes of ESRI web-APIs</p>
+<p>Solution: Server-side tiling.&nbsp; In order to optimize NAIP imagery viewing:</p>
+<ol>
+<li>Create an empty GDB</li>
+<li>Create 4 empty unmanaged raster catalogs labeled L1, L2, L3, L4</li>
+<li>Created 3 fishnets at the same extent as the county bounds. L1 = 2x2, L2=4x4, and L3=8x8.</li>
+<li>Ran a script (see below) to create bookmarks out of features</li>
+<li>Exported JPGs based on bookmarks (this is kind of like a quick and dirty DSMapBook)</li>
+<li>Imported JPGs into each of the above corresponding Raster Catalogs</li>
+<li>For L4 I imported the sid files</li>
+<li>Created an MXD with 4 groups corresponding to the fishnet/raster catalogs and set their scales accordingly</li>
+</ol>
+<p>End result - a dynamic map service that should draw equally fast at all scales and will allow for custom scales.</p>
+<p>The code below includes the createBookmark function and the export image method.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/09/ExportCode.zip" target="_blank" rel="external">ExportCode</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-09-08T04:08:00.000Z"><a href="/2010/09/07/js-api-get-scale-function/">Sep 7 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/09/07/js-api-get-scale-function/">JS API get scale function</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Ever need to know the scale your working at using the ESRI JS API?</p>
+<pre lang="javascript">function convertExtentToScale(){
+    var scale = ((map.extent.xmax - map.extent.xmin)/map.width)*96;
+    var units;
+    for (var j=0, jl=map.layerIds.length; j&lt;jl; j++) {
+      var layer = map.getLayer(map.layerIds[j]);
+     if (yourMapLayer == layer.id) {
+        units = layer.units;
+      }
+    }
+    scale = scale * 12
+        //don't like decimals in my scales:
+    scale = scale.toFixed(0)
+    return scale;
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-20T06:39:00.000Z"><a href="/2010/08/19/server-side-tiling/">Aug 19 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/19/server-side-tiling/">Server-side tiling</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Many, if not all, of our imagery layers are tiled into MrSIDS, this makes display at large scales relatively fast in ArcMap.&nbsp; However, even though these tiles are pyramided, viewing the layer at small scales is nearly impossible.&nbsp; In ArcMap we can set the layer to simply display polygons at scales smaller than x but what about on the web?&nbsp; We are pretty much forced to set the layer to be scale dependent and a fairly large scale at that.&nbsp; In order to enable and optimize the viewing of these imagery datasets on the web (and perhaps in ArcMap), I’ve set up a handy suite of scripts to create pyramid style grids (3 levels) and tile imagery accordingly.&nbsp; The cost is about another gig but from my perspective, the ability to view the map at scales smaller than 1:50K and down and the performance thereof, is worth every kb.</p>
+<p><span style="font-size:medium;"><strong>Server-side?</strong></span><br> I’m going to follow this train of thought further to the basis of the new Interactive Map.&nbsp; It seems that the loss of the user-defined scale functionality has been quite a blow.&nbsp; The central roadblock to user-defined scales is caching. So what if we could optimize the performance of dynamic image services?</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-20T01:37:00.000Z"><a href="/2010/08/19/point-density-based-tiling/">Aug 19 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/19/point-density-based-tiling/">Point density based tiling.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>In the continuing thoughts about tiling vectors, I’ve realized that, especially where contours are concerned, it doesn’t necessarily make the most sense to tile a straight fishnet-based grid.&nbsp; This thought occurred to me this morning when a company called interested in obtaining paper maps for all the parcels in the county.&nbsp; In the rural areas of the county, using sections as a standard grid cell makes sense but in areas with higher density, 8.5x11 will not cut it.&nbsp; This grid could be produced by generating parcel centroid points, generating a grid and then running a point count per grid cell.&nbsp; In cells with a point count greater than a certain threshold, the grid cell would be quartered again.</p>
+<p>I ran this train of thought out to contours as well and it, again, makes sense.&nbsp; In areas with a greater range of vertical relief, say the Grand Canyon, point density is going to be much, much higher.&nbsp; To optimize tiling, or rather to <em>equalize</em>, tiles, it makes sense to take this into consideration.&nbsp; More on this in future posts.</p>
+<p>My density has brought me to you…</p>
+<iframe title="YouTube video player" width="640" height="390" src="http://www.youtube.com/embed/w8B-Nokm9K0" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-17T02:16:00.000Z"><a href="/2010/08/16/the-esri-js-api-expand-method/">Aug 16 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/16/the-esri-js-api-expand-method/">The ESRI JS API Expand method</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <div class="detaildesc">I’ve been missing this function for quite some time…Oftentimes the map will zoom too close to a parcel…always wanted to back it off a scale level but I thought it was too hard coded into the API….enter ‘<em><strong>expand</strong></em>‘.<br></div><br><div class="detaildesc"><br></div><br><div class="detaildesc">Expands the extent by the factor given.  For example, a value of 1.5 will be 50% bigger.</div><br><div class="detaildesc"><strong>Return value:</strong> <a href="extent.htm">Extent</a></div><br><div class="detaildesc"><strong>Input Parameters:</strong></div><br><table class="syntaxTABLE" border="0" cellspacing="0"><br><tbody><br><tr><br><td class="detailTABLE">&lt;Number&gt; <strong>factor</strong></td><br><td class="detailTABLE">Required</td><br><td class="detailTABLE">The mulitplier value.</td><br></tr><br></tbody><br></table><br><div class="detaildesc"><strong>Code snippets:</strong><br><br><pre>  map.setExtent(points.getExtent().expand(3));<br></pre><br><br></div>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-08-06T02:03:00.000Z"><a href="/2010/08/05/tiled-vectors-and-arcmap-2/">Aug 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/08/05/tiled-vectors-and-arcmap-2/">Tiled Vectors and ArcMap</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><em>Special thanks to Brian and MS Research for enlightening me on this one</em></p>
+<p><strong>Tiling is not only for raster data but can also be used to improve the performance of vector data in web and desktop GIS. </strong>If you’re still interested, read on…</p>
+<p>As you all most likely recall I recently created a county-wide 20 ft. contour feature class. By all of my measures this new layer I had created should draw much faster than the existing 20ft contour layer (AgTopo20). I ran summary statistics on number of vertices for a comparative sample and came up with an exponentially greater number of vertices in the existing feature class…So how was it drawing so much faster than my new contours layer???</p>
+<p>The other obvious difference I noticed between the two was that the existing FC (AgTopo20) has roughly twice the number of features and 1/3 less coverage.</p>
+<p>hmmm….As mentioned above, Brian clued me in to the fact that even though ArcMap only draws the features in the viewing area, if the extent of the features drawn spreads beyond the viewing area, <em>it has to draw that also</em>.&nbsp; Aha!</p>
+<p>Continuing along this line of thought…I had been wondering why the public lands layer was drawing so slowly in the web app.&nbsp; The polygons weren’t that complicated.&nbsp; but again, even if the user was centered over Prescott with just a corner of a polygon in view, the engine would be drawing said polygon up near Ash Fork!!!&nbsp; Checked the Public Lands layer in SDE (AgLandUseWk) and sure enough: 10 total features.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/08/pub.bmp" target="_blank" rel="external"><img src="/images/554a63ca52615bdc3454e191065a56fef69eea9a.bmp" alt="" title="pub"></a></p>
+<p>Discovered a new tool in Data Management:Features- Multipart to Singlepart. Ran this tool on the Public Lands FC and resulted in 1400 records.&nbsp; Sure enough, draw time in ArcMap was much improved.</p>
+<p>Several years ago I experimented with tiling vectors for improving vector display in the Virtual Earth (now Bing) mapping API. See <a href="http://research.microsoft.com/en-us/um/redmond/projects/mapcruncher/TiledVectors/TiledVectorsDemo-1.1/description.html" target="_blank" rel="external">this link</a> for more on this concept.&nbsp; I never thought then that this same principle could be applied to improve draw times in ArcMap.</p>
+<p>If you have a county-wide dataset that is displaying EQUALLY AS FAST(SLOW) AT LARGE SCALES AS SMALL SCALES - think about exploding or tiling your features.&nbsp; If exploding doesn’t work, follow this workflow to tile your vectors:</p>
+<ol>
+<li>Create a fishnet (Data Management::Feature Class) a 10x10 worked for me for the contours. (Yes, 100 tiles)</li>
+<li>Convert the ouput fishnet to polygons.</li>
+<li>Split the polygons into indiv. feature classes using a split by attribute tool</li>
+<li>Batch intersect your target feature class with the polygon feature classes</li>
+<li>Merge together intersect outputs.</li>
+</ol>
+<p>There are probably other (perhaps better) ways to do this but this worked well for me.</p>
+<p><strong>Moral of the story: Tiling is not only for raster data but can also be used to improve the performance of vector data in web and desktop GIS.</strong></p>
+<p><strong><span style="color:#AA1111;">UPDATE - The Public Lands Layer was drawing pretty well on the web but there was still a lag..why? Oh yeah, because the layer in the labels service was still pointing to the old Public Lands layer - re-pointed it and it sped up (although this doesn’t make entire sense since none of the features were being drawn.&nbsp; It was probably due to the labeling engine needing to quasi-draw the features in order to know where to label.<br></span></strong></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-16T07:24:00.000Z"><a href="/2010/07/16/new-app-headaches/">Jul 16 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/16/new-app-headaches/">External GIS app user complaints</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>The most common problems so far:<br><strong><br>1)&nbsp;&nbsp;&nbsp; Inability to set custom scale</strong><br> I hope to research this more in the next month.&nbsp; I have not found any scripts/forum stubs regarding this a la the new ESRI APIs.&nbsp; This was mostly unforeseen.<br><strong>2)&nbsp;&nbsp;&nbsp; <span style="text-decoration:line-through;">Inability to mark coordinates on the map</span></strong><br>This is developed and tested and will be pushed into prod when I get back.&nbsp; I would do it before I leave but then it would inevitably fail ;P.<br><strong>3)&nbsp;&nbsp;&nbsp; Inability to print/export.</strong><br>I didn&rsquo;t realize the breadth of browser pop-up blockers.&nbsp; When I have walked people through disabling them in IE it usually still fails.&nbsp; I later discover that it a 3rd party toolbar&hellip;I&rsquo;ve put comprehensive help in the FAQs for this.<br><strong>4)&nbsp;&nbsp;&nbsp; Inability to measure in IE7.</strong><br>One person reported this&hellip;I cannot reproduce it&hellip;but have taken note.<br><strong>5)&nbsp;&nbsp;&nbsp; Blank map when printing from the print_parcel.aspx page with IE7.</strong><br>Little issues keep coming up for people with IE7 that I cannot reproduce.<br><strong>6)&nbsp;&nbsp;&nbsp; X layer doesn&rsquo;t appear at Y scale&hellip;</strong><br>I am making note of these and can adjust accordingly.<br><strong>7)&nbsp;&nbsp;&nbsp; <span style="text-decoration:line-through;">No aerial photo coverage</span></strong><br>I tiled the NAIP imagery but have now decided to go with a dynamic layer instead so as to get coverage (albeit crappy coverage) at &gt;1:10,000 scales.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-10T00:06:00.000Z"><a href="/2010/07/09/service-tuning/">Jul 9 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/09/service-tuning/">Service tuning...</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Based on the stats I’m seeing, and advice from Jeremiah w/ESRI I’ve decided to roll back some changes I made on Wednesday to service instance pooling.&nbsp;</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/toppagesdetail1.png" target="_blank" rel="external"><img src="/images/8debbde438c0f1f93a96ffd1b33a5f5ec4dc3953.png" alt="" title="toppagesdetail1"></a></p>
+<p>I set the top 4 services (property, labels, roads and land1) to use a maximum of 2 instances (instead of 1).&nbsp; Based on the production GIS web server’s performance after the lsass.exe fix, I don’t think it will be a problem.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-08T07:25:00.000Z"><a href="/2010/07/08/initial-thoughts-on-tuning-mapserver/">Jul 8 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/08/initial-thoughts-on-tuning-mapserver/">Initial thoughts on tuning ArcGIS Server</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Our production GIS web server died again today at 3:50.&nbsp; I was not surprised.&nbsp; I had been watching the load not dip below 98% for a sustained period (like an hour).&nbsp; We rebooted.&nbsp; Ops had already made their system modifications and I made the following modifications:</p>
+<p>Set the maximum number of instances for each service from 2 to 1.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/25345435.bmp" target="_blank" rel="external"><img src="/images/a437b46c6800c9a95104bb566c91fa0661e34ed2.bmp" alt="" title="25345435"></a></p>
+<p>Set all services that are not supposed to be running (File_gdb test services and secured services) to not start automatically and stopped them.</p>
+<p>Set the host/SOC capacity to 100 - According to ESRI - “capacity limits the number of service instances that can run on a container machine (SOC)” - I’m not really sure how this translates&nbsp; - in a way it doesn’t make sense since if you only have 10 services and have set their maximum number of instances to 1 each then it seems to me you would never have more than 10 service instances.?? Am I missing something? I have a hunch that within each ArcSOC instance on the web server there are multiple instances running. This is the only way the capacity number makes sense to me…</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/111.bmp" target="_blank" rel="external"><img src="/images/87244fccb691208ce5e386189bafbb28bb4b2d3f.bmp" alt="" title="111"></a></p>
+<p>If/when the server begins to overheat again we will try the following additional settings:</p>
+<p>Setting the services to run in low isolation - according to ESRI - “the isolation level determines whether these instances run in separate processes or share processes” - low isolation implies that service instances will share processes and according to ESRI “can significantly improve memory consumption on your server” but is risky in that “if a process experiences a shutdown or crash” (I don’t know why one would) “all instances sharing the process will be destroyed.”</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/2222.bmp" target="_blank" rel="external"><img src="/images/5979144f04acbff366041978fabfa9a1613b3a28.bmp" alt=""></a></p>
+<p><strong>ALSO:</strong>I noticed that the lsass.exe process is coming out as a prime suspect in overheating Mapserver. After googling ArcGIS Server and lsass.exe voila! arrived at <a href="http://resources.arcgis.com/content/kbase?fa=articleShow&amp;d=32620" target="_blank" rel="external">this ESRI kb article</a> outlining the correlation, or should I say causation.&nbsp; It seems that every REST and SOAP request require the use of the LSASS (Local Security Authority Subsystem Service). By creating a new app pool and invoking additional IIS incantations, you can “disable per request authentication.”</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/categories/ArcGIS-Server/page/2/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/categories/ArcGIS-Server/page/4/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,846 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 6 | General GIS Warfare | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">General GIS Warfare</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-04-06T01:41:24.000Z"><a href="/2011/04/05/arcgis-dev-icons/">Apr 5 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/04/05/arcgis-dev-icons/">ArcGIS dev icons</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>The motherload of quality icons for ArcGIS dev is located here:</p>
+<p>[~ArcGISInstall]\DeveloperKit10.0\Icons</p>
+<p>Enjoy!</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-03-09T02:31:24.000Z"><a href="/2011/03/08/because-i-havent-blogged-in-a-while/">Mar 8 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/03/08/because-i-havent-blogged-in-a-while/">Data driven symbol levels</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Another benefit of relative elevation values beyond routing is that of symbol levels.  If you pop the right fields in your dataset you can do some cool symbology stuff with bridges and overpasses and not have to mess around with manual adjustment (e.g. data driven)</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/03/elev.png" target="_blank" rel="external"><img src="/images/805ddcba7c111a6d60cb898bf088824a535703ac.png" alt="" title="elev"></a></p>
+<p>For the purpose of coloring and applying symbolic hierarchies, I setup an extremely simple field calculation to classify street segments by their from/to elevations.</p>
+<pre lang="vb">dim lvl
+if [F_ELEV]=1 and [T_ELEV]=1 then
+lvl=1
+elseif ([F_ELEV]=0 and [T_ELEV]=1) OR ([F_ELEV]=1 and [T_ELEV]=0) then
+lvl=.5
+elseif ([F_ELEV]=2 and [T_ELEV]=1) OR ([F_ELEV]=1 and [T_ELEV]=2) then
+lvl=1.5
+elseif [F_ELEV]=2 and [T_ELEV]=2 then
+lvl=2
+elseif ([F_ELEV]=2 and [T_ELEV]=3) OR ([F_ELEV]=3 and [T_ELEV]=2) then
+lvl=2.5
+elseif [F_ELEV]=3 and [T_ELEV]=3 then
+lvl=3
+elseif ([F_ELEV]=4 and [T_ELEV]=3) OR ([F_ELEV]=3 and [T_ELEV]=4) then
+lvl=3.5
+elseif [F_ELEV]=4 and [T_ELEV]=4 then
+lvl=4
+elseif ([F_ELEV]=4 and [T_ELEV]=5) OR ([F_ELEV]=5 and [T_ELEV]=4) then
+lvl=4.5
+elseif [F_ELEV]=5 and [T_ELEV]=5 then
+lvl=5
+End If</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-01-29T07:49:06.000Z"><a href="/2011/01/28/calcconvert-dates-and-strings-in-arc/">Jan 28 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/01/28/calcconvert-dates-and-strings-in-arc/">Calc/convert dates and strings in Arc.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>‘To convert a string to a date</p>
+<pre lang="vb">
+CDate("2010-02-16")
+</pre>
+'To convert a string (YYYYMMDD)
+<pre lang="vb">
+Left( [varv],4) & "-" & Left( Right([varv],4),2) & "-" & Right( [varv],2)
+'To convert a string (YYYYDDMM)
+Left( [varv],4) & "-" & Right( [varv],2) & "-" & Left( Right([varv],4),2)
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-01-27T08:42:46.000Z"><a href="/2011/01/27/space-syntax/">Jan 27 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/01/27/space-syntax/">Space Syntax</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Just came out of a presentation by Tim Stonor of Space Syntax - he was presenting the logic that goes in to some of their planning models…</p>
+<p>Got me to thinking that it would be interesting to run a connectivity analysis and compare that with a CFCC/Road class attribute. Tease out roads with speed limits/ratings that don’t conform to their connectedness…</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-01-11T01:52:52.000Z"><a href="/2011/01/10/how-efficient-is-privacy/">Jan 10 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/01/10/how-efficient-is-privacy/">Waxing heterarchical</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Seems like not that efficient when looking at the complexity of social structures.</p>
+<p>For instance heterarchy:</p>
+<p><a href="http://en.wikipedia.org/wiki/Heterarchy" target="_blank" rel="external">http://en.wikipedia.org/wiki/Heterarchy</a></p>
+<p>or another…</p>
+<p><a href="http://en.wikipedia.org/wiki/Homoarchy" target="_blank" rel="external">http://en.wikipedia.org/wiki/Homoarchy</a></p>
+<p>A horizontal vs. vertical political organization…</p>
+<p>I seem to be dealing with networks of various types.  Could this be some suggestion of a heterarchy. eg. improved communication as lateralizing?</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-18T06:41:12.000Z"><a href="/2010/12/17/preliminary-workflow-for-reconciling-busline-geom-with-rlis-streets/">Dec 17 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/17/preliminary-workflow-for-reconciling-busline-geom-with-rlis-streets/">Preliminary workflow for reconciling busline geom with RLIS Streets</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>Create new field in buslines- [rte_dir]</li>
+<li>Calc new field with [rte] &amp; “-“ &amp; [dir]</li>
+<li>Split buslines feature class on [rte_dir]</li>
+<li>Create envelope for each feature class (route+dir)</li>
+<li>Select RLIS Streets that intersect each envelope</li>
+<li>Run feature vertices to points on Selected RLIS Streets using MidPoint</li>
+<li>Select by location points that intersect bus route using 10 ft buffer(?)</li>
+<li>Export selected points to table</li>
+<li>Join table to RLIS Streets</li>
+<li>Select where joined table LOCAL_IDS are not null.</li>
+<li>Export selected segments</li>
+<li>Visual QA/QC to make sure extraneous segments were not picked up and that we have a continuous path from start to finish.</li>
+<li>Merge all features to generate total route geometry (and to allow for re-segmentation)</li>
+<li>Generate endpoints for busline</li>
+<li>Split new busline geom by endpoints</li>
+<li>There should now be 3 segments, delete the shortest 2.</li>
+<li>Explode original busline fc</li>
+<li>Visual QA/QC to make sure bus stop segmentation rules intact</li>
+<li>Run Feature vertices to points on exploded busline fc (end points)</li>
+<li>Remove duplicate points (using IRelationOperator)</li>
+<li>Split newly created busline geometry on points</li>
+<li>Merge? Leave as unique features? Somehow combine into one multi-part feature while preserving segmentation (as in the source data)?</li>
+<li>Topology for final QA/QC</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-16T23:32:44.000Z"><a href="/2010/12/16/a-few-thoughts-on-geojson/">Dec 16 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/16/a-few-thoughts-on-geojson/">A few thoughts on geoJSON</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I’ve noticed that the spec for EZRI’s JSON format as well as the more ‘open’ spec for geoJSON both have a weakness. And that weakness is a field mapping for each feature.  With ArcGIS we do not ever have a dataset with internally differing schema.</p>
+<p><em>So when geoJSON goes like this:</em></p>
+<pre lang="javascript">{ "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [102.0, 0.5]},
+      "properties": {"prop0": "value0"}
+      },
+    { "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]
+          ]
+        },
+      "properties": {
+        "prop0": "value0",
+        "prop1": 0.0
+        }
+      },
+    { "type": "Feature",
+       "geometry": {
+         "type": "Polygon",
+         "coordinates": [
+           [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
+             [100.0, 1.0], [100.0, 0.0] ]
+           ]
+       },
+       "properties": {
+         "prop0": "value0",
+         "prop1": {"this": "that"}
+         }
+       }
+     ]
+   }</pre>
+The prop0 and prop1 are redundant... in this case with a few features and abbreviated field names it is obviously no big deal.
+The issue arrives when we want to load 250 features with 10, 10 character field names.  This amounts to 2490 redundant key entries for field names. Why?
+
+_The same thing goes for EZRI's format:::_
+<pre lang="javascript">
+{"geometryType":"esriGeometryPoint",
+"spatialReference":{"wkid":4326},
+"features":[{"geometry":{"x":-83.1021268329999,"y":42.383135812,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Detroit"}},
+{"geometry":{"x":-87.6850202569999,"y":41.837084233,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Chicago"}},
+{"geometry":{"x":-73.9434298479999,"y":40.6699031900001,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"New York"}},
+{"geometry":{"x":-75.1343024059999,"y":40.006932985,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Philadelphia"}},
+{"geometry":{"x":-118.412114405,"y":34.112106538,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Los Angeles"}},
+{"geometry":{"x":-117.136669444,"y":32.8149979820001,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"San Diego"}},
+{"geometry":{"x":-96.7655292159999,"y":32.794279906,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Dallas"}},
+{"geometry":{"x":-95.3869428549999,"y":29.7689275690001,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Houston"}}]}
+</pre>
+
+<p>In this case even more burdensome with the repeating spatialReference Key/Val per feature as well as the field mapping.</p>
+<p>I propose a new JSON format.  One which more closely resembles a SQL statement without the field mappings.  Store field values in an array for each feature.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-08T03:27:49.000Z"><a href="/2010/12/07/multi-modal-thoughts/">Dec 7 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/07/multi-modal-thoughts/">Multi-modal thoughts</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h2 id="Thought_1">Thought 1</h2>
+<p>Tri-Met evangelizes OSM as the ultimate routing source data due to it’s lack of segmentation, or rather it’s integrity(?). This is all well and good but means that there can really be no place for granular Metro datasets such as bike_rtes and <a href="http://help.openstreetmap.org/questions/1236/should-i-map-sidewalks" target="_blank" rel="external">sidewalks</a> which enhance the accuracy of the network at a segment level.</p>
+<p>It would seem that the integrity of OSM data will steadily degrade over time as more detail is added (see figure 1). At this point it seems impossible to attribute segments within a way with bicycle hazard rating, sidewalk, other granular attributes. <span style="color:#993300;"><em>**Update - this was confirmed by Jack N., there’s no way to attribute without further segmentation.</em></span></p>
+<h2 id="Thought_2-">Thought 2.</h2>
+<p>Transit geometry does not need to coincide with street geometry only the junctions where inter-modal transfers take place (which, if derived from transit linework means that both geometries must coincide…Snake eat tail…NOW!). In Network Analyst this translates to a requirement of coincident geometries, and an override of endpoint connectivity of streets.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-11-30T08:24:48.000Z"><a href="/2010/11/30/a-first-network/">Nov 30 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/11/30/a-first-network/">A basic network w/out elevations or TRs</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Took a trial run of creating a network dataset with streets data today.</p>
+<ul>
+<li>Exported a version of sde.streets to a local FGDB.</li>
+<li>Joined streets to sde.streets.str and calc’ed two new fields (DRCT and STRUC) from str.</li>
+<li>Dissolved local streets on name and type fields = streets.diss</li>
+<li>Calc’ed the DRCT fields 3=”FT, 2=”TF”, 1 &amp; 0 = “ “</li>
+<li>Added subtypes programmatically to the FC in the FD in the FGDB ;)</li>
+<li>Created network dataset and used the subtypes to define different connectivity rules.<br>The biggest problem was freeway endpoints not recognizing ramps since they’d been dissolved into essentially one piece..</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-11-30T08:09:05.000Z"><a href="/2010/11/30/add-subtypes-programatically/">Nov 30 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/11/30/add-subtypes-programatically/">Add subtypes programatically</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>ArcObjects VBA</p>
+<p><pre lang="vb"><br>Public Sub subTypeOvercome()</pre></p>
+<p>Dim pMxDoc As IMxDocument<br>Set pMxDoc = ThisDocument</p>
+<p>Dim pMap As IMap<br>Set pMap = pMxDoc.FocusMap</p>
+<p>Dim player As IFeatureLayer<br>Set player = pMxDoc.SelectedLayer<br>Dim pSubTypes As ISubtypes<br>Dim pFeatureClass As IFeatureClass<br>Set pFeatureClass = player.FeatureClass<br>Set pSubTypes = pFeatureClass<br>pSubTypes.SubtypeFieldName = “TYPE”<br>pSubTypes.AddSubtype 1120, “Ramps, interchanges and feeders”<br>pSubTypes.AddSubtype 1121, “On ramp (only)”<br>pSubTypes.AddSubtype 1122, “Off ramp (only)”<br>pSubTypes.AddSubtype 1123, “On/off ramp”</p>
+<p>End Sub<br><br>Good times…</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/categories/General-GIS-Warfare/page/5/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/categories/General-GIS-Warfare/page/7/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

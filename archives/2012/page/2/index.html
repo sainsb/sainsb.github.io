@@ -1,0 +1,931 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 2 | Archives: 2012 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2012</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-13T00:08:15.000Z"><a href="/2012/07/12/on-watches-and-filegeodatabase-null-values/">Jul 12 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/12/on-watches-and-filegeodatabase-null-values/">On watches and FileGeodatabase null values</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Ran into a glitch today. (What days do I not run into glitches?)</p>
+<p>I was trying to evaluate a field value in a feature class in a file geodatabase.  Where checking for null had worked fine in the context of a shapefile, it was not working in the feature class.</p>
+<pre lang="csharp">
+if(pftr2.get_Value(4)!= null)
+{
+var foo = (int)pftr2.get_Value(4); // <== kaboom="" -="" invalid="" cast="" exception="" }="" <="" pre="">
+
+<p>I spent a lot of time rewriting statements trying to determine what this value was if it wasn’t null.  Casting to a nullable type, Long, double, string etc.  And then remembered the watch window.</p>
+<p>As it turns out, a null value in a file geodatabase evaluates to a <a href="http://msdn.microsoft.com/en-us/library/system.dbnull.value.aspx" target="_blank" rel="external">dbNull</a>…</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/bewg.png" target="_blank" rel="external"><img src="/images/12f939a38b6137c94b60ad02f6c122825f32da67.png" alt="" title="bewg"></a></p>
+<p>Lessons?</p>
+<ul>
+<li><p>For debugging in Visual Studio and ArcMap - use the Attach to process function in Visual Studio (Note that you don’t hit F5 or explicitly start debugging - just attach).<br></p></li></ul></==></pre><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/attach.png" target="_blank" rel="external"><img src="/images/fb19fa0b483cce38a58cda4a14335d1885d9dbd8.png" alt="" title="attach"></a><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/attach3.png" target="_blank" rel="external"><img src="/images/00c1b05886224ee90ed37a2de07fa4b318ed4798.png" alt="" title="attach3"></a><p></p>
+
+<li><p>Watch for dbNull values in file geodatabases</p>
+</li>
+<li>The watch window is your friend, especially considering the expense of firing up ArcMap to debug.</li>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-12T13:48:27.000Z"><a href="/2012/07/12/nightsky-model/">Jul 12 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/12/nightsky-model/">Nightsky model</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>For a recent project we set out to identify the darkest place in the contiguous United States.</p>
+<p>For this purpose, we used the following datasets:</p>
+<p>[gallery exclude=”1688”]<br>Line and point density functions were used to grid the input data as well as euclidean distance and simple binary classification (e.g. roadless area or not).  All input data were reclassified into 5 classes and composited to produce a final nightsky ‘index’ map.</p>
+<p>After constructing the composite, we created a 150x50 lattice and performed a zonal analysis. We then ranked polygons on their mean cell values to arrive at the following finalists:</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-06T02:06:36.000Z"><a href="/2012/07/05/a-snippet-and-a-thorn/">Jul 5 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/05/a-snippet-and-a-thorn/">A snippet and a thorn</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>So I’m trying to run a very simple script in arcpy that adds 4 bounding box (Xmin, Ymin, etc) fields and calculates them using the python !shape! object.<br>This, of course, works fine via the attribute table in ArcMap but fails in scriptland here:</p>
+<pre lang="python">
+arcpy.management.CalculateField(fc, "XMIN1", "!shape!.extent.xmin", "PYTHON")
+</pre>
+
+<p>This forum post informed me that I need to change the PYTHON part to PYTHON_9.3 to make this work.</p>
+<pre lang="python">
+import arcpy
+
+fc = "c:/users/sainsbury/desktop/osmmonitor/OSMNet_10_by10W.shp"
+arcpy.management.AddField(fc, "XMIN1", "DOUBLE")
+arcpy.management.AddField(fc, "YMIN1", "DOUBLE")
+arcpy.management.AddField(fc, "XMAX1", "DOUBLE")
+arcpy.management.AddField(fc, "YMAX1", "DOUBLE")
+
+arcpy.management.CalculateField(fc, "XMIN1", "!shape!.extent.xmin", "PYTHON_9.3")
+arcpy.management.CalculateField(fc, "YMIN1", "!shape!.extent.ymin", "PYTHON_9.3")
+arcpy.management.CalculateField(fc, "XMAX1", "!shape!.extent.xmax", "PYTHON_9.3")
+arcpy.management.CalculateField(fc, "YMAX1", "!shape!.extent.ymax", "PYTHON_9.3")
+</pre>
+
+<p>As my heroes Tim and Eric put it:<br>Great Job</p>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/l7u9hP4r1S8" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-05T13:29:54.000Z"><a href="/2012/07/05/teensy-pantilt-servo-nes-controller/">Jul 5 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/05/teensy-pantilt-servo-nes-controller/">Teensy + Pan/Tilt Servo + NES Controller</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>As you can probably tell from some of my <a href="http://blog.guerrillagis.net/?p=1591" title="The Teensy and the 4-Digit 7-Segment display" target="_blank" rel="external">recent blog posts</a>, I’m getting deep into the hardware side of things.  My current project is a scanning laser rangefinder mounted on a pan/tilt servo unit.  For practical purposes, I’m using the <a href="http://blog.guerrillagis.net/?p=1630" target="_blank" rel="external">NES controller library outlined several posts ago</a>… It makes for a handy little pan/tilt controller. Basically the setup is a <a href="http://www.pololu.com/catalog/product/522" target="_blank" rel="external">GWS S125 1T</a> 360 degree ball bearing servo, a <a href="http://www.radioshack.com/product/index.jsp?productId=12296088" target="_blank" rel="external">Radio Shack Parallax 180 degree servo</a>, <a href="http://www.trossenrobotics.com/p/pan-tilt-kit-noservos.aspx?feed=Froogle" target="_blank" rel="external">a Lynxmotion pan/tilt bracket</a> and my beloved <a href="http://www.pjrc.com/teensy/" target="_blank" rel="external">Teensy microcontroller</a>.<br>I’ve set up the directional control pad buttons to pan/tilt accordingly and the start button to run a simple scan routine with steady increment/decrement of pan/tilt.</p>
+<p>I’ll let the vid explain the rest:</p>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/jl9XTR_tTfQ" frameborder="0" allowfullscreen></iframe>
+
+<p>And of course, the code..crude as it is…</p>
+<pre lang="c">
+#include <servo.h>
+#include <controller.h>
+
+Controller cbar(2,3,4);
+Servo pan;
+Servo tilt;
+boolean up;
+boolean right;
+boolean start;
+int del;
+int ppos=1500;
+int tpos=90;
+
+/* SETUP */
+void setup() {
+tilt.attach(9);
+pan.attach(10);
+
+}
+
+void loop() {
+cbar.update();
+
+if(cbar.isPressed(START))
+    { start=!start;    }
+
+    if(start==true)
+    {
+    del=8;
+        if(up==true) //tilt
+        {
+            if(tpos<146) {="" tpos+="1;" tilt.write(tpos);="" }="" else="" up="false;" if(tpos="">5)
+            {
+                tpos-=1;
+                tilt.write(tpos);
+            }
+            else
+            {
+                up=true;
+            }
+        }
+
+        if(right==true) //pan
+        {
+
+            if(ppos<1976) {="" ppos+="5;" pan.writemicroseconds(ppos);="" }="" else="" right="false;" if(ppos="">825)
+            {
+                ppos-=5;
+                pan.writeMicroseconds(ppos);
+            }
+            else
+            {
+                right=true;
+            }
+        }
+    }
+    else
+    {
+    del=15;
+    if (cbar.isDown(LEFT)){
+    if(ppos<1976) {="" ppos+="25;" pan.writemicroseconds(ppos);="" }="" if="" (cbar.isdown(right)){="" if(ppos="">825)
+    {
+     ppos-=25;
+     pan.writeMicroseconds(ppos); 
+    }
+ }
+
+   if (cbar.isDown(DOWN)){
+    if(tpos<146) {="" tpos+="5;" tilt.write(tpos);="" }="" if="" (cbar.isdown(up)){="" if(tpos="">5)
+    {
+     tpos-=5;
+     tilt.write(tpos); 
+    }
+ }
+
+    }
+    delay(del);
+}
+</146)></1976)></1976)></146)></controller.h></servo.h></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-26T23:48:48.000Z"><a href="/2012/06/26/quick-vs-2010-keystroke/">Jun 26 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/26/quick-vs-2010-keystroke/">Quick VS 2010 Keystroke</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>CTRL M + CTRL O ==</p>
+<p>Collapses to definitions. </p>
+<p>CTRL + SHIFT + F9 ==</p>
+<p>Removes all breakpoints<br>badass.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-22T06:19:40.000Z"><a href="/2012/06/21/run-a-python-script-remotely-with-psexec/">Jun 21 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/21/run-a-python-script-remotely-with-psexec/">Run a python script remotely with psexec</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is a handy little tidbit using <a href="http://technet.microsoft.com/en-us/sysinternals/bb897553.aspx" target="_blank" rel="external">psexec</a>.</p>
+<p>If you have a python script you’d like to run on a remote server (with which you have elevated rights) just go like this:</p>
+<p><pre lang="c"><br>C:/&gt; psexec \machinename python mypythonscript.py<br></pre><br>easy.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-22T04:29:19.000Z"><a href="/2012/06/21/changing-column-values-in-a-dataframe-using-the-sample-function/">Jun 21 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/21/changing-column-values-in-a-dataframe-using-the-sample-function/">R - Changing column values in a dataframe using the sample function</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Ran into a bit of a headache this morning trying to update a sample of rows in a dataframe.  Here is the correct way to do it:</p>
+<pre lang="python">
+DU[DU$BTYPE=='H1x',][sample(1:nrow(DU[DU$BTYPE=='H1x',]),100),]$MODE = "MF"
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-03T12:33:09.000Z"><a href="/2012/06/03/generalize-your-shapefile-online/">Jun 3 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/03/generalize-your-shapefile-online/">Generalize your shapefile online</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I found this site years ago and while it isn’t quite as cool nowadays — it was light years ahead of it’s time when it arrived.  Upload a shapefile, choose a generalization algorithm - adjust your gen level (between 0 and 100) and save out your results.  The output comes as a .shp and .shx file - I dropped it right back in with the dbf file of origin and was good to go…</p>
+<p>MapShaper<br><a href="http://mapshaper.com/test/MapShaper.swf" target="_blank" rel="external">http://mapshaper.com/test/MapShaper.swf</a></p>
+<p>Whoever you are, you rock.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-03T12:28:12.000Z"><a href="/2012/06/03/nes-controller-code/">Jun 3 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/03/nes-controller-code/">NES Controller + Teensy + JNES</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Picked up a Nintendo Entertainment System (NES) controller the other day at Goodwill and wanted to test it out as a controller for a servo project.  Since I had some time to kill, I wired it up to my Teensy and cobbled together some code to use it via USB with Windows 7 and the pretty solid <a href="http://jabosoft.com/index.php?categoryid=1" target="_blank" rel="external">NES emulator JNes</a>. (<a href="http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1254964306" target="_blank" rel="external">This Arduino Forum post</a> made it very easy).  Including the controller class that is several posts down made writing the driver pretty easy.  The trick was the fact that USB keyboards allow for 6 simultaneous inputs so we’re really only concerned with capturing change via the isPressed and isReleased properties.  Learned a little about constructors in C. I kept trying to call:</p>
+<pre lang="c">
+Controller con = new Controller(2,3,4);
+</pre>
+but kept getting hit with something about requested conversion to a scalar variable...
+I then realized I wasn't calling the constructor correctly:
+<pre lang="c">
+Controller con(2,3,4);
+</pre>
+
+<p>Here’s the constructor method signature:</p>
+<pre lang="c">
+Controller::Controller(int clock, int latch, int datin)
+</pre>
+
+<p>Now I know that the new keyword returns a pointer variable.<br>I also picked up a little on writing libraries for Arduino outlined <a href="http://arduino.cc/en/Hacking/LibraryTutorial" target="_blank" rel="external">here</a>.</p>
+<p>Here’s the pinout on a nintendo controller BTW.<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/06/images.jpg" target="_blank" rel="external"><img src="/images/d03c4b5f5c8839d66c488866339ccdd7cae54ac5.jpg" alt="" title="images"></a></p>
+<iframe width="560" height="315" src="http://www.youtube.com/embed/gLs3bBmUPMU" frameborder="0" allowfullscreen></iframe>
+
+<p>Here is the incredibly simple code I used as a driver:</p>
+<pre lang="c">
+#include <controller.h>
+
+Controller cbar(2,3,4);
+
+/* SETUP */
+void setup() {
+
+}
+
+void loop() {
+cbar.update();
+if (cbar.isPressed(A)){
+ Keyboard.set_key1(KEY_F);
+ }
+ else if(cbar.isReleased(A))
+ {
+   Keyboard.set_key1(0);
+ }
+
+ if (cbar.isPressed(B)){
+ Keyboard.set_key2(KEY_D);
+ }
+ else if(cbar.isReleased(B))
+ {
+   Keyboard.set_key2(0);
+ }
+
+  if (cbar.isPressed(LEFT)){
+ Keyboard.set_key3(KEY_LEFT);
+  }
+  else if(cbar.isReleased(LEFT))
+ {
+   Keyboard.set_key3(0);
+ }
+
+ if (cbar.isPressed(DOWN)){
+ Keyboard.set_key4(KEY_DOWN);
+ }
+ else if(cbar.isReleased(DOWN))
+ {
+   Keyboard.set_key4(0);
+ }
+
+ if (cbar.isPressed(UP)){
+ Keyboard.set_key5(KEY_UP);
+ }
+ else if(cbar.isReleased(UP))
+ {
+   Keyboard.set_key5(0);
+ }
+
+ if (cbar.isPressed(RIGHT)){
+ Keyboard.set_key6(KEY_RIGHT);
+ }
+ else if(cbar.isReleased(RIGHT))
+ {
+   Keyboard.set_key6(0);
+ }
+
+  if (cbar.isPressed(SELECT)){
+   Keyboard.set_key1(KEY_A);
+  }
+  else if(cbar.isReleased(SELECT))
+ {
+   Keyboard.set_key1(0);
+ }
+
+  if (cbar.isPressed(START)){
+    Keyboard.set_key1(KEY_S);
+ }
+ else if(cbar.isReleased(START))
+ {
+   Keyboard.set_key1(0);
+ }
+
+ Keyboard.send_now();
+
+delay(10);
+}
+</controller.h></pre>
+
+<p>Code:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/06/NESController.zip" target="_blank" rel="external">NESController Class for Arduino</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-01T13:35:25.000Z"><a href="/2012/06/01/gws-s125-code/">Jun 1 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/01/gws-s125-code/">GWS s125 code</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>  myservo.write(102);<br>  Serial.println(“back”);<br>  delay(1650);<br>  myservo.write(0);<br>  Serial.println(“forth”);<br>  delay(1650);</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/2012/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/archives/2012/page/3/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

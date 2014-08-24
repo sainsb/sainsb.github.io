@@ -1,0 +1,1246 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 22 | Archives | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">Archives</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-09T04:27:00.000Z"><a href="/2010/10/08/sql-server-2005-custom-data-types/">Oct 8 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/08/sql-server-2005-custom-data-types/">SQL Server 2005 Custom data types</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>The other day we had an issue trying to run a stored procedure on our Test SQL Server instance. It was telling us that it could not find a custom data type even though it was clearly present in the database under ‘User-defined Data Types’</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/userdefinedtypes.png" target="_blank" rel="external"><img src="/images/1a1e2bdfdc3bcb2d9eb7e8e8532936bf9024cb18.png" alt="" title="userdefinedtypes"></a></p>
+<p>Come to find out that even if user-defined types are clearly defined in the database - they have to be registed with the SQL Server instance in order for other databases contained within the instance to use them.  They were not registered but per the DBA - we’re going to try to get away from using user-defined data types.  Solution - change the datatypes in the stored procedure to varchars.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-06T01:58:00.000Z"><a href="/2010/10/05/sql-is-not-like-riding-a-bike/">Oct 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/05/sql-is-not-like-riding-a-bike/">SQL is not like riding a bike...</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>It seems every so often I am needing to do a select distinct with a count.&nbsp; I end up hacking my way through…Hopefully this will make things easier…</p>
+<pre lang="sql">
+SELECT DISTINCT [PARCEL_ID], [PRE_DIR], [CIVIC], [PARLABEL], [Unit], COUNT(*) TotalCount
+FROM table WHERE [COMMUNITY] = 'DEWEY-HUMBOLDT'
+GROUP BY [PARCEL_ID], [PARLABEL], [Unit], [CIVIC], [PRE_DIR]
+HAVING COUNT(*) > 1
+ORDER BY COUNT(*) DESC
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-06T01:52:00.000Z"><a href="/2010/10/05/cookie-powered-web-request/">Oct 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/05/cookie-powered-web-request/">Cookie-powered web request</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This has become a valuable bit of code for web requests:</p>
+<pre lang="vb">
+Function grabRecordedData(ByVal qs As String) As String
+        Dim cookiejar As CookieContainer = New CookieContainer
+        Dim cookieGetter As String = "http://someLoginPage.jsp?submit=Public+Login&amp;guest=true"
+        Dim cookieUser As String = "http://somePageThatRequiresIhaveACookie" & qs
+        'this gets cookie
+        Try
+            Dim Stream As Stream
+            Dim Temp As String
+            Dim Request As HttpWebRequest = HttpWebRequest.Create(cookieGetter)
+            Request.CookieContainer = cookiejar
+            Dim Response As HttpWebResponse = Request.GetResponse()
+            Dim tempCookie As Cookie
+            For Each tempCookie In Response.Cookies
+                cookiejar.Add(tempCookie)
+            Next
+            Dim request2 As HttpWebRequest = HttpWebRequest.Create(cookieUser)
+            request2.CookieContainer = cookiejar
+            Dim Response2 As HttpWebResponse = request2.GetResponse()
+            Stream = Response2.GetResponseStream
+            Temp = New StreamReader(Stream).ReadToEnd()
+            Stream.Close()
+            Response.Close()
+
+            'run the regex on the response
+            Dim reggie As New Regex("/someRighteousRegEx/", RegexOptions.Singleline)
+            Return reggie.Replace(myString, "someBitchinReplacement")
+            'Return Temp
+        Catch ex As Exception
+
+        End Try
+
+    End Function</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-06T01:48:00.000Z"><a href="/2010/10/05/php-address-parser/">Oct 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/05/php-address-parser/">PHP Address parser</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A reference for future address parsing: (note I did not write this, I found it using The Google.)</p>
+<pre lang="php">function parse_address($address){
+&nbsp;&nbsp;&nbsp; /***
+&nbsp;&nbsp;&nbsp; 2004-10-05 Added HC n Box n, Star Route to function
+&nbsp;&nbsp;&nbsp; 2004-10-04 Sam Fullman (compasspointmedia.com)
+&nbsp;&nbsp;&nbsp; function notes
+&nbsp;&nbsp;&nbsp; this function requires an address that has been stripped of periods and commas.&nbsp; I don't believe commas are part of the USPS required addressing standards so I don't want to use them to try to get parsing information.
+&nbsp;&nbsp;&nbsp; this function starts from the RIGHT hand side, pulling unit numbers and other features like the direction (N,S,E,W).
+&nbsp;&nbsp;&nbsp; It also recognizes PO Boxes and Rural routes pretty well though there are surely formats I'm not familiar with.&nbsp; Any Canadians chip in here, appreciate your feedback and we do want to mail things to you even if you are Canadians :-)
+&nbsp;&nbsp;&nbsp; Many of the parameters start with the prefix raw_ (raw_unit, raw_suffix_direction, etc.).&nbsp; Usually there's a corresponding parameter called unit, suffix_direction, etc..&nbsp; I'm not consistent on this but one of the concepts is that if you have this address:
+&nbsp;&nbsp;&nbsp; Park Place
+        type=>(none)
+    or
+        name=>Park
+        type=>Pl
+    so the idea was to store it something like this:
+        name=Park
+        type=>Pl
+        raw_type=>Place
+
+    On the above example, there would be no raw_prefix_direction, only a prefix_direction field, since we are assured that S means a prefix direction, but not the word South (since it could be "South Park" Place)
+
+    ***/
+    $dir=array(
+        N=>N,S=>S,E=>E,W=>W,NW=>NW,SW=>SW,NE=>NE,SE=>SE,
+        North=>N,South=>S,East=>E,West=>W,Northwest=>NW,Southwest=>SW,Northeast=>NE,Southeast=>SE
+    );
+    $type=array(
+        ave=>Ave,blvd=>Blvd,st=>St,wy=>Wy,cir=>Cir,dr=>Dr,ln=>Ln,Pl=>Pl,Rd=>Rd,
+        Bvd=>Blvd,
+        Avenue=>Ave,Boulevard=>Blvd,Street=>St,Way=>Wy,Circle=>Cir,Drive=>Dr,Lane=>Ln,Place=>Pl,Road=>Rd
+    );
+
+    $address=trim($address);
+    $b[raw_address]=$address;
+    $original=$address;
+    //remove any unit or apt # from the end
+    //a number alone at the end is not enough, we need at least # or one of the descriptors in ()
+    if(preg_match('/(\s+(Apt|Apartment|Suite|Ste|Unit|Bldg|Building|Room|Rm|#)\s*)+#?[-a-z0-9]+$/i',
+    $address,$a)){
+        $b[raw_unit]=$a[0];
+        $b[unit]=preg_replace('/(\s+(Apt|Apartment|Suite|Ste|Unit|Bldg|Building|Room|Rm|#)\s*)+#?/i','',$a[0]);
+        //break raw unit down
+        $address=substr($address,0,strlen($address)-strlen($a[0]));
+    }
+    //parse suffix direction (SW)
+    if(preg_match('/\s+(North|South|East|West|Northeast|Southeast|Southwest|Northwest|N|S|E|W|NE|SE|SW|NW)$/i',
+    $address,$a)){
+        $b[raw_suffix_direction]=$a[0];
+        $b[suffix_direction]=$dir[$b[raw_suffix_direction]];
+        $address=substr($address,0,strlen($address)-strlen($a[0]));
+    }
+    //remove type of street
+    if(preg_match('/\s+(St|Bvd|Ave|Wy|Cir|Dr|Ln|Pl|Boulevard|Blvd|Street|Avenue|Way|Circle|Drive|Lane|Place)$/i',
+    $address,$a)){
+        $b[raw_type]=$a[0];
+        strlen($b[raw_type])>3 || strtolower($b[raw_type])=='way' || strtolower($b[raw_type])=='bvd'?$typeDefinite=false:$typeDefinite=true;
+        $b[type]=$type[strtolower($b[raw_type])];
+        $address=substr($address,0,strlen($address)-strlen($a[0]));
+    }
+    //remove number and fraction
+    if(preg_match('/^[0-9]+(\s+[0-9]+\/[0-9]+)*/',$address,$a)){
+        $address=substr($address,strlen($a[0]),strlen($address)-strlen($a[0]));
+        if(preg_match('/\s+[0-9]+\/[0-9]+$/',$a[0],$aa)){
+            $b[fraction]=$aa[0];
+            $a[0]=substr($a[0],0,strlen($a[0])-strlen($aa[0]));
+        }
+        $b[number]=trim($a[0]);
+        $numberFormat='standard';
+    }else{
+        $numberFormat='irregular';
+        //account for possible P.O. Boxes and Rural Routes
+        if(preg_match('/^(POB\s+|P\s*O\s*Box|Post Office Box|Postal Box|Box|Boite Postal)\s*[0-9a-z]+(-[0-9a-z]+)*/i',$address,$a)){
+            $b[raw_po_box]=$a[0];
+            preg_match('/[0-9a-z]+(-[0-9a-z]+)*$/i',$a[0],$aa);
+            $b[po_box]=strtoupper($aa[0]);
+            $b[address_type]="Post Office Box";
+        }
+        if(preg_match('/(Rrte|RR|Rural Route|Rt|Rte|Route)\s+[0-9]+\s+(Box|Bx)\s+[0-9]+/i',$address,$a)){
+            $b[raw_route]=$a[0];
+            $a=explode('b',strtolower($a[0]));
+            $b[route_number]=preg_replace('/[^0-9]+/','',$a[0]);
+            $b[route_box_number]=preg_replace('/[^0-9]+/','',$a[1]);
+            $b[address_type]="Rural Route";
+        }
+        //Account for HC nomenclature -- for drawmack
+        echo $address;
+        if(preg_match('/(HC|Highway County|Hwy Cty|Hwy County)\s+[0-9]+\s+(Box|Bx)\s+[0-9]+/i',$address,$a)){
+            $b[raw_hc]=$a[0];
+            $a=explode('b',strtolower($a[0]));
+            $b[hc_number]=preg_replace('/[^0-9]+/','',$a[0]);
+            $b[hc_box_number]=preg_replace('/[^0-9]+/','',$a[1]);
+            $b[address_type]="Highway County Route";
+        }
+        //Account for * | Star Route
+        if(preg_match('/(\*\s+Rte|\*\s+Route|Star\s+Route|Star\s+Rte)\s+[0-9]+\s+(Box|Bx)\s+[0-9]+/i',$address,$a)){
+            $b[raw_starrt]=$a[0];
+            $a=explode('b',strtolower($a[0]));
+            $b[starrt_number]=preg_replace('/[^0-9]+/','',$a[0]);
+            $b[starrt_box_number]=preg_replace('/[^0-9]+/','',$a[1]);
+            $b[address_type]="Star Route";
+        }
+        /***
+        Note on the above 4 nodes: we don't check that an address only partially conforms, such as Rte 1 (no box number), and perhaps we should.  Perhaps "Route 1" is even OK in some areas :-|
+        ***/
+
+    }
+    //what remains is the prefix direction, and street, several analyses to make here
+
+    //note that if there is still an address left over yet we pulled a PO Box above or a Rural Route, then either something is wrong or our code missed something, this should be flagged.
+    $address=trim($address);
+    if(preg_match('/^(North|South|East|West|Northeast|Southeast|Southwest|Northwest|N|S|E|W|NE|SE|SW|NW)\s+/i',$address,$a)){
+        $b[prefix_direction]=$dir[trim($a[0])];
+        strlen($a[0])>2?$b[raw_prefix_direction]=$a[0]:'';
+        $address = substr($address,strlen($a[0]),strlen($address)-strlen($a[0]));
+    }else{
+        //presume all else is the name
+        $b[name]=trim($address);
+        $b[address_type]="Presumed Standard";
+    }
+
+    //present the array visibly in a logical order -- not required for operation but nice
+    $order=array(
+        type_definite,
+        address_type,
+        raw_po_box,
+        po_box,
+        raw_route,
+        route_number,
+        route_box_number,
+        raw_hc,
+        hc_number,
+        hc_box_number,
+        raw_starrt,
+        starrt_number,
+        starrt_box_number,
+        number,
+        fraction,
+        prefix_direction,
+        raw_prefix_direction,
+        name,
+        type,
+        raw_type,
+        suffix_direction,
+        raw_suffix_direction,
+        unit,
+        raw_unit,
+        raw_address
+    );
+    foreach($order as $v){
+        isset($b[$v])?$c[$v]=$b[$v]:'';
+    }
+    return $c;
+}
+?></pre>
+
+<p>&nbsp;</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-06T01:15:00.000Z"><a href="/2010/10/05/2-ways-to-add-a-row-to-a-standalone-table-programatically/">Oct 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/05/2-ways-to-add-a-row-to-a-standalone-table-programatically/">2 ways to add a row to a standalone table programatically.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <pre lang="vb">
+Sub AddRow(ByVal pmap As IMap, ByVal Tbl As String, ByVal pftr As IFeature, ByVal prow As IRow)
+        Dim psatable2 As IStandaloneTable
+        psatable2 = ReturnTable(pmap, Tbl)
+        'Create new row
+        Dim addr_addr As String = pftr.Value(pftr.Fields.FindField("civic")) & _
+        " " & pftr.Value(pftr.Fields.FindField("pre_dir")) & " " & _
+               pftr.Value(pftr.Fields.FindField("street")) & " " & _
+               pftr.Value(pftr.Fields.FindField("suffix"))
+        Dim pCursor As ICursor
+        Dim pRowBuff As IRowBuffer
+        pRowBuff = psatable2.Table.CreateRowBuffer()
+        pRowBuff.Value(1) = prow.Value(prow.Fields.FindField("text_registrant_id")) & ""
+        pRowBuff.Value(2) = prow.Value(prow.Fields.FindField("text_name_first")) & " " & prow.Value(prow.Fields.FindField("text_name_last"))
+        pRowBuff.Value(3) = "" ' note that at this point we don't have a name in the master_addr_elec_join table
+        pRowBuff.Value(4) = Replace((prow.Value(prow.Fields.FindField("text_res_address_nbr")) & " " & prow.Value(prow.Fields.FindField("cde_street_dir_prefix")) & " " & prow.Value(prow.Fields.FindField("text_street_name")) & " " & prow.Value(prow.Fields.FindField("cde_street_type")) & " " & prow.Value(prow.Fields.FindField("cde_street_dir_suffix"))), "  ", " ") 'Voter Reg Addr
+        pRowBuff.Value(5) = Trim(addr_addr)
+        pRowBuff.Value(6) = prow.Value(prow.Fields.FindField("precinct_text_designation"))
+        pRowBuff.Value(7) = pftr.Value(pftr.Fields.FindField("prec_num"))
+        pRowBuff.Value(8) = "Match"
+        pCursor = psatable2.Table.Insert(True)
+        pCursor.InsertRow(pRowBuff)
+        ProgressBar1.Increment(1)
+        pCursor = Nothing
+    End Sub
+
+    Sub AddRow(ByVal pmap As IMap, ByVal Tbl As String, ByVal prow As IRow)
+        Dim psatable2 As IStandaloneTable
+        psatable2 = ReturnTable(pmap, Tbl)
+        'Create new row
+        Dim pRowBuff As IRowBuffer
+        Dim pCursor As ICursor
+        pRowBuff = psatable2.Table.CreateRowBuffer()
+        pRowBuff = prow
+        pCursor = psatable2.Table.Insert(True)
+        pCursor.InsertRow(pRowBuff)
+        ProgressBar1.Increment(1)
+        pCursor = Nothing
+    End Sub</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-06T01:13:00.000Z"><a href="/2010/10/05/list-versioned-feature-classes-in-sde-gdb/">Oct 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/05/list-versioned-feature-classes-in-sde-gdb/">List versioned feature classes in SDE GDB</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <pre lang="python">
+import arcgisscripting
+gp = arcgisscripting.create(9.3)
+
+# obviously make sure this db connection string exists in your ArcCatalog.
+gp.workspace = "myDBConnectionStringNameInArcCatalog"
+# Get a list of feature classes in the workspace.
+fcs = gp.ListFeatureClasses()
+
+for fc in fcs:
+    try:
+        if not gp.Describe(fc).IsVersioned:
+            print fc + " - Not versioned"
+        else:
+            print fc + " - Versioned"
+    except:
+    # it was choking on the views...so this gets past those...
+        print fc + " - Can't tell"</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-06T01:11:00.000Z"><a href="/2010/10/05/split-layer-by-attributes/">Oct 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/05/split-layer-by-attributes/">Split layer by attributes</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A python script for splitting a layer by attributes.</p>
+<p></p><p></p>
+<pre lang="python">
+#SplitLayerByAttributes.py
+'''
+Author:
+  Dan Patterson
+  Dept of Geography and Environmental Studies
+  Carleton University, Ottawa, Canada
+  Dan_Patterson@carleton.ca
+
+Date created June 23 2005
+Modified     Jan  24 2010
+
+Purpose:
+  Converts each shape in a feature class to a separate shapefile
+
+Properties (right-click on the tool and specify the following)
+General
+  Name   SplitLayerByAttributes
+  Label  Split Layer By Attributes
+  Desc   Splits a layer according to attributes within the selected field producing
+         a separate shapefile for common attributes.
+
+Source script SplitLayerByAttributes.py
+
+Parameter list
+                              Parameter Properties
+          Display Name         Data type        Type      Direction  MultiValue
+  argv[1]  Input feature class  Feature Layer    Required  Input      No
+  argv[2]  Field to query       Field            Required  Input      No
+  argv[3]  File basename        String           Optional  Input      No
+  argv[4]  Output folder        Folder           Required  Input      No
+'''
+#--------------------------------------------------------------------
+#Functions
+
+def gp_create(vers=None):
+  '''create the geoprocessor, 9.3, 9.2 or empty for win32com.client.Dispatch'''
+  if vers &gt;= 9.2:   #try 9.2 or above
+    try:
+      import arcgisscripting
+      gp = arcgisscripting.create(vers)
+      gp_version = vers
+    except:
+      import arcgisscripting
+      gp = arcgisscripting.create()
+      gp_version = 9.2
+  else:
+    try:
+      import win32com.client
+      gp = win32com.client.Dispatch("esriGeoprocessing.GpDispatch.1")
+      gp_version = 9.1
+    except:
+      gp = None
+      gp_version = 9.1
+  #
+  return [gp, gp_version]
+
+def gp_toolboxes(toolboxes, gp):
+  '''a list of toolboxes to add to the geoprocessor, gp'''
+  tbx_home = os.environ['ARCGISHOME'].replace("\","/") + 
+             "ArcToolbox/Toolboxes/"
+  msg = ""
+  passed = True
+  for a_tbx in toolboxes:
+    try:
+      tbx = tbx_home + a_tbx
+      gp.AddToolbox(tbx)
+      msg = msg + "\n  Adding toolbox: " + str(tbx)
+    except:
+      msg = msg + "\n  The toolbox:  " + str(tbx) + 
+            "\n  could not be loaded.  Check your toolbox path " + \
+            "\n  and availability, edit BoundingContainers.py to " + \
+            "\n  reflect its location."
+      passed = False
+  return [gp, msg, passed]
+
+#--------------------------------------------------------------------
+#Import the standard modules and the geoprocessor
+#
+import os, sys, string  #common examples
+
+gp, gp_version = gp_create(9.2)  #use 9.2 gp to permit enumerations
+
+gp, msg, passed = gp_toolboxes(["Data Management Tools.tbx"], gp)
+
+gp.AddMessage(msg)
+if not passed:
+  gp.AddMessage("\n  Exiting ..... \n")
+  del gp
+  sys.exit()
+
+gp.OverWriteOutput = 1
+#
+#Get the input feature class, optional fields and the output filename
+inFC = sys.argv[1]
+inField = sys.argv[2]
+theFName = sys.argv[3]
+outFolder = sys.argv[4]
+desc = gp.Describe
+theType = desc(inFC).ShapeType
+FullName = desc(inFC).CatalogPath
+thePath = (os.path.split(FullName)[0]).replace("\","/")
+if theFName != "#":
+  theFName = theFName.replace(" ","_")
+else:
+  theFName = (os.path.split(FullName)[1]).replace(".shp","")
+
+outFolder = outFolder.replace("\","/")
+
+#Determine if the field is integer, decimal (0 scale) or string field
+
+gp.AddMessage("\n  Checking for appropriate field type" 
+              + "(  string, decimal (0 scale) or integer)")
+
+theFields = gp.ListFields(inFC)
+inType = ""
+OIDField = desc(inFC).OIDFieldName
+OKFields = [OIDField]
+aField = theFields.next()
+gp.AddMessage("%-10s %-10s %-6s %-6s " % ("Field","Type","Scale","Useable"))
+
+while aField:
+  fType = aField.Type
+  fScale = aField.Scale
+  fName = aField.Name
+  if fName == inField:
+    inType = fType   #used to determine field type later on
+    inScale = fScale
+    inName = fName
+  isOK = "Y"
+  if (fType == "String"):
+    OKFields.append(fName)
+  elif ((fScale == 0) and (fType not in ["Geometry", "Date"])):
+    OKFields.append(fName)
+  else:
+    isOK = "N"
+
+  gp.AddMessage("%-10s %-10s %-6s %-6s " % (fName, fType, fScale,isOK))
+  aField = theFields.next()
+#
+if inField not in OKFields:
+  gp.AddMessage("The field " + inField + " is not an appropriate" + 
+                " field type.  Terminating operation.  " + 
+                "Convert date fiels to strings, and ensure integers " 
+                "are positive" + "n")  
+  del gp
+  sys.exit()
+#  
+#Determine unique values in the selected field
+
+gp.AddMessage(inField + " is being queried for unique values.")
+valueList = []
+rows = gp.SearchCursor(inFC)
+row = rows.next()
+aString = ""
+aLen = 0; aFac = 1
+
+while row:
+  aVal = row.GetValue(inField)
+  if aVal not in valueList:
+    valueList.append(aVal)
+    aLen = len(aString)
+    if aLen &gt; 50 * aFac:
+      aString = aString + "\n"
+      aFac = aFac + 1
+    aString = aString + " " + str(aVal)
+  row = rows.next()
+gp.AddMessage("Unique values: " + "\n" + aString)
+#
+gp.AddMessage("\n  Processing: " + FullName )
+#
+#Do the actual work of producing the unique shapefiles
+aMax = 1
+for aVal in valueList:
+  aMax = max(aMax, len(str(aVal)))
+for aVal in valueList:
+  if (str(aVal).isdigit()) and (not inType == "String"):
+    fs = '"' + "%" + str(aMax) + "." + str(aMax) + 'i"'
+    aSuffix = fs % aVal
+    aVal = str(aVal)
+  elif inType == "Double" and inScale == 0:
+    aSuffix = str(aVal).replace(".0","")  ###### 
+    aVal = str(aVal).replace(".0","")
+  else:
+    aSuffix = str(aVal) 
+    aVal = str(aVal)
+  try:
+    aSuffix = aSuffix.replace(" ","_")  #replace garbage in output files
+    aSuffix = aSuffix.replace('"',"")
+    aSuffix = aSuffix.replace("/","")
+    aSuffix = aSuffix.replace("-","")
+    outName = theFName + aSuffix + ".shp"
+
+    outShapeFile = outFolder + "/" + outName
+    outShapeFile = outShapeFile.replace("\","/")
+
+    if (not aVal.isdigit()) or (inType == "String"):
+      aVal = "'" + aVal + "'"
+    whereClause = "%s = %s" % (inField, aVal)
+    gp.MakeFeatureLayer(inFC, "TempLayer", whereClause)
+    gp.CopyFeatures("TempLayer",outShapeFile)
+    gp.AddMessage("Output and query: " + aSuffix + "  " + whereClause)
+  except:
+    whereClause = "%s = %s" % (inField, aVal)
+    gp.AddMessage("Output and query: " + aSuffix + "  " + whereClause + " did not work ")
+#
+gp.Addmessage("n  Processing complete" + "\n")
+del gp</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-06T00:51:00.000Z"><a href="/2010/10/05/parallel-processing-with-arcmap/">Oct 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/05/parallel-processing-with-arcmap/">Parallel processing with ArcMap</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A parallel processing example for geocoding in ArcMap.&nbsp; It seems as though ESRI would prefer you multithread with ArcGIS Server.&nbsp; This seems bogus to me because it is not really ‘parallel’ but rather treats SOCS as cores….whereas SOCS are physically distinct machines.</p>
+<p><a href="http://arcscripts.esri.com/details.asp?dbid=16533" target="_blank" rel="external">http://arcscripts.esri.com/details.asp?dbid=16533</a></p>
+<p>This is another snippet in VB of a raster export tool using multiple threads:</p>
+<p><a href="/Blog/file.axd?file=2010%2f10%2fmultithread_image_export.vb">multithread_image_export.vb (28.28 kb)</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-05T07:01:00.000Z"><a href="/2010/10/05/gtile-creator/">Oct 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/05/gtile-creator/">GTile Creator</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Here is a screenshot of and code for the Google Maps Tile Creator.  I found it much better than ESRI’s crappy caching tools.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/GTileCreator.bmp" target="_blank" rel="external"><img src="/images/2c0278a6b1035438da58e1a2eb6f4f71078e9b06.bmp" alt="" title="GTileCreator"></a></p>
+<p>The plugin: (Straight from ArcScripts)</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/GTileCreator.zip" target="_blank" rel="external">GTileCreator</a></p>
+<p>And the script for converting the output of this code to ESRI cache directory format:</p>
+<pre lang="vb">On Error Resume Next
+    Dim fso, folder, files, NewsFile,sFolder
+    Dim StdIn, StdOut
+    Set StdIn = WScript.StdIn
+    Set StdOut = WScript.StdOut
+
+  Set fso = CreateObject("Scripting.FileSystemObject")
+  'Source Folder - where GTileCreator dumped your tiles.
+  sFolder = "V:\tempBen"
+  'Target Folder - in your arcGIS Server Cache directory.
+  tFolder = "S:\arcgisserver\arcgiscache\DG2007\Layers\_alllayers"
+
+  Set folder = fso.GetFolder(sFolder)
+  Set files = folder.Files
+For each folderIdx In files
+     dim fn  : fn=folderIdx.Name
+     dim fax : fax = split(folderIdx.Name,"_")
+     dim col : col=(fax(1))
+     dim row : row=(fax(2))
+     dim zoom : zoom=(fax(3))
+     dim zoomstr : zoomstr = replace(zoom, ".jpg","")
+     dim colstr : colstr=hex(col) & ""
+     dim rowstr : rowstr=hex(row) & ""
+
+     if len(zoomstr) &lt;2 then
+     while len(zoomstr) &lt;&gt; 2
+     zoomstr = "0" & zoomstr
+     wend
+     end if
+     zoomstr = "L" & zoomstr
+
+     while len(colstr) &lt;&gt; 8
+     colstr = "0" & colstr
+     wend
+         colstr = "C" & Lcase(colstr) & ".jpg"
+
+         while len(rowstr) &lt;&gt; 8
+         rowstr = "0" & rowstr
+         wend
+         rowstr = "R" & Lcase(rowstr)
+
+        If Not fso.FolderExists(tFolder & "\" & zoomstr) Then
+            fso.CreateFolder (tFolder & "\" & zoomstr)
+        End If
+
+        If Not fso.FolderExists(tFolder & "\" & zoomstr & "\" & rowstr) Then
+            fso.CreateFolder (tFolder & "\" & zoomstr & "\" & rowstr)
+        End If
+
+        'check if the file exists if it does - delete the source
+        tFile = tFolder & "\" & zoomstr & "\" & rowstr & "\" & colstr
+        If Not fso.FileExists(tfile) Then 'if it doesn't exist
+            set fil = fso.getFile(folderIdx)
+            if fil.size&gt;1700 then ' and it's greater than 1 kb
+                fil.Copy tFile, true ' then copy it over
+                StdOut.WriteLine ("copied file: " & fn)
+                StdOut.Writeline (vbtab & "to: " & tFile)
+            End If
+            fil.delete() ' then delete it
+            StdOut.Writeline vbtab & "Deleted: " & fn
+            set fil = nothing
+        Else ' if it does exist
+           set fil2 = fso.getFile(tfile) ' get the target file
+           set fil = fso.getFile(folderIdx) ' get the source file
+            if fil.size &gt; fil2.size then 'if the source is larger than the target
+                fil.Copy tFile, true ' so overwrite the target
+                StdOut.WriteLine ("copied larger file: " & fn)
+            End If
+            set fil=nothing
+            set fil2=nothing
+           fso.deletefile(folderIdx) ' then delete it
+           StdOut.Writeline zoomstr & "\" & rowstr & "\" & colstr & " exists"
+           StdOut.Writeline vbtab & "Deleted: " & fn
+        end If
+Next
+Set fso = Nothing</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-05T06:55:00.000Z"><a href="/2010/10/04/python-html-stripper/">Oct 4 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/04/python-html-stripper/">Python HTML Stripper</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Python is well-powerful when it comes to cooking data.&nbsp; This script cleans out HTML from the input file and writes it to the target.</p>
+<p><pre lang="python"><br>import re<br>import os, glob</pre></p>
+<p>def fixFile(infile, outfile):<br>    print infile<br>    file = open(infile, “r”)<br>    p=re.compile(“<!--?\w*\s*[^-->]*&gt;”)</p>
+<pre><code><span class="comment">#r=0</span>
+<span class="comment">#b=0</span>
+f=<span class="built_in">open</span>(outfile,<span class="string">"a"</span>)
+<span class="keyword">for</span> <span class="built_in">line</span> <span class="operator">in</span> <span class="built_in">file</span>.<span class="built_in">read</span>().<span class="built_in">split</span>(<span class="string">'\n'</span>):
+    s=p.sub(<span class="string">""</span>,<span class="built_in">line</span>)
+    f.<span class="built_in">write</span>(s + <span class="string">"\n"</span>)
+f.<span class="built_in">close</span>()
+<span class="built_in">file</span>.<span class="built_in">close</span>()
+</code></pre><p>path = ‘myPath/‘<br>for infile in glob.glob( os.path.join(path, ‘mls.txt’) ):<br>    print “current file is: “ + infile<br>    fixFile(infile)<br></p><p></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/page/21/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/archives/page/23/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

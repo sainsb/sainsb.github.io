@@ -1,0 +1,904 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>General GIS Warfare | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">General GIS Warfare</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-02T00:27:08.000Z"><a href="/2012/10/01/linkroll-2/">Oct 1 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/01/linkroll-2/">Linkroll</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This <a href="http://simpleprogrammer.com/2012/07/23/when-being-good-is-bad/" target="_blank" rel="external">Making the Complex Simple blog post</a> really hit home with me.<br>If you don’t read John Sonmez’ blog, you’re like, really missing out.</p>
+<p>Why do hackers get more done? because even if they end up destroying 80% of their work, that’s 80% more experience they have over those who didn’t attempt it. It seems to touch on risk aversion as well although I don’t think it’s a super clean analogy, the more risks you take, the more experience/exposure to adversity you have. Now go bet the bank on black at the roulette table. ;)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-13T00:08:15.000Z"><a href="/2012/07/12/on-watches-and-filegeodatabase-null-values/">Jul 12 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/12/on-watches-and-filegeodatabase-null-values/">On watches and FileGeodatabase null values</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Ran into a glitch today. (What days do I not run into glitches?)</p>
+<p>I was trying to evaluate a field value in a feature class in a file geodatabase.  Where checking for null had worked fine in the context of a shapefile, it was not working in the feature class.</p>
+<pre lang="csharp">
+if(pftr2.get_Value(4)!= null)
+{
+var foo = (int)pftr2.get_Value(4); // <== kaboom="" -="" invalid="" cast="" exception="" }="" <="" pre="">
+
+<p>I spent a lot of time rewriting statements trying to determine what this value was if it wasn’t null.  Casting to a nullable type, Long, double, string etc.  And then remembered the watch window.</p>
+<p>As it turns out, a null value in a file geodatabase evaluates to a <a href="http://msdn.microsoft.com/en-us/library/system.dbnull.value.aspx" target="_blank" rel="external">dbNull</a>…</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/bewg.png" target="_blank" rel="external"><img src="/images/12f939a38b6137c94b60ad02f6c122825f32da67.png" alt="" title="bewg"></a></p>
+<p>Lessons?</p>
+<ul>
+<li><p>For debugging in Visual Studio and ArcMap - use the Attach to process function in Visual Studio (Note that you don’t hit F5 or explicitly start debugging - just attach).<br></p></li></ul></==></pre><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/attach.png" target="_blank" rel="external"><img src="/images/fb19fa0b483cce38a58cda4a14335d1885d9dbd8.png" alt="" title="attach"></a><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/attach3.png" target="_blank" rel="external"><img src="/images/00c1b05886224ee90ed37a2de07fa4b318ed4798.png" alt="" title="attach3"></a><p></p>
+
+<li><p>Watch for dbNull values in file geodatabases</p>
+</li>
+<li>The watch window is your friend, especially considering the expense of firing up ArcMap to debug.</li>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-26T23:48:48.000Z"><a href="/2012/06/26/quick-vs-2010-keystroke/">Jun 26 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/26/quick-vs-2010-keystroke/">Quick VS 2010 Keystroke</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>CTRL M + CTRL O ==</p>
+<p>Collapses to definitions. </p>
+<p>CTRL + SHIFT + F9 ==</p>
+<p>Removes all breakpoints<br>badass.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-05-28T06:30:25.000Z"><a href="/2012/05/27/bitwise-brain-dump-part-1/">May 27 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/05/27/bitwise-brain-dump-part-1/">Bitwise Brain Dump - Part. 1</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is a personal brain dump on binary numbers, bitwise operators and bitshifting.  This stuff has eluded me for quite some time and it feels good to have a better handle on it.   So…let’s dive on in.</p>
+<p><strong><span style="color:#555555;font-size:16px;">Numeric datatypes in C#</span></strong></p>
+<p>The <strong>int</strong> datatype is an alias for the System.Int32, a signed 32-bit integer.<br>This is what the number 1(as an <strong>int</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>00000000 00000000 00000000 00000001</em><br>This is what the number -2147483648 (the minimum value of an <strong>int</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>10000000 00000000 00000000 00000000</em><br>The <strong>long</strong> datatype is an alias for the System.Int64, a signed 64-bit integer.<br>Hence, this is what the 1(as a <strong>long</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001</em><br>And this is what 9223372036854775807 (the maximum value of a <strong>long</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>01111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111</em></p>
+<p>Here are the functions I used to extract and display each bit in the numbers above:</p>
+<pre lang="csharp">
+private static string showBits(int x)
+{
+    string s=x+": ";
+    int mask = 1 << 31;
+    for (var cnt = 1; cnt <= 0="" 8="=" 32;="" ++cnt)="" {="" s+="((x" &="" mask)="=" 0)="" ?="" '0'="" :="" '1';="" x="" <<="1;" if="" (cnt="" %="" &&="" cnt="" !="32)" ;="" }="" return="" s;="" private="" static="" string="" showbits(long="" x)="" s="x" +="" ":="" ";="" long="" mask="1L" 63;="" for="" (var="" <="64;" pre="">
+
+<p>Note the use of the variable <strong>mask</strong> here - known as a ‘bitmask’ we use the bitwise AND operation to ‘mask’ out all bits except the ones we care about….so our mask value in the int version of the showBits function looks like this: 10000000 00000000 00000000 00000000. </p>
+<p>Keep in mind the bitwise &amp; operator works like this:</p>
+<blockquote>
+<p>0 &amp; 0 == 0<br>    0 &amp; 1 == 0<br>    1 &amp; 0 == 0<br>    1 &amp; 1 == 1</p>
+</blockquote>
+<p>As we enter the loop with our integer value we mask out all bits except the far left.  Once we’ve used the ternary conditional to determine the value of the bit, we left-shift-assign (&lt;&lt;=) the value of x 1 bit.  Again, using the same mask, we are only looking at the left-most bit, apply the conditional, shift left 1 again etc. etc.</p>
+<p><strong><span style="color:#555555;font-size:16px;">In Action</span></strong></p>
+<p>I’ve recently run into several cases where these kind of bit-level operations came in handy.  The first, using the writeableBitmap class in C#. Without going into too much detail, we needed to convert an ARGB value in int form to a .Net Color type - so we needed the constituent RGB values.  Here’s the function:</p>
+<pre lang="csharp"> 
+public static Color ConvertIntToRGB(int rgb)
+{
+      return Color.FromArgb(255, (byte) ((rgb >> 16) & 0xff), (byte) ((rgb >> 8) & 0xff), (byte) ((rgb) & 0xff));
+}
+</pre>
+
+<p>So what’s going on here? For the Alpha value, we’re always using 255 so we can skip that; for the red value or, the second byte from the left, we shift the bits right 16 (2 bytes worth), apply (bitwise &amp;) a mask that looks like this: <em>00000000 00000000 00000000 11111111</em> in order to set all other bytes except the right-most to 0 and convert to a byte-length number.  For the green value, we do the same but we only shift the byte right one, and for blue, we don’t need to shift at all.</p>
+<p>These 2 links were invaluable for understanding this:</p>
+<ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/s1ax56ch" target="_blank" rel="external">Value Types (C# reference)</a></li>
+<li><a href="http://www.arduino.cc/playground/Code/BitMath" target="_blank" rel="external">Arduino Playground - Bit Math Tutorial</a></li>
+</ul>
+<p>Stay tuned for part 2.</p>
+</=></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-10T02:54:20.000Z"><a href="/2012/04/09/welcome-to-git/">Apr 9 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/09/welcome-to-git/">Welcome to Git</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This will be my attempt to document getting a VS2010 project setup and running with Git.</p>
+<p>Get your Git structure in place:<br>I’m using <a href="http://code.google.com/p/msysgit/" target="_blank" rel="external">MsysGit</a>, <a href="http://code.google.com/p/gitextensions/" target="_blank" rel="external">GitExtensions</a>, and <a href="http://gitscc.codeplex.com/" target="_blank" rel="external">Git Source Control Provider</a> to make the magic happen.  I won’t go into the configuration details behind these three mainly since I don’t really understand them.  Until the abstraction leaks, we’ll run with it ;)<br><strong>So, in VS 2010, create a new project:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step1.png" target="_blank" rel="external"><img src="/images/d0b4acb3179eaaaf702c78e4cb45e8c4bbec02f3.png" alt="" title="step1"></a><br><strong>Step 2 - Intialize your repository:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step2.png" target="_blank" rel="external"><img src="/images/d46d96271b38767f50bf3c879b98c47cd8d76974.png" alt="" title="step2"></a><br><strong>Step 3 - Choose repository type:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step3.png" target="_blank" rel="external"><img src="/images/8351653e28ce978693720f77a22a8076c00e721e.png" alt="" title="step3"></a><br><strong>Step 4 - Celebrate your milestone:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step4.png" target="_blank" rel="external"><img src="/images/f44795065a0a0f7b1cb3ae5733e21ffb3a2553f4.png" alt="" title="step4"></a><br><strong>Step 5 - Refresh your Solution Explorer to see the status of your files:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step6.png" target="_blank" rel="external"><img src="/images/039f7ab38fde2e27fd20e812c4c0a7c70f0758d9.png" alt="" title="step6"></a><br><strong>Steps 6 and 7 - Stage and commit your baseline code:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step5.png" target="_blank" rel="external"><img src="/images/12b14e6a54dd3326c43f79f386bd6da5462027d9.png" alt="" title="step5"></a><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step71.png" target="_blank" rel="external"><img src="/images/e2bdc37949db445129653312f50dd963379f9987.png" alt="" title="step7"></a><br><strong>Step 8 - Assuming you were able to commit, refresh solution explorer:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step81.png" target="_blank" rel="external"><img src="/images/a3518c7874f987bfbe564ca313166e31d50a0fca.png" alt="" title="step8"></a><br><strong>Step 9 - Create a new repo on the remote server, we’ll use GitHub for an example:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/Step9.png" target="_blank" rel="external"><img src="/images/23123bb6d8bca1430552b807c3f56aa72cca86dc.png" alt="" title="Step9"></a><br><strong>Step 10 - Push up to remote:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step11.png" target="_blank" rel="external"><img src="/images/cc9fd1cfbd0a0535af26d5abae649f73b40ea7ee.png" alt="" title="step11"></a><br><strong>Step 11 - Use your new projects uri:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step12.png" target="_blank" rel="external"><img src="/images/499a0498c0b4002d66a9d8815866d6bd96891f6d.png" alt="" title="step12"></a><br><strong>Step 12 - Milestone celebration!</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step13.png" target="_blank" rel="external"><img src="/images/948fd75d73887c63424b91d71f719048ae869b71.png" alt="" title="step13"></a><br><strong>Step 13 - Reaffirm yourself</strong></p>
+<iframe width="420" height="315" align="middle" src="http://www.youtube.com/embed/-DIETlxquzY" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-09T12:09:31.000Z"><a href="/2012/04/09/mysql-geometry-to-shapefile/">Apr 9 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/09/mysql-geometry-to-shapefile/">Converting MySQL geometry to Shapefile</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I was recently faced with the task of converting MySQL Geometry  (stored in a remote db) as WKB to a shapefile to an ESRI File Geodatabase.<br>Since it’s a remote database stored with my web hosting provider access is rather limited (e.g no console access). The dataset is ~33,000 features with 20-some fields - calling a dump from the phpMyAdmin web interface works but returns WKB. I tried reading this stuff with Shapely, but it wasn’t having it…messed around with encodings to no avail.  And while one can export the geometry as text, my dump limits are thus severely limited to ~2000 records per export (phpMyAdmin has a 5mb limit per export file as I recall).  I used to suffer through this when time was less valuable and I was less competent but not no more.</p>
+<p>I decided to extract the geometry separately and join the attribution in later.  This made coding the automated extraction a little easier.  So how did I do it?  I went out and grabbed the <a href="http://www.mysql.com/downloads/connector/net/" target="_blank" rel="external">MySQL Connector for .NET</a>, threw in my credz and went to town 5 at a time so as not to stress the server.</p>
+<pre lang="csharp">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MySql.Data.MySqlClient;
+using System.Web;
+using System.IO;
+using System.Threading;
+
+namespace myBitchinMySQLExtractor
+{
+    class Program
+    {
+        const string MyConString = "connectionStuff";
+        const int numRecords = 35000;
+        static void Main(string[] args)
+        {
+            for (int t = 0; t < numRecords; t += 5)
+            {
+                try
+                {
+                    getData(t);
+                }
+                catch (Exception ex)
+                {
+                    try
+                    {
+                        Thread.Sleep(10000);
+                        getData(t);
+                    }
+                    catch (Exception exc)
+                    {
+                        Console.Write("Lost connection at " + t);
+                    }
+                }
+                Thread.Sleep(3000);
+            }
+        }
+
+        private static void getData(int t)
+        {
+            var connection = new MySqlConnection(MyConString);
+            MySqlCommand command = connection.CreateCommand();
+            MySqlDataReader Reader;
+            connection.Open();
+            command.CommandText = "SELECT ID, astext(geometry)"+
+                "as geom from table where 1 limit " + t + ",5;";
+
+            Reader = command.ExecuteReader();
+            while (Reader.Read())
+            {
+                string thisrow = "";
+                for (int i = 0; i < Reader.FieldCount; i++)
+                {
+                    var s = Reader.GetValue(i);
+                    if (s.GetType() != typeof(byte[]))
+                    {
+                        thisrow += s.ToString() + ", ";
+                    }
+                    else
+                    {
+                        thisrow += Encoding.UTF8.GetString((byte[])s, 0, ((byte[])s).Length);
+                    }
+                }
+                using (var sw = new StreamWriter("C:/myFile.txt", true))
+                {
+                    sw.WriteLine(thisrow);
+                }
+                Console.WriteLine(thisrow + Environment.NewLine + Environment.NewLine);
+            }
+            connection.Close();
+        }
+    }
+}
+</pre>
+
+<p>Ok, so now I had a big-ass file full of ids and geometry in WKT.  What next? <a href="http://pypi.python.org/pypi/Shapely" target="_blank" rel="external">Shapely</a> and <a href="http://pypi.python.org/pypi/geojson/" target="_blank" rel="external">GeoJSON</a> to the rescue. </p>
+<pre lang="python">
+from shapely.wkt import loads
+from geojson import dumps
+import re
+import sys
+import string
+
+output=r"C:/myOutput.txt"
+input=r"C:/myInput.txt"
+f = open(output, "a")
+f.write("{ \"type\": \"FeatureCollection\",\"features\": [")
+
+def processWKT(id, line):
+    x = loads(line)
+    y = dumps(x)
+    f.write("{\"type\": \"Feature\",\"geometry\": " +
+                y + ", \"properties\" : {\"id\" :\"" + id+"\"}},\n")
+
+file = open(input, "r")
+
+for line in file.read().split("\n"):
+    #parse the id out
+    #grab everything up to the first comma
+    s=re.match("[^,]*,\s",line)
+    t=s.group()
+    l = string.replace(line,t, "")
+    y = string.replace(t,", ","")
+
+    processWKT(y,l)
+    print y
+
+f.write("]}")
+file.close()
+f.close()
+</pre>
+
+<p>Ok, so now after I go in and delete a comma in the last line, I have a valid geojson file with all my IDs and geometry.  What next? <a href="http://www.gdal.org/" target="_blank" rel="external">GDAL</a>.  Converting the geojson to a shapefile is a one-liner with ogr2ogr:</p>
+<pre lang="python">
+ogr2ogr -f "ESRI Shapefile" c:/myshapes.shp c:/myOutput.js OGRGeoJSON
+</pre>
+
+<p>So, yes, it is a painful process but these three steps helped to expedite the extraction of data from a remote MySQL db, convert it to the middle-ground format of GeoJSON, and on to a shapefile using GDAL.  All, with free and open-source libraries and platforms. Since my data comprises fields of &gt; 256 characters, I’ll convert the shapefile to a file geodatabase and then populate the attribution using ESRI tools.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-23T23:48:06.000Z"><a href="/2012/03/23/resharper-and-epsilon/">Mar 23 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/23/resharper-and-epsilon/">Resharper and Epsilon</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Coding away this morning with resharper and came across this:</p>
+<p><pre lang="csharp">if(datagrid.Width==0)<br>{<br>//do stuff<br>}</pre><br>In the conditional Resharper warns me to “<span style="color: #ff0000;">Fix floating point numbers comparing. Compare a difference with Epsilon</span>.”<br>When I accept the suggestion I get this:</p>
+<p><pre lang="csharp">if (Math.Abs(wndDatagrid.Width - 0) &lt; EPSILON)<br>{<br>//Do stuff<br>}</pre><br>Too bad the EPSILON constant is not defined…<br>JetBrains explains it this way:</p>
+<blockquote>
+<p>Using the == operator to compare floating-point numbers is, generally, a bad idea. The problem arises from the fact that, typically, results of calculations have to be ‘fitted’ into floating-point representation, which does not always matched the perceived reality of what result should be produced.</p>
+<p>For example, suppose you take a root of -4 using var root = Complex.Sqrt(new Complex(-4, 0)). Then, you decide to ensure that the real part of the result is 0 (zero), by asserting that root.Real == 0.0. Unfortunately, the actual result of the calculation is (1.22460635382238E-16, 2), so the comparison will, predictably, fail.</p>
+<p>In order to do these comparisons correctly, you need to specify a tolerance, i.e., a value to indicate by how much the result can diverge from the intended value. Then, the comparison above can be rewritten, e.g., as Math.Abs(root.Real) &lt; 1.E-10. Similarly, comparisons between two values can take the form of Math.Abs(x - y) &lt; tolerance. The tolerance value really depends on the precision of the calculations being performed but, in most cases, should be at least the Epsilon value (float.Epsilon, double.Epsilon, and so on). The Epsilon is a constant that denotes the smallest non-zero value that can be represented with the type of floating number you are using. Please note that, in the majority of cases, the Epsilon value is too low to be used as a reliable tolerance value.<br>Learn something new everyday.</p>
+</blockquote>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-25T07:09:47.000Z"><a href="/2012/01/24/arcobjects-runtime-manager/">Jan 24 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/24/arcobjects-runtime-manager/">ArcObjects Runtime manager</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I always forget where and how to do this whenever I want to use ArcObjects in a console app or something simple.  Nowadays you have to provide a ‘license’ manager to your use of ArcObjects.  I like how <a href="http://blogs.esri.com/Dev/blogs/arcgisdesktop/archive/2010/07/19/Bind-and-License-your-standalone-ArcGIS-Engine-or-Desktop-application.aspx" target="_blank" rel="external">here</a> [note the excellent banter in the comments section] they frame it as something you ‘can do’ as in a ‘new feature’!! OMFG! I’ve been asking for you to control my use of ArcObjects for sooooo long now… THANK YOU!!!.</p>
+<p>1. Throw a reference in to ESRI.ArcGIS.Version<br>2. Mix in this line:</p>
+<p><pre lang="csharp"><br> ESRI.ArcGIS.RuntimeManager.Bind(ESRI.ArcGIS.ProductCode.Desktop);<br></pre><br>you’re good to go….as long as you got a license ;)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-12T06:13:33.000Z"><a href="/2012/01/11/this-hole-is-deep/">Jan 11 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/11/this-hole-is-deep/">Overview of compiled vs interpreted, static vs dynamic, and late/early binding</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is one deep hole.<br>Having spent the past few weeks in coder’s purgatory as Silverlight’s future appears shaky and HTML5/JS/WebGL is hyperactively killing it, I’ve realized I really, <em>really</em> need to understand these waters in order to better navigate them.</p>
+<h3 id="Interpreted_vs-_Compiled">Interpreted vs. Compiled</h3>
+<p>When I sat down with a friend a few months back and mentioned to him that I was really into C# those days, he said, oh yeah, that runs on a virtual machine right?  Being a noob, I thought, like VirtualPC? Kindly, he explained, but it didn’t really fit with my understanding.</p>
+<p></p><p>Here’s the deal, in as much of my own words as possible:  I always sort of understood that dynamically-typed languages like R, Python and JavaScript are interpreted by a runtime; R.exe, Python.exe, the browser {Chrome : V8, IE : Chakra, Firefox : Spidermonkey} etc. but I was err in thinking that .Net and Java code is compiled.  Because it is not.  Well, not as in converted to machine code to be run directly by the CPU (an extremely powerful integrated circuit(IC) (a collection of resistors, transistors and capacitors merged into a cell on a circuit board).  </p>
+<h3 id="All_-Net_and_Java_code_(whether_it’s_C#_or_VB)_is_‘compiled’_to_a_bytecode-like_language_in_the_same_way_that_Python,_JavaScript,_R,_PHP,_your_favorite_dynamic_language_is-">All .Net and Java code (whether it’s C# or VB) is ‘compiled’ to a bytecode-like language <em>in the same way that Python, JavaScript, R, PHP, your favorite dynamic language</em> is.</h3>
+<p></p><p>With .Net it is called <a href="http://en.wikipedia.org/wiki/Common_Intermediate_Language" target="_blank" rel="external">Common Intermediate Language (CIL)</a> (formerly Microsoft Intermediate Language (MSIL)) and with Java, it’s called <a href="http://en.wikipedia.org/wiki/Java_bytecode#Support_for_dynamic_languages" target="_blank" rel="external">Java Bytecode</a>.  And again the bytecode is interpreted and JIT compiled – with .Net the Common Language Runtime (CLR) Virtual Machine executes the CIL or with Java the Java Virtual Machine(JVM) executes the Java bytecode.  Both can be Ahead-of-Time (AOT) compiled with either the Native Image Generator (NGEN) (.Net) or the GNU compiler for Java (both of which seem relatively unused).<br>Contrast this with the Keil Embedded IDE where the C++ (native code) is compiled and then sent to the Atmel IC.  It is not open to interpretation. It is compiled to machine code and sent to the chip to run independently.</p>
+<h3 id="Just_in_Time_Compilation_(Wikipedia)">Just in Time Compilation (Wikipedia)</h3>
+<blockquote>
+<p>Interpreted code is translated from a high-level language to a machine code continuously during every execution, whereas statically compiled code is translated into machine code before execution, and only requires this translation once.<br>JIT compilers represent a hybrid approach, with translation occurring continuously, as with interpreters, but with caching of translated code to minimize performance degradation. It also offers other advantages over statically compiled code at development time, such as handling of late-bound data types and the ability to enforce security guarantees.<br>So part of the story behind the dynamic language (mostly JS but Python also) craze is that the new breed of runtimes, utilizing JIT, perform <em>very</em> well.  As well as C#, Java and potentially native code (C++/Objective-C).  And the question is, why shouldn’t they? <em>since they are all high-level languages that are interpreted from bytecode</em>. Here’s <a href="http://origin.cuttherope.ie/dev/" target="_blank" rel="external">some context:</a><br>In the past, JavaScript had a reputation of being a slow language. Frankly, that reputation was initially valid. Older JavaScript engines were designed for simple “scripting” kinds of tasks (hence the name). Today, however, JavaScript engines have been highly optimized. With features like just-in-time compilation, JavaScript now can execute at near native speeds.</p>
+</blockquote>
+<h3 id="Early_Binding/Late_Binding">Early Binding/Late Binding</h3>
+<p>Late binding allows you to tell the ‘compiler’ that you’re not exactly sure what the type is going to be at run time and you’re willing to trade optimizations for ‘uncertainty’ or rather ‘flexibility’.<br>According to MSDN:</p>
+<blockquote>
+<p>You should use early-bound objects whenever possible, because they allow the compiler to make important optimizations that yield more efficient applications. Early-bound objects are significantly faster than late-bound objects and make your code easier to read and maintain by stating exactly what kind of objects are being used. Another advantage to early binding is that it enables useful features such as automatic code completion and Dynamic Help because the Visual Studio integrated development environment (IDE) can determine exactly what type of object you are working with as you edit the code. Early binding reduces the number and severity of run-time errors because it allows the compiler to report errors when a program is compiled.<br><del datetime="2012-01-11T21:02:26+00:00">Now I see it’s funny that you can use var in C# 3.0 - YOU SHOULD ALWAYS HAVE BEEN ABLE TO DO THIS - because it’s really no different than JavaScript when it comes down to it…it’s just late-binding.</del><br>No. wait, that’s not right – with var the type is inferred from the assignment so it is still statically typed as far as the CLR is concerned.<br>A comment on a <a href="‘http://stackoverflow.com/questions/484214/c-sharp-early-and-late-binding">stub on SO</a>&gt; Dynamic typing is not the same as late binding. The difference is subtle, but it’s important. Late binding still binds to a type, it just does it at runtime. Dynamic typing does not bind; instead, it resolves member information at runtime irrespective of type. – Michael Meadows Jan 27 ‘09 at 18:23<br>A search on “dynamic typing vs late binding” led me to this <a href="http://www.shubho.net/2011/02/dynamic-typing-late-binding-c-40.html" target="_blank" rel="external">horridly-edited-yet-informational blog post</a> which introduces the Dynamic type at C# 4.0. Aha – the ‘dynamic’ type in a statically compiled language. <a href="http://msdn.microsoft.com/en-us/magazine/ee336309.aspx‘" target="_blank" rel="external">This MS press release</a> seems like a decent plateau.<br>Soooo… why static?<br>Why? <a href="http://perl.plover.com/yak/typing/notes.html‘" target="_blank" rel="external">This is why</a>:<br>The idea we have is that the computer is going to keep track of the type of value stored at each part of its memory, whether it’s part of a string, or an integer, or a floating-point number, or whatever. Each operation such as multiplication will also have a type. The compiler or assembler can check to make sure that the types of an operator and its operands match, and raise a compile-time error if they don’t, and so hopefully detect some sorts of bugs early on before they have a chance to cause real trouble.<br>Real trouble huh? Like exploding capacitors trouble? Now this sounds like fun.<br>Why is everything early bound in C#/VB since it is JITted by the CLR?  Why do .Net languages pretend to be statically-typed? Why did I ever Dim anything if I’m JIT’ing?   <a href="http://www.youtube.com/watch?v=5hR5YNqE3K8" target="_blank" rel="external">To make the compiler’s life easier?</a><br>Under the <a href="http://msdn.microsoft.com/en-us/library/7ee5a7s1%28v=VS.80%29.aspx" target="_blank" rel="external">2005 MSDN Dim Statement stub</a> – this is the first remark:<br>You should declare every variable you use in your program, to tell the Visual Basic compiler the variable’s data type and other information such as what code can access it.<br>Then in the 2010 version, this is the first remark:<br>The Visual Basic compiler uses the Dim statement to determine the variable’s data type and other information, such as what code can access the variable.</p>
+</blockquote>
+<p>Intense. Enough for one post. Thanks for listening. Maybe you learnd something.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-04-08T06:26:46.000Z"><a href="/2011/04/07/webbrowser-control-registry-values/">Apr 7 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/04/07/webbrowser-control-registry-values/">WebBrowser control registry values</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Wow - the latest struggle involves horrible stack overflow errors + really bad performance with Google Street View in an HTML page in a browser window in an ArcMap Addin.</p>
+<p>This <a href="http://stackoverflow.com/questions/790542/replacing-net-webbrowser-control-with-a-better-browser-like-chrome" target="_blank" rel="external">Stack Overflow stub</a> saved me and this <a href="http://msdn.microsoft.com/en-us/library/ee330730%28v=vs.85%29.aspx" target="_blank" rel="external">MSDN KB</a> informed me.  The executable would be ArcMap.exe since the webbrowser control will be embedded in it.</p>
+<p>Now the only problem is the need to edit the user’s registry…which means that this will be one AddIn that will require administrative rights.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

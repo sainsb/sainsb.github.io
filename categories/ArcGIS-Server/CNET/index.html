@@ -1,0 +1,515 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>C#.NET | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">C#.NET</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-24T06:33:24.000Z"><a href="/2012/01/23/c-soe-vs-python-gptool/">Jan 23 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/23/c-soe-vs-python-gptool/">C# SOE vs. Python GPTool</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Just watched <a href="http://www.screencast.com/users/bcdc/folders/Jing/media/02b42fea-adb8-4845-919d-ba619798905b" target="_blank" rel="external">an excellent video comparing the performance of C# Server Object Extensions(SOE) to Python geoprocessing services</a>.  I really like the tack he takes here: yes, the C# SOE is roughly twice as fast, but there are several other factors that should be taken into account.<br>For instance: </p>
+<ul>
+<li>Programmer productivity - The core Python script (using arcpy) is only a few lines of code.  Wrangling the input params and the response object is almost totally abstracted.*   Portability - While the python script requires a toolbox with a script (+ params) wrapper, it is relatively easier to publish than an SOE, which must be registered with the Server.  Though to be fair, once you understand how to register the SOE, it only takes a second; most of the pain is in decoding the documentation on how to do it.</li>
+</ul>
+<p>So now I see why Ismael Chivite advised devs to only build SOEs to when you need <em>atomic</em> functionality.  <a href="http://video.esri.com/watch/457/top-10-improvements-in-arcgis-10.1-for-server" target="_blank" rel="external">Are you ready for ArcGIS Server? I’m not.</a></p>
+<iframe frameborder="0" scrolling="no" width="480" height="270" src="http://video.esri.com/iframe/457/000000/width/480/0/00:00:00"></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-04-05T23:24:38.000Z"><a href="/2011/04/05/helpful-gp-environment-enumeration/">Apr 5 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/04/05/helpful-gp-environment-enumeration/">Helpful GP Environment enumeration</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This tip is worth 5hrs of my life…</p>
+<p>Always, always, always remember to set the GP workspace and scratch workspace when running a gp process in an SOE.</p>
+<p>Handy little snippet to see what your geoprocessing environment values are when running in black box mode.</p>
+<pre lang="csharp">
+string envsList = "";
+IGpEnumList baz;
+baz = gp.ListEnvironments("*");
+string envs = baz.Next();
+while (envs != "")
+{
+envsList += envs + "::" + gp.GetEnvironmentValue(envs) + Environment.NewLine;
+envs = baz.Next();
+}
+</pre>
+
+<p>//Result</p>
+<p>{“wtOverlay”:”newPrecision::SINGLE<br>autoCommit::1000<br>XYResolution::<br>XYDomain::<br>scratchWorkspace::<br>terrainMemoryUsage::False<br>MTolerance::<br>compression::LZ77<br>coincidentPoints::MEAN<br>randomGenerator::System.__ComObject<br>outputCoordinateSystem::<br>rasterStatistics::STATISTICS 1 1<br>ZDomain::<br>snapRaster::<br>projectCompare::NONE<br>cartographicCoordinateSystem::<br>configKeyword::<br>outputZFlag::Same As Input<br>qualifiedFieldNames::True<br>tileSize::128 128<br>pyramid::PYRAMIDS -1 NEAREST DEFAULT 75<br>referenceScale::<br>extent::<br>XYTolerance::<br>tinSaveVersion::CURRENT<br>MDomain::<br>spatialGrid1::0<br>cellSize::MAXOF<br>outputZValue::<br>outputMFlag::Same As Input<br>geographicTransformations::<br>spatialGrid2::0<br>ZResolution::<br>mask::<br>spatialGrid3::0<br>maintainSpatialIndex::False<br>workspace::<br>MResolution::<br>derivedPrecision::HIGHEST<br>ZTolerance::<br>“}</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-03-31T01:35:27.000Z"><a href="/2011/03/30/silverlight-api-note-to-self/">Mar 30 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/03/30/silverlight-api-note-to-self/">Silverlight API note to self</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>When creating a featurelayer you need to spec what outfields you want or it’ll just grab 1(?) - not sure which 1 it will grab but…</p>
+<p>Anyway…the proper handling of this is:</p>
+<pre lang="csharp">
+OutFields of = new OutFields();
+of.Add(fieldName);
+fl.OutFields =of;
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-03-22T04:13:54.000Z"><a href="/2011/03/21/featuredatagrid-snippet/">Mar 21 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/03/21/featuredatagrid-snippet/">Featuredatagrid snippet</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Grab a value from a rowclick/selected event in a Silverlight datagrid:</p>
+<pre lang="csharp">
+var myValue = e.Row.DataContext;
+object cellValue = myValue.GetType().GetProperty("ATTRIBUTE_NAME").GetValue(myValue, null);
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-16T02:34:29.000Z"><a href="/2010/12/15/wednesday-thoughts/">Dec 15 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/15/wednesday-thoughts/">ESRI Silverlight API and KML</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Have been tirelessly playing around with the EZRI SL API. The new support for the kmlLayer is very impressive…no longer do we see horrible, granulated, rasters with pathetic response time but rather smooth, rapidly rendered vectors on the map. With cross-domain requests via a proxy provided by EZRI! Whoopee!!</p>
+<pre lang="xml">
+<esri:kmllayer id="KmlLayer" url="http://www.redtrails.com/data/mfh.kmz" proxyurl="http://serverapps.esri.com/SilverlightDemos/ProxyPage/proxy.ashx" maximumresolution=".0001">
+</esri:kmllayer></pre>
+
+<p>MaximumResolution = scale dependency = since the rendering engine doesn’t respect the Network Link scales…Although the rendering engine seems to handle more geom than expected it has it’s limitations…</p>
+<p>On top of this we have KML MapTips! WOW!</p>
+<pre lang="xml">
+<esri:kmllayer.maptip>
+<border cornerradius="13" borderbrush="#CC444444" borderthickness="0" margin="0" background="#EE222222">
+<stackpanel orientation="Horizontal">
+<textblock text="{Binding Converter={StaticResource MyDictionaryConverter},
+ConverterParameter=name, Mode=OneWay}" foreground="#FFFFFFFF" fontsize="16" fontfamily="Verdana" fontweight="Bold" margin="5,5,0,3">
+</textblock></stackpanel>
+</border>
+</esri:kmllayer.maptip>
+</pre>
+
+<p>now if we could pull the geometry directly out of the kml…</p>
+<p><pre lang="csharp"><br>Graphic g = new Graphic();<br>ESRI.ArcGIS.Client.Geometry.Polygon p = new ESRI.ArcGIS.Client.Geometry.Polygon();<br>p = e.Graphic.Geometry;<br>MessageBox.Show(p.Rings[0].X)<br></pre><br>oooh yeah….</p>
+<p>Huge, huge potential here for the next rendition of Redtrails as well.. What I’m looking for now is to improve the MDI interface to build agile apps on.  The glass nav and floatable windows UI seems to work quite well.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

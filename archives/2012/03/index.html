@@ -1,0 +1,716 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2012/3 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2012/3</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-23T23:48:06.000Z"><a href="/2012/03/23/resharper-and-epsilon/">Mar 23 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/23/resharper-and-epsilon/">Resharper and Epsilon</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Coding away this morning with resharper and came across this:</p>
+<p><pre lang="csharp">if(datagrid.Width==0)<br>{<br>//do stuff<br>}</pre><br>In the conditional Resharper warns me to “<span style="color: #ff0000;">Fix floating point numbers comparing. Compare a difference with Epsilon</span>.”<br>When I accept the suggestion I get this:</p>
+<p><pre lang="csharp">if (Math.Abs(wndDatagrid.Width - 0) &lt; EPSILON)<br>{<br>//Do stuff<br>}</pre><br>Too bad the EPSILON constant is not defined…<br>JetBrains explains it this way:</p>
+<blockquote>
+<p>Using the == operator to compare floating-point numbers is, generally, a bad idea. The problem arises from the fact that, typically, results of calculations have to be ‘fitted’ into floating-point representation, which does not always matched the perceived reality of what result should be produced.</p>
+<p>For example, suppose you take a root of -4 using var root = Complex.Sqrt(new Complex(-4, 0)). Then, you decide to ensure that the real part of the result is 0 (zero), by asserting that root.Real == 0.0. Unfortunately, the actual result of the calculation is (1.22460635382238E-16, 2), so the comparison will, predictably, fail.</p>
+<p>In order to do these comparisons correctly, you need to specify a tolerance, i.e., a value to indicate by how much the result can diverge from the intended value. Then, the comparison above can be rewritten, e.g., as Math.Abs(root.Real) &lt; 1.E-10. Similarly, comparisons between two values can take the form of Math.Abs(x - y) &lt; tolerance. The tolerance value really depends on the precision of the calculations being performed but, in most cases, should be at least the Epsilon value (float.Epsilon, double.Epsilon, and so on). The Epsilon is a constant that denotes the smallest non-zero value that can be represented with the type of floating number you are using. Please note that, in the majority of cases, the Epsilon value is too low to be used as a reliable tolerance value.<br>Learn something new everyday.</p>
+</blockquote>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-22T06:49:55.000Z"><a href="/2012/03/21/rounding-coordinates-with-a-regex/">Mar 21 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/21/rounding-coordinates-with-a-regex/">Storing geodata - Shapefile vs. Human Readable formats</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>suppose you work in a state plane geography that uses feet as a unit, and now suppose that you work with shapefiles that store coordinates as <a href="http://forums.esri.com/Thread.asp?c=93&amp;f=986&amp;t=234634" target="_blank" rel="external">double precision floating point values</a> resulting in numbers looking something like this:</p>
+<pre lang="python">
+[[ 7625592.5, 671988.93766404688 ], [ 7625597, 672003.31266404688 ],
+ [ 7625601.5, 672017.81266404688 ], [ 7625605, 672032.375 ]]
+</pre>
+Talk about false precision.
+Still with me? Ok, so suppose you deal with data in human readable formats here and there, such as GeoJson, ESRIJson, what have you...  <del datetime="2012-03-22T16:06:35+00:00">Long story short you can probably get away with rounding these numbers to save a little space.</del>
+<font color="red">
+
+### Bullshit alert!!
+
+yes, shapefiles store coordinates as double precision floats.. This equates to 64 bits (8 bytes per coordinate value).  Yes, that's a lot, however, storing geodata in human readable format equates to, assuming your text file is ascii based, a byte per digit...that means that while the above snip would equate to 64 bytes in the shapefile, in human-readable text it would equate to more than twice that.  Lesson: storing values as strings is _almost_ always more expensive.
+</font>
+
+**round with zero decimals**
+\s(\d+)\.\d+, replace with \1 and you get:
+<pre lang="python">
+[[7625592,671988 ], [ 7625597,672003 ],
+ [7625601,672017 ], [ 7625605,672032 ]]
+</pre>
+
+<p><strong>round to two decimals</strong><br>\s(\d+.\d\d)\d+, replace with \1 and you get:</p>
+<pre lang="python">
+[[ 7625592.5,671988.93 ], [ 7625597,672003.31 ],
+ [ 7625601.5,672017.81 ], [ 7625605,672032.37 ]]
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-21T22:27:13.000Z"><a href="/2012/03/21/merging-csv-files-in-python/">Mar 21 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/21/merging-csv-files-in-python/">Merging CSV files in Python</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I can barely justify noting such a simple script but I’m betting I’ll want to reference it again.<br>Basically I’ve got 225 csv files titled by zip code that I want to merge into one file.  On a side note I am blown away by how quickly Python accomplishes this.  I can barely blink before it merges 225 files. fun.</p>
+<pre lang="python">
+fout=open("c:/myCSVFiles/out.csv","a")
+
+zips=[12345,54321 ] # There are actually 225 values in this array
+
+for zip in zips:
+    f = open("C:/myCSVFiles/"+str(zip)+".csv")
+    f.next() # skip the header
+    for line in f:
+         fout.write(line)
+    f.close() # not really needed
+fout.close()
+print "done"
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-21T05:02:12.000Z"><a href="/2012/03/20/present-value-and-payment-functions-for-r-dorks/">Mar 20 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/20/present-value-and-payment-functions-for-r-dorks/">I can haz R Time Value of Money</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <pre lang="python">
+PV<-function(pmnt) {="" i=".00625" per="360" pmt="(pmnt/12)*.3" v="(1+i)^(-per)" pv="pmt*((1-v)/i)" #annuity="" due="" so="" multiply="" the="" result="" by="" 1+interest="" rate="" return(round(pv*(1+i),="" digits="0))" }="" <="" pre="">
+
+<p>Payment function:</p>
+<pre lang="python">
+PMT <- function(amt,="" inc)="" {="" i=".00625" per="360" v="(1-(1/(1+i)^per))/i" return((amt="" v)="" (inc="" 12))="" }="" <="" pre=""></-></pre></-function(pmnt)></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-16T23:52:41.000Z"><a href="/2012/03/16/connecting-to-sde-with-arcobjects-c/">Mar 16 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/16/connecting-to-sde-with-arcobjects-c/">Connecting to SDE with ArcObjects C++</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <pre lang="c">
+HRESULT connectToSDE(BSTR server, 
+                     BSTR instance, 
+                     BSTR user, 
+                     BSTR passwd, 
+                     BSTR database,
+                     BSTR version,
+                     IWorkspace ** outWorkspace)
+{
+  if (outWorkspace == NULL)
+    return E_POINTER;
+
+  // create the property set for the connection parameters
+  IPropertySetPtr ipPropertySet;
+  ipPropertySet.CreateInstance(CLSID_PropertySet);
+
+  // configure the propertyset
+  ipPropertySet->SetProperty(CComBSTR("SERVER"),    CComVariant(server));
+  ipPropertySet->SetProperty(CComBSTR(L"INSTANCE"), CComVariant(instance));
+  ipPropertySet->SetProperty(CComBSTR(L"DATABASE"), CComVariant(database));
+  ipPropertySet->SetProperty(CComBSTR(L"USER"),     CComVariant(user));
+  ipPropertySet->SetProperty(CComBSTR(L"PASSWORD"), CComVariant(passwd));
+  ipPropertySet->SetProperty(CComBSTR(L"VERSION"),  CComVariant(version));
+
+  // open workspace
+  IWorkspaceFactoryPtr ipWorkspaceFactory;
+  ipWorkspaceFactory.CreateInstance(CLSID_SdeWorkspaceFactory);
+  return ipWorkspaceFactory->Open(ipPropertySet, NULL, outWorkspace);
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-13T07:16:04.000Z"><a href="/2012/03/13/two-recent-blog-posts-i-really-like/">Mar 13 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/13/two-recent-blog-posts-i-really-like/">Two recent blog posts I really like</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Scott Hanselman on people in the trenches who don’t tweet, blog or get involved in user groups etc.<br><a href="http://www.hanselman.com/blog/DarkMatterDevelopersTheUnseen99.aspx" target="_blank" rel="external">Dark Matter Developers: The Unseen 99%</a></p>
+<p>And John Sonmez on switching gears, I fully agree with his conclusion that <a href="http://simpleprogrammer.com/2012/03/10/switching-gears-is-grinding-gears/" target="_blank" rel="external">switching gears is grinding gears.</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-07T00:47:54.000Z"><a href="/2012/03/06/tuesday-morning-wake-up-call/">Mar 6 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/06/tuesday-morning-wake-up-call/">Tuesday Morning wake up call</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <iframe width="100%" height="166" scrolling="no" frameborder="no" src="http://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F7088891&show_artwork=true"></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-03T08:56:52.000Z"><a href="/2012/03/03/server-monitor/">Mar 3 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/03/server-monitor/">Server Monitor</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I’ve been wanting to build an external contraption to monitor our servers.  Something that I could just plug in via USB and get a 7seg display - something like <a href="http://www.youtube.com/watch?v=mAXKMwQUV5U" target="_blank" rel="external">this</a>.  In the process of researching what goes on software-wise I came across this glossy little app.  It’s built in WPF and uses the PerformanceCounter object in the System.Diagnostics library.  I stole 99% of the code from <a href="http://blog.lab49.com/archives/2028" target="_blank" rel="external">here</a> - an app built for monitoring stocks - strangely, what took the longest was adjusting the code to take the same value twice in a row.  I guess the developer was working with very large (decimal) numbers and so never ran across that.  Instead of creating a new class, I just modified the RandomTickerAdapter Class to suit my needs.  yes. I’m <em>really</em> lazy. </p>
+<p>Here’s the globals-&gt;</p>
+<pre lang="csharp">
+private readonly Stopwatch _stopwatch = new Stopwatch();
+private readonly string[] _symbols = new[] {"SERVER1", "SERVER2", "SERVER3"};
+private readonly double _timerSpeedMilliseconds = 3000;
+private readonly double _virtualSecondsPerSecond = 500000;
+private readonly PerformanceCounter a;
+private readonly PerformanceCounter b;
+private readonly PerformanceCounter c;
+private TimeSpan _realTimePassed = TimeSpan.Zero;
+private Timer _timer;
+private TimeSpan _virtualTimePassed = TimeSpan.Zero;
+private int counter;
+</pre>
+
+<p>And here’s what happens in the constructor-&gt;</p>
+<pre lang="csharp">
+_virtualSecondsPerSecond = virtualTimePerRealSecond.TotalSeconds;
+_timerSpeedMilliseconds = tickInterval.TotalMilliseconds;
+a = new PerformanceCounter("Processor", "% Processor Time", "_Total", "SERVER1");
+b = new PerformanceCounter("Processor", "% Processor Time", "_Total", "SERVER2");
+c = new PerformanceCounter("Processor", "% Processor Time", "_Total", "SERVER3");
+</pre>
+
+<p>The ticker starts a timer and raises the timer.elapsed event. Here’s basically what’s going on in the handler-&gt;</p>
+<pre lang="csharp">
+if (sec.Id == "SERVER1")
+  a.NextValue();
+Thread.Sleep(200);
+if (sec.Id == "SERVER1")
+  value = Convert.ToDouble(a.NextValue());
+
+//Pass value to UI.
+</pre>
+
+<p>You have to sleep the thread just a tad to get a valid number from the Performance Counter.</p>
+<p>Here’s a screenshot-</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/03/smon.png" target="_blank" rel="external"><img src="/images/0f3e7f441b4af1713d2475503488c059fae50665.png" alt="" title="smon"></a><br>The ‘capsules’ look like buttons because they are…I guess they were used because someone had a nice glass button style. ;)  With each tick if the value is greater than the median then the color will turn red and actually varies in intensity.  As it moves below the median it turns green.  The slider at the bottom allows you to zoom in on the linegraph.  Overall a very, very handy little tool.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

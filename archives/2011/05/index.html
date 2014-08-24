@@ -1,0 +1,853 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2011/5 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2011/5</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-27T02:04:52.000Z"><a href="/2011/05/26/cannot-project-into-memory/">May 26 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/26/cannot-project-into-memory/">Cannot project into memory?</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This sounds like an existential teleportation question but rather refers to a limitation or bug in ESRI software..<br>sigh…<br>bang head…<br>sigh…</p>
+<p><strong>ERROR 000944: Output feature class cannot be in the in_memory workspace.</strong></p>
+<p><a href="http://forums.arcgis.com/threads/23289-Trying-to-project-a-layer-in-a-Python-script" target="_blank" rel="external">Here’s the only forum post on the issue.</a></p>
+<p>Here’s a reproducible python script::</p>
+<h1 id="Begin_Python_script">Begin Python script</h1>
+<p>import arcpy<br>arcpy.management.Project(“C:/scratch/temp.shp”,”in_memory/foo”,”path to whatever coord system…”)</p>
+<h1 id="End_python_script">End python script</h1>
+<p>Fails with error msg::</p>
+<p>ERROR 000944: Output feature class cannot be in the in_memory workspace.<br>Failed to execute (Project).</p>
+<p>called ESRI and at least got them to update the forum post…appears to have started as a bug at 9.1 then converted to a real live error.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-27T01:36:27.000Z"><a href="/2011/05/26/cross-domain-ajax-with-jsonp-esri-gp-tasks/">May 26 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/26/cross-domain-ajax-with-jsonp-esri-gp-tasks/">Cross domain AJAX with JSONP + ESRI GP Tasks</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is one of the finest wikipedia articles I’ve come across in a while.</p>
+<p><a href="http://en.wikipedia.org/wiki/JSONP" target="_blank" rel="external">http://en.wikipedia.org/wiki/JSONP</a></p>
+<p>By fooling the browser into thinking that you’ve wrapped your javascript request in &lt;script&gt; tags, you can make the cross-domain calls you’ve always dreamed of.</p>
+<p>I discovered this issue yesterday when trying to make calls to an ArcGIS Server geoprocessing task.  When you submit a job to AGS, the server returns a 302 redirect to the job url and gives you the status.  This is kind of difficult for a number of reasons, b/c you have to handle the redirect and, for our purposes, the cross-domain call.  I finally discovered the JSONP datatype in the jQuery ajax call and it magically handled both issues!! yeah!</p>
+<p>This is the <a href="http://stackoverflow.com/questions/3506208/jquery-ajax-cross-domain" target="_blank" rel="external">Stack Overflow</a> that finally tipped me off to the JSONP datatype.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-27T01:20:45.000Z"><a href="/2011/05/26/hosting-silverlight-with-apache/">May 26 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/26/hosting-silverlight-with-apache/">Hosting Silverlight with Apache</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Apparently these links say you can do it…</p>
+<p><a href="http://stackoverflow.com/questions/729294/run-silverlight-with-apache-server-under-linux" target="_blank" rel="external">http://stackoverflow.com/questions/729294/run-silverlight-with-apache-server-under-linux</a></p>
+<p><a href="http://blogs.technet.com/b/jorke/archive/2007/09/11/silverlight-mime-types-in-iis6.aspx" target="_blank" rel="external">http://blogs.technet.com/b/jorke/archive/2007/09/11/silverlight-mime-types-in-iis6.aspx</a></p>
+<p><a href="http://blogs.msdn.com/b/tims/archive/2008/03/18/configuring-a-web-server-to-host-silverlight-content.aspx" target="_blank" rel="external">http://blogs.msdn.com/b/tims/archive/2008/03/18/configuring-a-web-server-to-host-silverlight-content.aspx</a></p>
+<p>As long as there is no .NET code involved in the host page…</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-13T06:24:40.000Z"><a href="/2011/05/12/using-arcpy-in-visual-studio-2010/">May 12 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/12/using-arcpy-in-visual-studio-2010/">Arcpy + Visual Studio 2010</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Overcame the odds today trying to create a happy-time IDE for arcpy scripting in Visual Studio 2010.</p>
+<p>My priorities:</p>
+<ol>
+<li>Intellisense + method signatures (for arcpy)</li>
+<li>Debugger</li>
+<li>Syntax highlighting</li>
+<li>To avoid having to install another major IDE (like Eclipse)<br>Based on the forums it seemed like most serious ArcGIS scriptographers are either using Eclipse, Komodo or good ol’ text editors.  I looked into Eclipse but I couldn’t figure out which one to install…I tried one off the cuff and attempted to run it but it wanted me to install Java this and Java that…While I’m not totally against that I figured I’d check my other options.</li>
+</ol>
+<p>And while I love Notepad++, I didn’t want to have to grok arcpy without some intellisense.</p>
+<p>I checked out IronPython and Ironclad (to make CPython modules work) …made a little progress with these but they seemed a little iffy.  It was then that I hit up a <a href="http://pragmaticgeographer.blogspot.com/" target="_blank" rel="external">collegiate colleague</a> who tipped me off to <a href="http://pytools.codeplex.com/" target="_blank" rel="external">Python Tools for Visual Studio</a>.</p>
+<p>Light install and got all kinds of new goodies in VS.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/projects.png" target="_blank" rel="external"><img src="/images/b5cacb33dbf47674ec5a08d5e20b5d38489189b1.png" alt="" title="projects"></a></p>
+<p>Don’t ask me what an IronPython Silverlight Web Page does or is…it sounds intriguing but 3-words = Kludgey as Hell.</p>
+<p>Anywho, I pointed my search paths to C:\Python26\ArcGIS10.0\ and tried out some intellisense….no love…was getting it for standard Python libraries and arcpy was showing up as a potential import but alas, no intellisense.</p>
+<p>Tried re-generating a Completion Database but alas, no luck.</p>
+<p>Read a little of the documentation (note that this was my last step :) ) about where the latter searches when  building the database and thought, what if I copy the arcpy files from here:</p>
+<p>C:\Program Files (x86)\ArcGIS\Desktop10.0\arcpy</p>
+<p>to here:</p>
+<p>C:\Python26\ArcGIS10.0\Lib</p>
+<p>Note that I <em>copied</em> them, I didn’t cut and paste them…regenerated the database and lo and behold…</p>
+<p>Intellisense goodness ++ (Note the <strong>full</strong> documentation at right)</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/success.png" target="_blank" rel="external"><img src="/images/f45f5aa700ff80691d6953a7209337f009fd3d80.png" alt="" title="success"></a></p>
+<p>A little signature help here?—&gt;</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/sig.png" target="_blank" rel="external"><img src="/images/b616035d3b1fc8c7c0df7b6d1353bb9cc5012ac9.png" alt="" title="sig"></a></p>
+<p>That’s more like it :)</p>
+<p>The debugger is slow but it works and it’s definitely not a dealbreaker - also some of the methods are accessed a little differently than you might see them elsewhere. (toy around with it, you’ll see what I mean)</p>
+<p>Python Tools for Visual Studio is in Beta but appears to have decent momentum.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-12T00:23:52.000Z"><a href="/2011/05/11/nk2edit/">May 11 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/11/nk2edit/">NK2Edit</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Handy little utility to build an NK2 file from your inbox.  Very useful when migrating to a new box as this file wasn’t copied over from my last box…<a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/nk2edit.zip" target="_blank" rel="external">nk2edit</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-11T22:46:28.000Z"><a href="/2011/05/11/mark-item-as-read-in-outlook-when-it-appears-in-the-reading-pane/">May 11 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/11/mark-item-as-read-in-outlook-when-it-appears-in-the-reading-pane/">Mark item as read in Outlook when it appears in the reading pane.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/Untitled.gif" target="_blank" rel="external"><img src="/images/4e2b90b519ff2decc721658b6a4826917b5a0f11.gif" alt="" title="Untitled"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-11T04:45:25.000Z"><a href="/2011/05/10/static-constructors/">May 10 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/10/static-constructors/">Static constructors</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>An interesting tidbit from <a href="http://msdn.microsoft.com/en-us/library/k9x6w0hc%28v=VS.100%29.aspx" target="_blank" rel="external">MSDN</a> regarding static constructors.</p>
+<pre lang="csharp">
+public class Bus
+{
+    // Static constructor:
+    static Bus()
+    {
+        System.Console.WriteLine("The static constructor invoked.");
+    }
+
+    public static void Drive()
+    {
+        System.Console.WriteLine("The Drive method invoked.");
+    }
+}
+
+class TestBus
+{
+    static void Main()
+    {
+        Bus.Drive();
+    }
+}
+</pre>
+
+<p>Outputs:</p>
+<pre lang="python">
+The static constructor invoked.
+
+The Drive method invoked. 
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-10T01:58:41.000Z"><a href="/2011/05/09/parallel-r/">May 9 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/09/parallel-r/">Parallel R</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A fun little performance test for my new box….</p>
+<p>For the population synthesizer I’m building for the Metro Greenstep model, I had to meet the requirement of writing the code in R - a language geared toward statistical anlayses focusing heavily on matrix-like data types (see the previous posts in this blog).<br>For the most part I like R, but I would rather, of course, be coding in an environment I’m more familiar with. (Visual Studio).<br>Enter <a href="http://rdotnet.codeplex.com/" target="_blank" rel="external">RDotNet</a>. With this library I’m able to effectively eval R commands as such:</p>
+<p><pre lang="csharp">//helper function<br> private static void R(string command)<br>        {<br>            eng.EagerEvaluate(command);<br>        }</pre></p>
+<p>//sample commands<br>     R(“numHIA &lt;- round(nrow(HIAIDs)/7, digits=0)”);<br>     R(“numHIA &lt;- numHIA+1”);<br>     R(“rp &lt;- 1”);<br>     R(“cntr &lt;- 1”);<br>With my new computer, I’ve been really wanting to push the limits so I broke the popsyn into 2 parts - a parent, manager console app and a child app that takes an arg to determine which file to process.  The manager app does some preprocessing and then breaks the massive table into 7 chunks using a numeric naming convention.  Once the pre-processing is done I iterate through a process spawn::</p>
+<p><pre lang="csharp">for (int i=1;i&lt;8;i++)<br>                {<br>                ProcessStartInfo startInfo = new ProcessStartInfo();<br>                startInfo.CreateNoWindow = false;<br>                startInfo.UseShellExecute = false;<br>                startInfo.FileName = @”childProcess.exe”;<br>                startInfo.WindowStyle = ProcessWindowStyle.Hidden;<br>                startInfo.Arguments = i.ToString();<br>                Process exeProcess = Process.Start(startInfo);<br>                }</pre><br>and load up the cores —&gt;<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/FOO.png" target="_blank" rel="external"><img src="/images/566696b66c4f651943fcb0e9237e2fba45ad6979.png" alt="" title="FOO"></a></p>
+<p>One of the cooler aspects of this process is that all the console output from the spawned children evaluate to the current console window.  This looks like-&gt;<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/output.png" target="_blank" rel="external"><img src="/images/99053688f57d661443c12b05d9a68a68127aeeb6.png" alt="" title="output"></a></p>
+<p>Total runtime :::: 00:2:20 ooh yeah.</p>
+<p><strong>UPDATE</strong></p>
+<p>Turns out I was making this harder than it needed to be and since the code needed to be transferred as R later on, I figured I’d put the business rules in R and handle the multithreading with .NET…</p>
+<p><pre lang="csharp"><br>private static void Main(string[] args)<br>        {<br>            ProcessStartInfo startInfo = new ProcessStartInfo();<br>            startInfo.CreateNoWindow = false;<br>            startInfo.UseShellExecute = false;<br>            string R=@”C:\Program Files\R\R-2.13.0\bin\i386\Rscript.exe”;<br>            startInfo.FileName = R;<br>            startInfo.WindowStyle = ProcessWindowStyle.Hidden;<br>            startInfo.Arguments = Module1 + “ “ + arg;<br>            Process exeProcess = Process.Start(startInfo);</pre></p>
+<pre><code>        //Wait for Module <span class="number">1</span> to complete
+        exeProcess<span class="preprocessor">.WaitForExit</span>()<span class="comment">;</span>
+
+        //start the parallelism
+        for (int i = <span class="number">7</span><span class="comment">; i &gt; 0; i--)</span>
+        {
+            startInfo<span class="preprocessor">.Arguments</span> = Module2 + <span class="string">" "</span> + i<span class="preprocessor">.ToString</span>()<span class="comment">;</span>
+            //Ensure that <span class="number">1</span> will be the last to exit
+            if (i == <span class="number">1</span>)
+            {
+                Thread<span class="preprocessor">.Sleep</span>(<span class="number">25000</span>)<span class="comment">;</span>
+                exeProcess = Process<span class="preprocessor">.Start</span>(startInfo)<span class="comment">;</span>
+                exeProcess<span class="preprocessor">.WaitForExit</span>()<span class="comment">;</span>
+            }
+            else
+            {
+                exeProcess = Process<span class="preprocessor">.Start</span>(startInfo)<span class="comment">;</span>
+            }
+        }
+
+        //Run module <span class="number">3</span> when module <span class="number">2</span> completes
+        startInfo<span class="preprocessor">.Arguments</span> = Module3<span class="comment">;</span>
+        exeProcess = Process<span class="preprocessor">.Start</span>(startInfo)<span class="comment">;</span>
+    }
+</code></pre><p><br>I didn’t need the RdotNet lib (even though it could be incredibly useful in a hybrid application)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-06T22:35:51.000Z"><a href="/2011/05/06/net-timer/">May 6 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/06/net-timer/">Timers</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Quick and easy way to report length of an operation.</p>
+<h3 id="C#-Net">C#.Net</h3>
+<pre lang="csharp">
+System.DateTime tStart = System.DateTime.Now;
+// do stuff
+Console.WriteLine("Operation took " + 
+    Math.Round(System.DateTime.Now.Subtract(tStart).TotalSeconds, 2)
+    + " seconds.");
+</pre>
+
+<h3 id="Python">Python</h3>
+<pre lang="python">
+import time
+start = time.clock()
+# do stuff
+print('Execution time: '+str(time.clock() - start))
+</pre>
+
+<h3 id="JavaScript">JavaScript</h3>
+<pre lang="javascript">
+var start = new Date().getTime();
+// do stuff
+alert('Execution time:' + (new Date().getTime() - start));
+</pre>
+
+<h3 id="R">R</h3>
+<pre lang="python">
+ptm <- proc.time()="" for="" (i="" in="" 1:50)="" mad(stats::runif(500))="" -="" ptm="" <="" pre="">
+
+<h3 id="Oracle_(PL/SQL)">Oracle (PL/SQL)</h3>
+<pre lang="sql">
+DECLARE
+    -- --------------------------------------------
+    -- Variable declararions
+    -- --------------------------------------------
+    tsStartTime TIMESTAMP;
+    tsEndTime TIMESTAMP;
+BEGIN
+    -- Start the timer
+    tsStartTime := CURRENT_TIMESTAMP;
+    DBMS_OUTPUT.PUT_LINE(tsStartTime);
+    -- Do something
+    dbms_lock.sleep(20);
+    DBMS_OUTPUT.PUT_LINE('Yawn...I am sleeping for 20 seconds...');
+    -- Display some information, and how long &quot;something&quot; took
+    tsEndTime := CURRENT_TIMESTAMP;
+    DBMS_OUTPUT.PUT_LINE(tsEndTime);
+
+    DBMS_OUTPUT.PUT_LINE('Time elapsed:' || to_char(tsEndTime - tsStartTime));
+END;
+</pre></-></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-05T23:01:16.000Z"><a href="/2011/05/05/keep-console-window-open/">May 5 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/05/keep-console-window-open/">Keep console window open</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>When developing a console app, instead of F5, hit CTRL-F5 to prevent the window from closing after it is finished running.</p>
+<p>When running a python console app use raw_input() for the last line to keep the window open.</p>
+<p>Since I couldn’t think of anywhere else to put this :::</p>
+<p>print a line without a newline</p>
+<pre lang="python">
+import sys
+sys.stdout.write("foo")
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

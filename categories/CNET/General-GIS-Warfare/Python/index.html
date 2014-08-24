@@ -1,0 +1,460 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Python | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">Python</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-09T12:09:31.000Z"><a href="/2012/04/09/mysql-geometry-to-shapefile/">Apr 9 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/09/mysql-geometry-to-shapefile/">Converting MySQL geometry to Shapefile</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I was recently faced with the task of converting MySQL Geometry  (stored in a remote db) as WKB to a shapefile to an ESRI File Geodatabase.<br>Since it’s a remote database stored with my web hosting provider access is rather limited (e.g no console access). The dataset is ~33,000 features with 20-some fields - calling a dump from the phpMyAdmin web interface works but returns WKB. I tried reading this stuff with Shapely, but it wasn’t having it…messed around with encodings to no avail.  And while one can export the geometry as text, my dump limits are thus severely limited to ~2000 records per export (phpMyAdmin has a 5mb limit per export file as I recall).  I used to suffer through this when time was less valuable and I was less competent but not no more.</p>
+<p>I decided to extract the geometry separately and join the attribution in later.  This made coding the automated extraction a little easier.  So how did I do it?  I went out and grabbed the <a href="http://www.mysql.com/downloads/connector/net/" target="_blank" rel="external">MySQL Connector for .NET</a>, threw in my credz and went to town 5 at a time so as not to stress the server.</p>
+<pre lang="csharp">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MySql.Data.MySqlClient;
+using System.Web;
+using System.IO;
+using System.Threading;
+
+namespace myBitchinMySQLExtractor
+{
+    class Program
+    {
+        const string MyConString = "connectionStuff";
+        const int numRecords = 35000;
+        static void Main(string[] args)
+        {
+            for (int t = 0; t < numRecords; t += 5)
+            {
+                try
+                {
+                    getData(t);
+                }
+                catch (Exception ex)
+                {
+                    try
+                    {
+                        Thread.Sleep(10000);
+                        getData(t);
+                    }
+                    catch (Exception exc)
+                    {
+                        Console.Write("Lost connection at " + t);
+                    }
+                }
+                Thread.Sleep(3000);
+            }
+        }
+
+        private static void getData(int t)
+        {
+            var connection = new MySqlConnection(MyConString);
+            MySqlCommand command = connection.CreateCommand();
+            MySqlDataReader Reader;
+            connection.Open();
+            command.CommandText = "SELECT ID, astext(geometry)"+
+                "as geom from table where 1 limit " + t + ",5;";
+
+            Reader = command.ExecuteReader();
+            while (Reader.Read())
+            {
+                string thisrow = "";
+                for (int i = 0; i < Reader.FieldCount; i++)
+                {
+                    var s = Reader.GetValue(i);
+                    if (s.GetType() != typeof(byte[]))
+                    {
+                        thisrow += s.ToString() + ", ";
+                    }
+                    else
+                    {
+                        thisrow += Encoding.UTF8.GetString((byte[])s, 0, ((byte[])s).Length);
+                    }
+                }
+                using (var sw = new StreamWriter("C:/myFile.txt", true))
+                {
+                    sw.WriteLine(thisrow);
+                }
+                Console.WriteLine(thisrow + Environment.NewLine + Environment.NewLine);
+            }
+            connection.Close();
+        }
+    }
+}
+</pre>
+
+<p>Ok, so now I had a big-ass file full of ids and geometry in WKT.  What next? <a href="http://pypi.python.org/pypi/Shapely" target="_blank" rel="external">Shapely</a> and <a href="http://pypi.python.org/pypi/geojson/" target="_blank" rel="external">GeoJSON</a> to the rescue. </p>
+<pre lang="python">
+from shapely.wkt import loads
+from geojson import dumps
+import re
+import sys
+import string
+
+output=r"C:/myOutput.txt"
+input=r"C:/myInput.txt"
+f = open(output, "a")
+f.write("{ \"type\": \"FeatureCollection\",\"features\": [")
+
+def processWKT(id, line):
+    x = loads(line)
+    y = dumps(x)
+    f.write("{\"type\": \"Feature\",\"geometry\": " +
+                y + ", \"properties\" : {\"id\" :\"" + id+"\"}},\n")
+
+file = open(input, "r")
+
+for line in file.read().split("\n"):
+    #parse the id out
+    #grab everything up to the first comma
+    s=re.match("[^,]*,\s",line)
+    t=s.group()
+    l = string.replace(line,t, "")
+    y = string.replace(t,", ","")
+
+    processWKT(y,l)
+    print y
+
+f.write("]}")
+file.close()
+f.close()
+</pre>
+
+<p>Ok, so now after I go in and delete a comma in the last line, I have a valid geojson file with all my IDs and geometry.  What next? <a href="http://www.gdal.org/" target="_blank" rel="external">GDAL</a>.  Converting the geojson to a shapefile is a one-liner with ogr2ogr:</p>
+<pre lang="python">
+ogr2ogr -f "ESRI Shapefile" c:/myshapes.shp c:/myOutput.js OGRGeoJSON
+</pre>
+
+<p>So, yes, it is a painful process but these three steps helped to expedite the extraction of data from a remote MySQL db, convert it to the middle-ground format of GeoJSON, and on to a shapefile using GDAL.  All, with free and open-source libraries and platforms. Since my data comprises fields of &gt; 256 characters, I’ll convert the shapefile to a file geodatabase and then populate the attribution using ESRI tools.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-23T23:48:06.000Z"><a href="/2012/03/23/resharper-and-epsilon/">Mar 23 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/23/resharper-and-epsilon/">Resharper and Epsilon</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Coding away this morning with resharper and came across this:</p>
+<p><pre lang="csharp">if(datagrid.Width==0)<br>{<br>//do stuff<br>}</pre><br>In the conditional Resharper warns me to “<span style="color: #ff0000;">Fix floating point numbers comparing. Compare a difference with Epsilon</span>.”<br>When I accept the suggestion I get this:</p>
+<p><pre lang="csharp">if (Math.Abs(wndDatagrid.Width - 0) &lt; EPSILON)<br>{<br>//Do stuff<br>}</pre><br>Too bad the EPSILON constant is not defined…<br>JetBrains explains it this way:</p>
+<blockquote>
+<p>Using the == operator to compare floating-point numbers is, generally, a bad idea. The problem arises from the fact that, typically, results of calculations have to be ‘fitted’ into floating-point representation, which does not always matched the perceived reality of what result should be produced.</p>
+<p>For example, suppose you take a root of -4 using var root = Complex.Sqrt(new Complex(-4, 0)). Then, you decide to ensure that the real part of the result is 0 (zero), by asserting that root.Real == 0.0. Unfortunately, the actual result of the calculation is (1.22460635382238E-16, 2), so the comparison will, predictably, fail.</p>
+<p>In order to do these comparisons correctly, you need to specify a tolerance, i.e., a value to indicate by how much the result can diverge from the intended value. Then, the comparison above can be rewritten, e.g., as Math.Abs(root.Real) &lt; 1.E-10. Similarly, comparisons between two values can take the form of Math.Abs(x - y) &lt; tolerance. The tolerance value really depends on the precision of the calculations being performed but, in most cases, should be at least the Epsilon value (float.Epsilon, double.Epsilon, and so on). The Epsilon is a constant that denotes the smallest non-zero value that can be represented with the type of floating number you are using. Please note that, in the majority of cases, the Epsilon value is too low to be used as a reliable tolerance value.<br>Learn something new everyday.</p>
+</blockquote>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

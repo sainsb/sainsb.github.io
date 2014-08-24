@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Uncategorized | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">Uncategorized</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-03T02:09:24.000Z"><a href="/2011/12/02/notes-on-distributed-database-editing-using-ms-access-2010/">Dec 2 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/02/notes-on-distributed-database-editing-using-ms-access-2010/">Notes on distributed database editing (Using MS Access 2010)</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I was recently tasked with updating an inventory that was maintained in MS Access and that included roughly 10 different data providers.  The database had several one-to-one relationships, one one-to-many relationship and ~6 domain value lookup tables.<br>The database was split up into chunks based on data provider and sent out.  While I tried with all my power to get a custom CRUD interface off the ground prior to sending out, I just couldn’t get it to production quality in &lt; 2wks….so the included Access Form it was.<br>Nearly all data providers botched their data input.  Several could not figure out how to add records and the meaning/purpose of the primary key.  Several failed to include data in one of the tables, and several were either unable to open the db or could only open it in read-only mode and so returned spreadsheets…which turned out to be easier in a way.</p>
+<p><strong>Change detection</strong></p>
+<p>After a series of failed attempts to detect the changes made to the data by the providers I finally settled on the <strong>Find Unmatched Query Wizard</strong> under the <strong>Create </strong>tab in Access.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/findUnmatched.png" target="_blank" rel="external"><img src="/images/2c9b3a3e7a9b46227bbad5205e10857f2a109cad.png" alt="" title="findUnmatched"></a></p>
+<p>The weakness with this wizard is that it only allows you to join one field to detect changes (a la primary key).  However, at the end there’s a dialog that allows you to either run the query or modify it before running.  Choose to modify and join all fields.  Then be sure to change the join properties to (number 2) “Include all records from the left table (changed) and only those records from the right table (original) where the joined fields are equal.  The query then looks for records where the right table’s pk is null.  I believe this is a version of a Left Outer join but due to the duplicate records, I’m not really sure what this thing would be classified. Here’s what it looks like in the Access query designer.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/LeftJoin.png" target="_blank" rel="external"><img src="/images/8837a08c4079918aab8b84f7bed4bc18c47e2873.png" alt="" title="LeftJoin"></a></p>
+<p>This process will find all changed records but there’s a gotcha, of course, involving nulls.  Since the join operation uses the ‘=’ sign, nulls don’t compute.  Therefore if 2 records match from the changed and the original <em>but</em> there’s a null in them, the record will ‘red herring’ in the this query.  <strong>The solution</strong> to this is to simply ensure you have no null values in your data preferably <em><strong>before</strong></em> sending out.  I simply changed all of mine to ‘UNKN’ - once this is accomplished you can join all fields using the above process and get true changed records.</p>
+<p>A few other notes to self from this process:</p>
+<ul>
+<li>to convert a field to upper case update tbl set field = UCase(field)</li>
+<li>Don’t use a string value for your primary key, the former convention was MYAGENCY<em>1,MYAGENCY_2 etc.  it made sorting a pain in the ass so I removed the MYAGENCY</em> -thankfully converting the data type went smoothly and the string numbers converted to long without grief.</li>
+<li><p>Regarding one-to-one relationships - here was a<a href="http://stackoverflow.com/questions/2521760/what-are-advantages-of-using-a-one-to-one-table-relationship-mysql" target="_blank" rel="external"> stub I found on Stack Overflow regarding one-to-ones in MySQL</a>, so it seems like the three main reasons why you might use one-to-ones are:</p>
+<ol>
+<li>To extend a table with strong dependencies (ie a vendor table) without affecting the schema.</li>
+<li>To extend a table with an ORM, class mapping etc. See #1</li>
+<li>If performance is an issue and you are only accessing a few fields 90% of the time<br>So for our purposes I removed them</li>
+</ol>
+</li>
+<li><p>Often I wish I could paste a series of queries in Access’ SQL Query view but unfortunately the app only allows <strong>one query at a time</strong>…this blows.  To combat this I did a little research and a little crafting and came up with scripts similar to this:</p>
+<pre lang="vb">
+Option Compare Database
+
+sub foo()
+
+DoCmd.SetWarnings False
+
+' have to add a reference to Microsoft DAO 3.6 Object Library under 'Tools'
+Dim dbf As Database
+Set dbf = CurrentDb
+DoCmd.SetWarnings False 'otherwise you'll get dialogued to death.
+Dim qryDef As QueryDef
+
+Set qryDef = dbf.CreateQueryDef("ID1", "INSERT INTO tbl1 SELECT a,b,c,d From tbl2 ") : DoCmd.OpenQuery ("ID1")
+Set qryDef = dbf.CreateQueryDef("ID2", "INSERT INTO tbl1 SELECT a,b,c,d From tbl3 ") : DoCmd.OpenQuery ("ID2")
+'Ad infinitum
+
+'To delete the queries you just created
+for i = 1 to CurrentDb().queryDefs.Count
+CurrentDb().queryDefs.Delete (CurrentDb.queryDefs(0).Name)
+next
+
+End Sub
+</pre>
+</li>
+<li><p>Don’t use captions/aliases in your fields, it makes creating queries in SQL view a pain if you’re referencing the table view to construct the query.</p>
+</li>
+</ul>
+<h2 id="Geocoding">Geocoding</h2>
+<p>After geocoding my data, I discovered a heinous amount of duplication.  My workflow went something like -&gt; geocode to points -&gt; intersect with parcel base -&gt; Summarize (count) instances of the same parcel -&gt; Export to table where count of parcel &gt; 1 (eg, where multiple points geocoded to the same parcel.)  By selecting these points I could then compare attributes and discover duplication.  For those points that failed to geocode to the MAF (inside a parcel) - I manually went through and searched for the obvious nearby parcel, moved the point, then updated the address for future geocodes.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

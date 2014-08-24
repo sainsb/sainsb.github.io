@@ -1,0 +1,318 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Oracle battle royale | </title>
+  <meta name="author" content="Che Geovara">
+  
+  <meta name="description" content="Lately I’ve become obsessed with delivering a stored function/proc to query ST_Geometry (ArcSDE) to reproduce our existing RLISQuery service.  This id">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Oracle battle royale"/>
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-10-18T01:43:38.000Z"><a href="/2011/10/17/oracle-battle-royale/">Oct 17 2011</a></time>
+      
+      
+  
+    <h1 class="title">Oracle battle royale</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Lately I’ve become obsessed with delivering a stored function/proc to query ST_Geometry (ArcSDE) to reproduce our existing RLISQuery service.  This idea is not my own but rather that of a recently retired co-worker who was here from day 1.<br>Historically the service has been created through an intersect of multiple reference feature classes; neighborhoods, sewer district, census tracts etc.  This intersect results in a very large dataset and resembles something like stained glass when viewed in ArcMap. The process for extracting the information previously was an intersect(?) with a passed in point(?) not sure about this…but whatever it was it was a geoprocessing task of some sort (see ‘proprietary’ and , ‘suboptimal’).</p>
+<p>Here were the steps that were necessary to get up and running:</p>
+<ol>
+<li><p><strong>Grant user permissions</strong> to use the ST_* functions of the sde user.  Although this is default behavior, our database has always been migrated rather than rebuilt from scratch and so those options quietly came online but were never ‘granted’ by sys to public….Here’s an example of what I’m talking about::<br><pre lang="SQL">GRANT EXECUTE ON SDE.ST_DISTANCE TO PUBLIC;<br>GRANT EXECUTE ON SDE.ST_DISJOINT TO PUBLIC;<br>GRANT EXECUTE ON SDE.ST_ENVINTERSECTS TO PUBLIC;<br>GRANT EXECUTE ON SDE.ST_SPATIAL_INDEX TO PUBLIC;</pre><br>We spent a lot of time on the phone with ESRI trying to figure it out.  The problem manifested itself as being able to create a feature class in ArcSDE with the ST_Geometry configuration keyword but not being able to see the actual geometry (our workaround was to recreate the spatial index).  We figured it was a bug for quite some time until we created a feature class as sde and were able to view the geometry statim (that’s latin for immediately).  Lost in the permissions maze for days we were but finally triumphed through the granting of permissions.</p>
+</li>
+<li><p><strong>Convert data</strong> to the ST_Geometry datatype.  This was pretty straightforward using the Migrate Data tool in the Data Management/Database Toolbox.</p>
+</li>
+<li><p><strong>Writing the function</strong>.  This took awhile.  PL/SQL according to Wikipedia : is Oracle Corporation’s procedural extension language for SQL and the Oracle relational database. PL/SQL’s general syntax resembles that of Ada or Pascal. Yikes.  butt puckerage statim.  I’m used to SQL Server and T-SQL which is just SQL with a few more methods…so yeah…my function body eventually came out looking something like this:</p>
+<pre lang="sql">create or replace
+FUNCTION RLISQUERY
+( lat IN NUMBER DEFAULT 7681671
+, lng IN NUMBER DEFAULT 652231
+)
+return VARCHAR
+IS
+foo VARCHAR(255) := 'null';
+Begin
+Select bar into foo from x where z
+return 'result:' || foo;
+end;</pre>
+</li>
+<li><p><strong>Tuning the query</strong>.  My initial attempts at the query yielded excellent results. But then things started to look bleak when queries like this:</p>
+<pre lang="sql">Select foo from bar where sde.st_relation_operators.st_contains_f(shape,st_point(lat,lng, 5))=1</pre>
+on feature classes of ~&gt;100,000 features were tanking.  And I mean tanking...Eventually came across [this blog](http://www.palladiumconsulting.com/blog/sebastian/2008/05/sde-92s-stgeometry-part-one-perhaps.html) post wherein the author meticulously deconstructs the patheticness of the ST_Geometry query and never really arrives at a solution.<p>Thinking all was lost, I desperately tried messing around with [different spatial operators](http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/A_quick_tour_of_SQL_functions_used_with_ST_Geometry_and_ST_Raster_types/006z0000003n000000/); contains, within, touches etc.  I stumbled upon the st_envintersects predicate and noted the comparatively blazing speed at which this query performed.</p><p><span style="color: #ff9900;">---POP--- lightbulb</span> - while the results of the envintersects don't really work with a point (query might return multiple results) what if you could perform the fine-grained predicate on the results of the envintersect? AHA!
+<pre lang="sql">
+select FOO into foo_ from (SELECT shape, FOO from table WHERE sde.st_envintersects (shape, st_point (lat, lng, 5) ) = 1 ) where sde.st_relation_operators.st_contains_f(shape,st_point(lat,lng, 5))=1;
+-- This also works
+select FOO into foo_ from table WHERE sde.st_envintersects (shape, st_point (lat, lng, 5) ) = 1 AND sde.st_relation_operators.st_contains_f(shape,st_point(lat,lng, 5))=1;
+</pre>
+</p></li>
+<li><p>I stumbled upon several humorous ESRI knowledge base articles in my quest… <a href="http://support.esri.com/en/knowledgebase/techarticles/detail/32601" target="_blank" rel="external">this one</a> is particularly hilarious.  It gives an example query and the autotrace results and then tells you how to write the same query but force Oracle to use the spatial index.  I like how when you force it to use the spatial index the query goes from taking 10 seconds to 1 minute and 56 seconds…Great tip…<strong>if you suck</strong>.   <a href="http://support.esri.com/en/knowledgebase/techarticles/detail/36158" target="_blank" rel="external">The next one</a> carries a slight emotional flavor and confirms that no, it is in fact, not necessary to include the st_envintersects operator in your ST_geometry queries.   Like…someone put you up to it or something.   No you don’t have to use it but your queries will likely <strong>suck</strong> if you do not.</p>
+</li>
+<li>Stored functions and procs are compiled in Oracle as opposed to MySQL and SQL Server…I guess I like this, even if it seems strange.  Here, however the problem became getting the function to compile.  I normally use SQL Developer because it was on my box and I didn’t know any better.  Crafting the function was not fun but I eventually got it to work.  I then thought, well…If I’m going to be working in the db more, maybe I’d rather use Navicat or Toad, or a newer version of SQL Developer.  Strangely, none of these IDEs were able to compile my function.  I’m not sure if they use a newer version of PL/SQL or what the deal is …With Navicat and Toad I kept getting  Oracle Error 302 component ‘NAMEOFFUNCTION’ must be declared.  And with the newer version of SQL Developer I was getting a pretty generic server failure message.  Don’t ask my why the function only compiles in an older version of SQL Developer…some extension or plugin that’s not available to the rest.</li>
+<li><strong>Dealing with null values</strong> in certain feature classes.  Solution, wrap ‘em in begin/end and throw and exception handler in there. Something a la<br><pre lang="sql"><br>Begin<br>select x from y where z<br>EXCEPTION<pre><code>  <span class="keyword">WHEN</span> NO_DATA_FOUND <span class="keyword">THEN</span>
+  dbms_output.put_line(<span class="string">' '</span>);
+</code></pre>end;<br></pre><br>In this way I’m able to get past nulls in the queries.  Seems like Oracle could do better at catching errors and continuing but both Oracle and PL/SQL seem to be a dying breed based on all my google searching…aka documentation on most all of the above sucks.<br>Alright, well I finished my tutorial/rant, stay tuned to see where my road leads next.</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Uncategorized/">Uncategorized</a>
+  </div>
+
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

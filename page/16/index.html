@@ -1,0 +1,838 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 16 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-11T04:45:25.000Z"><a href="/2011/05/10/static-constructors/">May 10 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/10/static-constructors/">Static constructors</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>An interesting tidbit from <a href="http://msdn.microsoft.com/en-us/library/k9x6w0hc%28v=VS.100%29.aspx" target="_blank" rel="external">MSDN</a> regarding static constructors.</p>
+<pre lang="csharp">
+public class Bus
+{
+    // Static constructor:
+    static Bus()
+    {
+        System.Console.WriteLine("The static constructor invoked.");
+    }
+
+    public static void Drive()
+    {
+        System.Console.WriteLine("The Drive method invoked.");
+    }
+}
+
+class TestBus
+{
+    static void Main()
+    {
+        Bus.Drive();
+    }
+}
+</pre>
+
+<p>Outputs:</p>
+<pre lang="python">
+The static constructor invoked.
+
+The Drive method invoked. 
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-10T01:58:41.000Z"><a href="/2011/05/09/parallel-r/">May 9 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/09/parallel-r/">Parallel R</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A fun little performance test for my new box….</p>
+<p>For the population synthesizer I’m building for the Metro Greenstep model, I had to meet the requirement of writing the code in R - a language geared toward statistical anlayses focusing heavily on matrix-like data types (see the previous posts in this blog).<br>For the most part I like R, but I would rather, of course, be coding in an environment I’m more familiar with. (Visual Studio).<br>Enter <a href="http://rdotnet.codeplex.com/" target="_blank" rel="external">RDotNet</a>. With this library I’m able to effectively eval R commands as such:</p>
+<p><pre lang="csharp">//helper function<br> private static void R(string command)<br>        {<br>            eng.EagerEvaluate(command);<br>        }</pre></p>
+<p>//sample commands<br>     R(“numHIA &lt;- round(nrow(HIAIDs)/7, digits=0)”);<br>     R(“numHIA &lt;- numHIA+1”);<br>     R(“rp &lt;- 1”);<br>     R(“cntr &lt;- 1”);<br>With my new computer, I’ve been really wanting to push the limits so I broke the popsyn into 2 parts - a parent, manager console app and a child app that takes an arg to determine which file to process.  The manager app does some preprocessing and then breaks the massive table into 7 chunks using a numeric naming convention.  Once the pre-processing is done I iterate through a process spawn::</p>
+<p><pre lang="csharp">for (int i=1;i&lt;8;i++)<br>                {<br>                ProcessStartInfo startInfo = new ProcessStartInfo();<br>                startInfo.CreateNoWindow = false;<br>                startInfo.UseShellExecute = false;<br>                startInfo.FileName = @”childProcess.exe”;<br>                startInfo.WindowStyle = ProcessWindowStyle.Hidden;<br>                startInfo.Arguments = i.ToString();<br>                Process exeProcess = Process.Start(startInfo);<br>                }</pre><br>and load up the cores —&gt;<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/FOO.png" target="_blank" rel="external"><img src="/images/566696b66c4f651943fcb0e9237e2fba45ad6979.png" alt="" title="FOO"></a></p>
+<p>One of the cooler aspects of this process is that all the console output from the spawned children evaluate to the current console window.  This looks like-&gt;<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/output.png" target="_blank" rel="external"><img src="/images/99053688f57d661443c12b05d9a68a68127aeeb6.png" alt="" title="output"></a></p>
+<p>Total runtime :::: 00:2:20 ooh yeah.</p>
+<p><strong>UPDATE</strong></p>
+<p>Turns out I was making this harder than it needed to be and since the code needed to be transferred as R later on, I figured I’d put the business rules in R and handle the multithreading with .NET…</p>
+<p><pre lang="csharp"><br>private static void Main(string[] args)<br>        {<br>            ProcessStartInfo startInfo = new ProcessStartInfo();<br>            startInfo.CreateNoWindow = false;<br>            startInfo.UseShellExecute = false;<br>            string R=@”C:\Program Files\R\R-2.13.0\bin\i386\Rscript.exe”;<br>            startInfo.FileName = R;<br>            startInfo.WindowStyle = ProcessWindowStyle.Hidden;<br>            startInfo.Arguments = Module1 + “ “ + arg;<br>            Process exeProcess = Process.Start(startInfo);</pre></p>
+<pre><code>        //Wait for Module <span class="number">1</span> to complete
+        exeProcess<span class="preprocessor">.WaitForExit</span>()<span class="comment">;</span>
+
+        //start the parallelism
+        for (int i = <span class="number">7</span><span class="comment">; i &gt; 0; i--)</span>
+        {
+            startInfo<span class="preprocessor">.Arguments</span> = Module2 + <span class="string">" "</span> + i<span class="preprocessor">.ToString</span>()<span class="comment">;</span>
+            //Ensure that <span class="number">1</span> will be the last to exit
+            if (i == <span class="number">1</span>)
+            {
+                Thread<span class="preprocessor">.Sleep</span>(<span class="number">25000</span>)<span class="comment">;</span>
+                exeProcess = Process<span class="preprocessor">.Start</span>(startInfo)<span class="comment">;</span>
+                exeProcess<span class="preprocessor">.WaitForExit</span>()<span class="comment">;</span>
+            }
+            else
+            {
+                exeProcess = Process<span class="preprocessor">.Start</span>(startInfo)<span class="comment">;</span>
+            }
+        }
+
+        //Run module <span class="number">3</span> when module <span class="number">2</span> completes
+        startInfo<span class="preprocessor">.Arguments</span> = Module3<span class="comment">;</span>
+        exeProcess = Process<span class="preprocessor">.Start</span>(startInfo)<span class="comment">;</span>
+    }
+</code></pre><p><br>I didn’t need the RdotNet lib (even though it could be incredibly useful in a hybrid application)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-06T22:35:51.000Z"><a href="/2011/05/06/net-timer/">May 6 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/06/net-timer/">Timers</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Quick and easy way to report length of an operation.</p>
+<h3 id="C#-Net">C#.Net</h3>
+<pre lang="csharp">
+System.DateTime tStart = System.DateTime.Now;
+// do stuff
+Console.WriteLine("Operation took " + 
+    Math.Round(System.DateTime.Now.Subtract(tStart).TotalSeconds, 2)
+    + " seconds.");
+</pre>
+
+<h3 id="Python">Python</h3>
+<pre lang="python">
+import time
+start = time.clock()
+# do stuff
+print('Execution time: '+str(time.clock() - start))
+</pre>
+
+<h3 id="JavaScript">JavaScript</h3>
+<pre lang="javascript">
+var start = new Date().getTime();
+// do stuff
+alert('Execution time:' + (new Date().getTime() - start));
+</pre>
+
+<h3 id="R">R</h3>
+<pre lang="python">
+ptm <- proc.time()="" for="" (i="" in="" 1:50)="" mad(stats::runif(500))="" -="" ptm="" <="" pre="">
+
+<h3 id="Oracle_(PL/SQL)">Oracle (PL/SQL)</h3>
+<pre lang="sql">
+DECLARE
+    -- --------------------------------------------
+    -- Variable declararions
+    -- --------------------------------------------
+    tsStartTime TIMESTAMP;
+    tsEndTime TIMESTAMP;
+BEGIN
+    -- Start the timer
+    tsStartTime := CURRENT_TIMESTAMP;
+    DBMS_OUTPUT.PUT_LINE(tsStartTime);
+    -- Do something
+    dbms_lock.sleep(20);
+    DBMS_OUTPUT.PUT_LINE('Yawn...I am sleeping for 20 seconds...');
+    -- Display some information, and how long &quot;something&quot; took
+    tsEndTime := CURRENT_TIMESTAMP;
+    DBMS_OUTPUT.PUT_LINE(tsEndTime);
+
+    DBMS_OUTPUT.PUT_LINE('Time elapsed:' || to_char(tsEndTime - tsStartTime));
+END;
+</pre></-></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-05T23:01:16.000Z"><a href="/2011/05/05/keep-console-window-open/">May 5 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/05/keep-console-window-open/">Keep console window open</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>When developing a console app, instead of F5, hit CTRL-F5 to prevent the window from closing after it is finished running.</p>
+<p>When running a python console app use raw_input() for the last line to keep the window open.</p>
+<p>Since I couldn’t think of anywhere else to put this :::</p>
+<p>print a line without a newline</p>
+<pre lang="python">
+import sys
+sys.stdout.write("foo")
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-04-22T03:58:24.000Z"><a href="/2011/04/21/r-commands-continued/">Apr 21 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/04/21/r-commands-continued/">R commands continued.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A few new R maneuvers::</p>
+<pre lang="python">
+#get number of rows/cols of a matrix
+nrow(matrix)
+ncol(matrix)
+
+#Select matching records in a matrix
+mtx <-mtx[mtx$colname==foo,] #order="" by="" a="" field="" mtx="" <-="" mtx[order(mtx$colname),="" ]="" #inner="" join="" data="" frames="" merge(df1,="" df2,="" )="" #remove="" duplicate="" records="" from="" frame="" df="" unique(df)="" #preview="" or="" matrix="" head(mtx)="" #select="" out="" certain="" columns="" mtx[c('col1',="" 'col2')]="" #sum="" colsums(mtx[c('col1',="" 'col2')])="" #print="" concatenated="" string="" cat('mean=",mean(y), " sd=", sd(y), " \n')="" #append="" values="" to="" vector="" for(t="" in="" 1:50)="" x<-append(x,t)="" #change="" column="" name="" colnames(mydf)[2]="" "foo"="" rows="" dataframe="" totals="" rbind(totals,="" data.frame(a="1," b="Vanilla" ,c="C(1,2,3)))" <="" pre=""></-mtx[mtx$colname==foo,]></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-04-20T07:09:39.000Z"><a href="/2011/04/20/r-rounding-values/">Apr 20 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/04/20/r-rounding-values/">R rounding values in matrix</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><strong><em>A useful little R command:::</em></strong></p>
+<pre lang="r">> print(myVar)</pre>
+AgeCat
+HhType            Age0to14    Age15to19    Age20to29    Age30to54    Age55to64    Age65Plus
+0-0-0-0-0-1 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 3.198813e-01
+0-0-0-0-0-2 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 4.426508e-01
+<pre lang="r">
+> foobar <- round(myvar,="" digits="4)"> print(foobar)</-></pre>
+AgeCat
+HhType        Age0to14 Age15to19 Age20to29 Age30to54 Age55to64 Age65Plus
+0-0-0-0-0-1   0.0000    0.0000    0.0000    0.0000    0.0000    0.3199
+0-0-0-0-0-2   0.0000    0.0000    0.0000    0.0000    0.0000    0.4427
+
+Note:
+To turn off scientific notation: (which feels, oh...so good)
+hit this ish:
+<pre lang="python">
+options(scipen=500)
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-04-20T04:25:22.000Z"><a href="/2011/04/19/excel-duplicate-check-snippet/">Apr 19 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/04/19/excel-duplicate-check-snippet/">Excel duplicate check snippet</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>=IF(COUNTIF([DataRange],[SpecificCellToCheck])&gt;1,”Duplicated”,””)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-04-19T06:02:57.000Z"><a href="/2011/04/18/r-learning/">Apr 18 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/04/18/r-learning/">R Learning</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://lib.stat.cmu.edu/s/Spoetry/Tutor/R_inferno.pdf" target="_blank" rel="external">http://lib.stat.cmu.edu/s/Spoetry/Tutor/R_inferno.pdf</a></p>
+<p>Abstract : if you’re using R and you think you’re in hell, this is a map for you.  LOL</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-04-14T01:58:11.000Z"><a href="/2011/04/13/uri-urn-url-urhot/">Apr 13 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/04/13/uri-urn-url-urhot/">URI, URN, URL, URHot</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://en.wikipedia.org/wiki/Uniform_Resource_Identifier#Relationship_to_URL_and_URN" target="_blank" rel="external">Wikipedia says:</a></p>
+<p>One can classify <strong>URI</strong>s as locators (URLs), or as names (URNs), or as both. A <a href="http://en.wikipedia.org/wiki/Uniform_Resource_Name" target="_blank" rel="external">Uniform Resource Name</a> (URN) functions like a person’s name, while a <a href="http://en.wikipedia.org/wiki/Uniform_Resource_Locator" target="_blank" rel="external">Uniform Resource Locator</a> (URL) resembles that person’s street address. In other words: the URN  defines an item’s identity, while the URL provides a method for finding  it.  Good enough for me…I think I’ll still just stick with the idea that a URI equals a URL…for all intents and purposes.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-04-14T01:44:20.000Z"><a href="/2011/04/13/db-schema-optimization/">Apr 13 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/04/13/db-schema-optimization/">Db schema optimization</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I recently brought a HUGE table into Arc from Access - we needed the file in DBF format for AccuMail geocoding service.  Upon exporting the table from Arc to DBF however, I watched the file grow to over 2gb and then pitifully fail.  Why? Because the text fields in the Access table were all 255 chars.  How to crank down each of the 20+ fields to it’s longest value length?</p>
+<pre lang="sql">SELECT MAX(LEN(site_zip)) as f1_len from table;</pre>
+Set field lengths accordingly.
+
+This would sure be nice though wouldn't it?
+<pre lang="sql">ALTER TABLE t1 Alter Column c1 TEXT(SELECT Int(MAX(LEN(site_zip))) from t1);</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+<nav id="pagination">
+  
+    <a href="/page/15/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/page/17/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

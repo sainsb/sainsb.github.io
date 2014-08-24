@@ -1,0 +1,953 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 2 | C#.NET | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">C#.NET</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-02-28T06:07:16.000Z"><a href="/2012/02/27/refactoring-switches-to-jump-tables-with-anonymous-delegates-funcy/">Feb 27 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/02/27/refactoring-switches-to-jump-tables-with-anonymous-delegates-funcy/">Refactoring switches to jump tables</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I’ve never really liked the switch statement…I don’t really understand having to break to prevent fall through etc.etc.  If you put a switch in a non-void function then you can get out of having to break by just returning. But using Func we can go one more step and create a ‘jump table’ - essentially this works out to a dictionary of &lt;string, Func&lt;T,T&gt;&gt; - where each key corresponds to an anonymous delegate (yah, a Func).</p>
+<p>This is in the context of a .Net .ashx generic handler supplying data to a <a href="http://www.kendoui.com/" target="_blank" rel="external">Kendo UI</a> grid.</p>
+<pre lang="csharp">
+public void ProcessRequest (HttpContext context)
+{
+    var validTasks = new[] { "read", "update", "create", "delete" };
+    var validModes = new [] {"category", "indicator", "scenario"};
+
+    var task = context.Request.Params["q"];
+    var mode = context.Request.Params["t"];
+
+    if(!validTasks.Contains(task) || !validModes.Contains(mode)) 
+      context.Response.Write("Fail.");
+
+    var json = context.Request.Params["data"];
+
+    var y = new Dictionary<string, func<string,="" string,="" string="">>
+                {
+                    {"read", Read}, {"update", Update}, {"create",Create}
+                };
+
+    context.Response.Write(string.Format("{0}({1});", 
+       context.Request["callback"], y[task](mode, json)));
+}
+</string,></pre>
+
+<p>So what’s going on here?<br>We want to be sure to validate our input params so we don’t try to lookup a key that is not in the dictionary.  Since I’m lazy, I just made a string array or each param and ensure that the task and mode are contained in there.  Next I parse data for a create, update or delete task.  Then I associate a function with each of the possible tasks in my jump table. [Tangent Note that I’m in the context of a JSONP request so I get the callback param and append my serialized object onto it.</p>
+<p>Basically my jump table has replaced something like this:</p>
+<pre lang="csharp">
+string response;
+switch(task)
+{
+    case "read":
+        response=Read(mode, data);
+        break;
+    case "update":
+        response=Update(mode, data);
+        break;
+    case "create":
+        response=Create(mode, data);
+        break;
+    default:
+        context.Response.Write("Fail.");
+        break;
+}
+
+context.Response.Write(string.Format("{0}({1});", 
+  context.Request["callback"], response));
+</pre>
+
+<p>Note that this post is basically a rehash of <a href="http://stackoverflow.com/questions/1537404/how-do-you-use-func-and-action-when-designing-applications" target="_blank" rel="external">this Stack Overflow stub</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-02-09T23:44:01.000Z"><a href="/2012/02/09/overriding-operators/">Feb 9 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/02/09/overriding-operators/">Overloading operators in .Net</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I recently switched my shapefile comparison routine over to windows forms from WPF/Silverlight.  I’ve been wanting to compare <strong>BIG</strong> data and I keep getting an OutofMemory exception when I run it in the XAML stack.  When I switched over to Windows Forms it still failed the memory test, BUT when I switched it over to 64 bit it took the 2gb+ hit to memory like a champ. I just had to fill in a few gaps.  The first one being a simple point class.  All I needed was X and Y, or so I thought.  I’d run through the shapefile and compare points but it took me awhile to realize that it was <em>always</em> inequal.  Well, it turns out that the System.Windows.Point object I was using in XAML land was A) a struct (cool) and B) overriding the equality and inequality operator.  I was able to discover the latter through the .Net metadata. <em>very cool</em></p>
+<p>Old object:</p>
+<pre lang="csharp">
+  public class Point
+    {
+        public Double X { get; set; }
+        public Double Y { get; set; }
+    }
+</pre>
+
+<p>New object:</p>
+<pre lang="csharp">
+  public struct Point
+    {
+        public Double X { get; set; }
+        public Double Y { get; set; }
+        public static bool operator ==(Point p1, Point p2)
+        {
+            return ((p1.X == p2.X) && (p1.Y == p2.Y));
+        }
+
+        public static bool operator !=(Point p1, Point p2)
+        {
+            return ((p1.X == p2.X) && (p1.Y == p2.Y));
+        }
+    }
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-02-08T04:25:22.000Z"><a href="/2012/02/07/linq-string-wildcard/">Feb 7 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/02/07/linq-string-wildcard/">LINQ string wildcard</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>With the amazing amount of functions we get from LINQ, it’s surprising, in a way, that we don’t have a ‘Like’ string comparator.</p>
+<p>So here’s the back story: I’ve got a grid sourced on an observablecollection that I want to support filtering.  I have a child window dialog that offers a series of criteria.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/02/child.png" target="_blank" rel="external"><img src="/images/e52e2fae547cb43a69ba4adfab15a074744cb2fd.png" alt="" title="child"></a></p>
+<p>I’m using a LINQ extension statement to apply the criteria and then setting the DataContext of my grid to the result, for instance, here’s the event handler on a separate textbox setup to dynamically filter the data:</p>
+<pre lang="csharp">
+  private void TxtFilterTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var t = sender as TextBox;
+            dg.DataContext = !string.IsNullOrEmpty(t.Text) 
+             ? projects.features.Where(
+              w => w.attributes.PROJECT_NAME.Contains(t.Text.ToUpper()))
+             : projects.features;
+        }
+</pre>
+
+<p>The criteria presents a different issue however because I may want to filter on multiple columns. How do I accommodate this?  Create a LINQ statement for every possible combination of the above?  I got to thinking about creating a query using LIKE statements and a wildcard of some sort.  something like : if combobox.value == nullorEmpty then use a wildcard == filterless.  Well, LINQ doesn’t have a like function nor a wildcard-ish operator but there’s a workaround.  <del>However, by using the Unicode character replacement ‘glyph’ \uFFFD I do have an effective wildcard.  Why is this so?  I don’t know…maybe someone can explain why .Net does this.  All I care is that I only have to write one LINQ statement.</del> WooT!</p>
+<pre lang="csharp">
+dg.DataContext = projects.features.Where(w => 
+                    w.attributes.CITY.StartsWith(
+                       (string)fd.cboCities.SelectedValue ?? "") &&
+                    w.attributes.COUNTY.StartsWith(
+                       (string)fd.cboCounties.SelectedValue ?? "")
+                       );
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-02-02T06:16:01.000Z"><a href="/2012/02/01/cross-thread-ui-update-in-silverlightwpf/">Feb 1 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/02/01/cross-thread-ui-update-in-silverlightwpf/">Cross-thread UI update in Silverlight/WPF</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>There appear to be any number of ways to update the UI thread from a background thread in Silverlight/WPF-land.<br>This seems to be the simplest.</p>
+<pre lang="csharp">
+private void DoStuffOnBackgroundThread()
+{
+    Dispatcher.BeginInvoke(new Action<string>(write), "Updated UI");
+}
+
+private void write(string msg)
+{
+    Dispatcher.VerifyAccess();
+    txtControl.Text=msg;
+}
+</string></pre>
+
+<p>In order to pass additional/different params to the Action delegate you would do something like this:</p>
+<pre lang="csharp">
+private void DoStuffOnBackgroundThread()
+{
+    Dispatcher.BeginInvoke(new Action<int, int,="" string="">(write), 1,2,"Updated UI");
+}
+
+private void write(int foo, int bar, string msg)
+{
+    Dispatcher.VerifyAccess();
+    txtControl.Text=msg;
+}
+</int,></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-26T00:19:50.000Z"><a href="/2012/01/25/net-geoprocessing-tools/">Jan 25 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/25/net-geoprocessing-tools/">.Net Geoprocessing tools in the Toolbox</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I had no idea you could do <a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/conceptualhelp/index.html#//00010000049w000000" target="_blank" rel="external">this</a>.  Now I want to do it too. ;)</p>
+<p>I’ve created many a custom GP tool with Python but never with .Net - Before reading the docs I had trouble understanding how one would ‘include’ or ‘capture’ the tool in a custom toolbox.</p>
+<p>It turns out the trick is registering the dll with esriRegAsm.exe and adding it to the “Geoprocessor Function Factory component category”.  Here’s a <a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/conceptualhelp/index.html#/Sample_Calculate_area_geoprocessing_function_tool/0001000002r6000000/" target="_blank" rel="external">sample tool</a>.  Miraculously, just like ESRI claims, after compiling and registering with EsriRegAsm.exe the tool will be available for selection when adding a tool to a toolbox:</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/01/NetGPTool2.png" target="_blank" rel="external"><img src="/images/974cbc3cff05b4991861bd883e3b967b35672cc9.png" alt="" title=".NetGPTool"></a></p>
+<p>Digging into the code it looks like within the namespace there’s a function and a function factory.  Both include COM registration; the former implements IGPFunction2 and the latter implements the IGPFunctionFactory interface.  Within the IGPFunction2 interface we have:</p>
+<table style="border:1px solid #444;border-collapse:collapse;" cellpadding="2"><br><tbody><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000294000000.htm" target="_blank" rel="external">DialogCLSID</a></td><br><td class="t">The class identifier (CLSID) of the custom dialog object to use when invoking the geoprocessing function.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000295000000.htm" target="_blank" rel="external">DisplayName</a></td><br><td class="t">Displayed name of the geoprocessing function.</td><br></tr><br><br><tr valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000296000000.htm" target="_blank" rel="external">Execute</a></td><br><td class="t">Executes the geoprocessing function using the given array of parameter values.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000297000000.htm" target="_blank" rel="external">FullName</a></td><br><td class="t">The function name object of the geoprocessing function.</td><br></tr><br><br><tr valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000298000000.htm" target="_blank" rel="external">GetRenderer</a></td><br><td class="t">Returns the custom renderer to use for the specified parameter.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000299000000.htm" target="_blank" rel="external">HelpContext</a></td><br><td class="t">The context identifier of the topic within the help file for this function object.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029m000000.htm" target="_blank" rel="external">HelpFile</a></td><br><td class="t">Name of the (CHM) file containing help information for this function object.</td><br></tr><br><br><tr valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029n000000.htm" target="_blank" rel="external">IsLicensed</a></td><br><td class="t">Returns whether the geoprocessing function has all necessary licenses in order to execute.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029p000000.htm" target="_blank" rel="external">MetadataFile</a></td><br><td class="t">Name of the (XML) file containing the default metadata for this function object.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029q000000.htm" target="_blank" rel="external">Name</a></td><br><td class="t">Name of the geoprocessing function.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029r000000.htm" target="_blank" rel="external">ParameterInfo</a></td><br><td class="t">The list of parameters accepted by the geoprocessing function.</td><br></tr><br><br><tr id="m" valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000285000000.htm" target="_blank" rel="external">UpdateMessages</a></td><br><td class="t">Post validates the given set of values.</td><br></tr><br><br><tr id="m" valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000286000000.htm" target="_blank" rel="external">UpdateParameters</a></td><br><td class="t">Pre validates the given set of values.</td><br></tr><br><br><tr valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029s000000.htm" target="_blank" rel="external">Validate</a></td><br><td class="t">Validates the given array of parameter values.</td><br></tr><br><br></tbody><br></table>
+
+<p>Pretty cool stuff…Like I said, I never knew about this possibility.  Likely a more powerful option for custom geoprocessing tools on the desktop.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-25T07:09:47.000Z"><a href="/2012/01/24/arcobjects-runtime-manager/">Jan 24 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/24/arcobjects-runtime-manager/">ArcObjects Runtime manager</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I always forget where and how to do this whenever I want to use ArcObjects in a console app or something simple.  Nowadays you have to provide a ‘license’ manager to your use of ArcObjects.  I like how <a href="http://blogs.esri.com/Dev/blogs/arcgisdesktop/archive/2010/07/19/Bind-and-License-your-standalone-ArcGIS-Engine-or-Desktop-application.aspx" target="_blank" rel="external">here</a> [note the excellent banter in the comments section] they frame it as something you ‘can do’ as in a ‘new feature’!! OMFG! I’ve been asking for you to control my use of ArcObjects for sooooo long now… THANK YOU!!!.</p>
+<p>1. Throw a reference in to ESRI.ArcGIS.Version<br>2. Mix in this line:</p>
+<p><pre lang="csharp"><br> ESRI.ArcGIS.RuntimeManager.Bind(ESRI.ArcGIS.ProductCode.Desktop);<br></pre><br>you’re good to go….as long as you got a license ;)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-21T07:35:28.000Z"><a href="/2012/01/20/reading-from-a-resource-in-silverlight/">Jan 20 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/20/reading-from-a-resource-in-silverlight/">Reading from a resource in Silverlight</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This post is completely lifted from <a href="http://www.michaelsnow.com/2010/12/28/silverlight-reading-from-a-file-contained-in-your-xap/" target="_blank" rel="external">Michael Snow’s blog ‘Everything Silverlight’</a> - Go check it out. So here we go:<br>Add a reference to System.Windows.Resources<br>Add an image, a text file or what have you, to your project and mark it as a resource:</p>
+<pre lang="csharp">
+var uri = new Uri("[yourNamespace];component/[yourFile]", UriKind.Relative);
+var streamInfo = Application.GetResourceStream(uri); 
+</pre>
+
+<p>Here’s how to reference it:</p>
+<pre lang="csharp">
+if (null != streamInfo)
+{
+    var stream = streamInfo.Stream;
+    var sr = new StreamReader(stream);
+    string line = String.Empty;
+    while ((line = sr.ReadLine()) != null)
+    {
+    //doStuff
+    }
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-12T06:13:33.000Z"><a href="/2012/01/11/this-hole-is-deep/">Jan 11 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/11/this-hole-is-deep/">Overview of compiled vs interpreted, static vs dynamic, and late/early binding</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is one deep hole.<br>Having spent the past few weeks in coder’s purgatory as Silverlight’s future appears shaky and HTML5/JS/WebGL is hyperactively killing it, I’ve realized I really, <em>really</em> need to understand these waters in order to better navigate them.</p>
+<h3 id="Interpreted_vs-_Compiled">Interpreted vs. Compiled</h3>
+<p>When I sat down with a friend a few months back and mentioned to him that I was really into C# those days, he said, oh yeah, that runs on a virtual machine right?  Being a noob, I thought, like VirtualPC? Kindly, he explained, but it didn’t really fit with my understanding.</p>
+<p></p><p>Here’s the deal, in as much of my own words as possible:  I always sort of understood that dynamically-typed languages like R, Python and JavaScript are interpreted by a runtime; R.exe, Python.exe, the browser {Chrome : V8, IE : Chakra, Firefox : Spidermonkey} etc. but I was err in thinking that .Net and Java code is compiled.  Because it is not.  Well, not as in converted to machine code to be run directly by the CPU (an extremely powerful integrated circuit(IC) (a collection of resistors, transistors and capacitors merged into a cell on a circuit board).  </p>
+<h3 id="All_-Net_and_Java_code_(whether_it’s_C#_or_VB)_is_‘compiled’_to_a_bytecode-like_language_in_the_same_way_that_Python,_JavaScript,_R,_PHP,_your_favorite_dynamic_language_is-">All .Net and Java code (whether it’s C# or VB) is ‘compiled’ to a bytecode-like language <em>in the same way that Python, JavaScript, R, PHP, your favorite dynamic language</em> is.</h3>
+<p></p><p>With .Net it is called <a href="http://en.wikipedia.org/wiki/Common_Intermediate_Language" target="_blank" rel="external">Common Intermediate Language (CIL)</a> (formerly Microsoft Intermediate Language (MSIL)) and with Java, it’s called <a href="http://en.wikipedia.org/wiki/Java_bytecode#Support_for_dynamic_languages" target="_blank" rel="external">Java Bytecode</a>.  And again the bytecode is interpreted and JIT compiled – with .Net the Common Language Runtime (CLR) Virtual Machine executes the CIL or with Java the Java Virtual Machine(JVM) executes the Java bytecode.  Both can be Ahead-of-Time (AOT) compiled with either the Native Image Generator (NGEN) (.Net) or the GNU compiler for Java (both of which seem relatively unused).<br>Contrast this with the Keil Embedded IDE where the C++ (native code) is compiled and then sent to the Atmel IC.  It is not open to interpretation. It is compiled to machine code and sent to the chip to run independently.</p>
+<h3 id="Just_in_Time_Compilation_(Wikipedia)">Just in Time Compilation (Wikipedia)</h3>
+<blockquote>
+<p>Interpreted code is translated from a high-level language to a machine code continuously during every execution, whereas statically compiled code is translated into machine code before execution, and only requires this translation once.<br>JIT compilers represent a hybrid approach, with translation occurring continuously, as with interpreters, but with caching of translated code to minimize performance degradation. It also offers other advantages over statically compiled code at development time, such as handling of late-bound data types and the ability to enforce security guarantees.<br>So part of the story behind the dynamic language (mostly JS but Python also) craze is that the new breed of runtimes, utilizing JIT, perform <em>very</em> well.  As well as C#, Java and potentially native code (C++/Objective-C).  And the question is, why shouldn’t they? <em>since they are all high-level languages that are interpreted from bytecode</em>. Here’s <a href="http://origin.cuttherope.ie/dev/" target="_blank" rel="external">some context:</a><br>In the past, JavaScript had a reputation of being a slow language. Frankly, that reputation was initially valid. Older JavaScript engines were designed for simple “scripting” kinds of tasks (hence the name). Today, however, JavaScript engines have been highly optimized. With features like just-in-time compilation, JavaScript now can execute at near native speeds.</p>
+</blockquote>
+<h3 id="Early_Binding/Late_Binding">Early Binding/Late Binding</h3>
+<p>Late binding allows you to tell the ‘compiler’ that you’re not exactly sure what the type is going to be at run time and you’re willing to trade optimizations for ‘uncertainty’ or rather ‘flexibility’.<br>According to MSDN:</p>
+<blockquote>
+<p>You should use early-bound objects whenever possible, because they allow the compiler to make important optimizations that yield more efficient applications. Early-bound objects are significantly faster than late-bound objects and make your code easier to read and maintain by stating exactly what kind of objects are being used. Another advantage to early binding is that it enables useful features such as automatic code completion and Dynamic Help because the Visual Studio integrated development environment (IDE) can determine exactly what type of object you are working with as you edit the code. Early binding reduces the number and severity of run-time errors because it allows the compiler to report errors when a program is compiled.<br><del datetime="2012-01-11T21:02:26+00:00">Now I see it’s funny that you can use var in C# 3.0 - YOU SHOULD ALWAYS HAVE BEEN ABLE TO DO THIS - because it’s really no different than JavaScript when it comes down to it…it’s just late-binding.</del><br>No. wait, that’s not right – with var the type is inferred from the assignment so it is still statically typed as far as the CLR is concerned.<br>A comment on a <a href="‘http://stackoverflow.com/questions/484214/c-sharp-early-and-late-binding">stub on SO</a>&gt; Dynamic typing is not the same as late binding. The difference is subtle, but it’s important. Late binding still binds to a type, it just does it at runtime. Dynamic typing does not bind; instead, it resolves member information at runtime irrespective of type. – Michael Meadows Jan 27 ‘09 at 18:23<br>A search on “dynamic typing vs late binding” led me to this <a href="http://www.shubho.net/2011/02/dynamic-typing-late-binding-c-40.html" target="_blank" rel="external">horridly-edited-yet-informational blog post</a> which introduces the Dynamic type at C# 4.0. Aha – the ‘dynamic’ type in a statically compiled language. <a href="http://msdn.microsoft.com/en-us/magazine/ee336309.aspx‘" target="_blank" rel="external">This MS press release</a> seems like a decent plateau.<br>Soooo… why static?<br>Why? <a href="http://perl.plover.com/yak/typing/notes.html‘" target="_blank" rel="external">This is why</a>:<br>The idea we have is that the computer is going to keep track of the type of value stored at each part of its memory, whether it’s part of a string, or an integer, or a floating-point number, or whatever. Each operation such as multiplication will also have a type. The compiler or assembler can check to make sure that the types of an operator and its operands match, and raise a compile-time error if they don’t, and so hopefully detect some sorts of bugs early on before they have a chance to cause real trouble.<br>Real trouble huh? Like exploding capacitors trouble? Now this sounds like fun.<br>Why is everything early bound in C#/VB since it is JITted by the CLR?  Why do .Net languages pretend to be statically-typed? Why did I ever Dim anything if I’m JIT’ing?   <a href="http://www.youtube.com/watch?v=5hR5YNqE3K8" target="_blank" rel="external">To make the compiler’s life easier?</a><br>Under the <a href="http://msdn.microsoft.com/en-us/library/7ee5a7s1%28v=VS.80%29.aspx" target="_blank" rel="external">2005 MSDN Dim Statement stub</a> – this is the first remark:<br>You should declare every variable you use in your program, to tell the Visual Basic compiler the variable’s data type and other information such as what code can access it.<br>Then in the 2010 version, this is the first remark:<br>The Visual Basic compiler uses the Dim statement to determine the variable’s data type and other information, such as what code can access the variable.</p>
+</blockquote>
+<p>Intense. Enough for one post. Thanks for listening. Maybe you learnd something.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-24T14:53:14.000Z"><a href="/2011/12/24/jagged-arrays/">Dec 24 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/24/jagged-arrays/">Jagged arrays and smooth rainbows</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I had never heard the term ‘<a href="http://msdn.microsoft.com/en-us/library/2s05feca.aspx" target="_blank" rel="external">Jagged Array</a>‘ before and having done this many times it’s nice to have a label.</p>
+<p>For awhile now, I’ve thought it would be fun to create a ‘color tuner’ circuit wherein, with an RGB LED and a potentiometer, one could dial through the colors of the rainbow.</p>
+<p>Here is the crappy video elucidating the result:</p>
+<p><iframe width="420" height="315" src="http://www.youtube.com/embed/ZIaL5GcpvJc" frameborder="0" allowfullscreen></iframe><br>Note that you can’t see that I’m dialing the potentiometer in order to cause the hue change (with one hand no less).</p>
+<p>In brief the circuit is using a 5K linear potentiometer, a Netduino (not plus), a cheap radio shack RGB LED and 3 470k resistors.  Since the RGB is common anode, I am ‘sinking’ voltage in three of the Netduino’s PWM pins and supplying 5V to the anode.  This means that the SetPulse and SetDutyCycle methods of the PWM pins will be inverted but it seems to work well given my equipment on hand. The potentiometer is regulating analog input into the Netduino.  I originally used <a href="http://forums.netduino.com/index.php?/topic/638-basic-analog-input-circuit-and-program/" target="_blank" rel="external">this link</a> to set up the simple analog input but <a href="http://davidsandor.com/post/2011/08/02/Netduino-Day-1-Variable-resistor-%28analog-input%29-controlling-onboard-LED-flashing.aspx" target="_blank" rel="external">this method</a> is even simpler.  The analog input comes in a range of 0 to 1023.  I perform a linear conversion (converting one range of numbers to a different range) <a href="http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio" target="_blank" rel="external">[as explained on SO]</a></p>
+<pre lang="python">
+NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
+
+Or a little more readable:
+OldRange = (OldMax - OldMin)
+NewRange = (NewMax - NewMin)
+NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
+</pre>
+
+<p> which is then used for a lookup in the jagged array.  The three values in the inner arrays are then fed into the SetPulse method of the LED.  While I originally had 16 colors set up, I ramped it up to 52.  It’s surprising how noticeable the jump still is from color to color.  Maybe I need to create 1023 different colors.  Anyway, here’s the source code with 16 colors for brevity, note the syntax on the inline jagged array initialization took a few extra minutes to figure out:</p>
+<pre lang="csharp">
+using System.Text;
+using Microsoft.SPOT;
+using System.Threading;
+using SecretLabs.NETMF.Hardware;
+using SecretLabs.NETMF.Hardware.Netduino;
+using System.Collections;
+
+namespace NDP_ColorTuner
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            PWM red = new PWM(Pins.GPIO_PIN_D6);
+            PWM blue = new PWM(Pins.GPIO_PIN_D5);
+            PWM green = new PWM(Pins.GPIO_PIN_D9);
+
+            AnalogInput a5 = new AnalogInput(Pins.GPIO_PIN_A0);
+            uint[][] colors = new uint[16][]{
+            new uint[] { 0,100,100 },new uint[] { 20,80,100 }, 
+           new uint[] { 40, 60, 100 },new uint[] { 60, 40, 100 }, 
+           new uint[] { 80, 20, 100 },new uint[] { 100, 0, 100 },
+           new uint[] { 100, 20, 80 },new uint[] { 100, 40, 60 }, 
+           new uint[] { 100, 60, 40 },new uint[] { 100, 80, 20 }, 
+            new uint[] { 100, 100, 0 }, new uint[] { 80, 100, 20 },
+            new uint[] { 60, 100, 40 }, new uint[] { 40, 100, 60 },
+            new uint[] { 20, 100, 80 }, new uint[] { 0, 100, 100 }
+        };
+
+            while (true)
+            {
+                int n = ((a5.Read() * 15 ) / 1023);
+
+                red.SetDutyCycle(colors[n][0]);
+                green.SetDutyCycle(colors[n][1]);
+                blue.SetDutyCycle(colors[n][2]);
+            }
+        }
+    }
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-10-23T05:29:49.000Z"><a href="/2011/10/22/null-coalesce/">Oct 22 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/10/22/null-coalesce/">Null coalesce</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>What do two question marks together in C# mean?</p>
+<p>This is the ‘Null Coalescing operator’ -</p>
+<p>As answered at StackOverflow:</p>
+<pre lang="csharp">
+FormsAuth = formsAuth ?? new FormsAuthenticationWrapper();
+</pre>
+
+<p>expands to:</p>
+<pre lang="csharp">
+FormsAuth = formsAuth != null ? formsAuth : new FormsAuthenticationWrapper();
+</pre>
+which further expands to:
+<pre lang="csharp">
+if(formsAuth != null)
+    FormsAuth = formsAuth;
+else
+    FormsAuth = new FormsAuthenticationWrapper();
+</pre>
+In English, it means "If whatever is to the left is not null, use that, otherwise use what's to the right."
+
+In JavaScript the null coalesce is simply a logical OR:
+
+<pre lang="javascript">
+var whatIWant = someString || "Cookies!";
+</pre>
+
+<p>Similarly, in Python it’s simply ‘or’</p>
+<pre lang="python">
+other = s or "some default value"
+
+# however
+
+42    or "something"    # returns 42
+0     or "something"    # returns "something"
+None  or "something"    # returns "something"
+False or "something"    # returns "something"
+""    or "something"    # returns "something"
+</pre>
+
+<p>Note that these last 2 snippets were stolen outright from Stack Overflow.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/categories/CNET/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/categories/CNET/page/3/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

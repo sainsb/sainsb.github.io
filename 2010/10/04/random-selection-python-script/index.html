@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Random Selection Python Script | </title>
+  <meta name="author" content="Che Geovara">
+  
+  <meta name="description" content="A script I’ve used for creating random samples of features.
+
+Given an input layer, return an output *.lyr layer file containing a random
+selection of ">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Random Selection Python Script"/>
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-05T06:27:00.000Z"><a href="/2010/10/04/random-selection-python-script/">Oct 4 2010</a></time>
+      
+      
+  
+    <h1 class="title">Random Selection Python Script</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A script I’ve used for creating random samples of features.</p>
+<p><pre lang="python"><a></a></pre></p>
+<h1 id="Given_an_input_layer,_return_an_output_*-lyr_layer_file_containing_a_random">Given an input layer, return an output *.lyr layer file containing a random</h1>
+<h1 id="selection_of_features-">selection of features.</h1>
+<p>#</p>
+<h1 id="Original_author:_Leah_Saunders,_ESRI_Inc,_on_Arcscripts-com-_July_2007">Original author: Leah Saunders, ESRI Inc, on Arcscripts.com. July 2007</h1>
+<h1 id="Major_modification_by_Stephen_Lead,_21st_Feb_2008">Major modification by Stephen Lead, 21st Feb 2008</h1>
+<p>import os, sys, random, arcgisscripting<br>try:<br>    gp = arcgisscripting.create()<br>    gp.overwriteoutput = 1</p>
+<pre><code># Specify input featureclass, output *.lyr file and the percentage of
+# random points to return. <span class="operator"><span class="keyword">Set</span> these parameters <span class="keyword">in</span> ArcToolbox <span class="keyword">as</span> shown.
+inputFC = sys.argv[<span class="number">1</span>] # Feature Class <span class="keyword">or</span> Feature Layer
+outputLyr = sys.argv[<span class="number">2</span>] # Layer File
+inpct = sys.argv[<span class="number">3</span>] # Long
+
+# Ensure that the <span class="keyword">input</span> percentage <span class="keyword">is</span> between <span class="number">1</span> <span class="keyword">and</span> <span class="number">100</span>%
+inpct = <span class="aggregate">min</span>(<span class="keyword">int</span>(inpct),<span class="number">100</span>)
+inpct = <span class="aggregate">max</span>(<span class="keyword">int</span>(inpct),<span class="number">1</span>)
+
+# <span class="keyword">Work</span> out how many features <span class="keyword">to</span> <span class="keyword">select</span>
+inputDirname = os.path.dirname(inputFC)
+inputBasename = os.path.basename(inputFC)
+
+gp.workspace = inputDirname
+<span class="keyword">desc</span> = gp.<span class="keyword">describe</span>(inputFC)
+totpnts = gp.getcount(inputFC)
+numValues = <span class="keyword">int</span>(round(totpnts * <span class="keyword">float</span>(inpct) / <span class="number">100.0</span>))
+gp.addmessage(<span class="string">"Selecting "</span> + str(numValues) + <span class="string">" random features"</span>)
+
+# Generate a list <span class="keyword">of</span> <span class="keyword">all</span> features, <span class="keyword">and</span> <span class="keyword">select</span> randomly <span class="keyword">from</span> this
+inList = []
+randomList = []
+fldname = <span class="keyword">desc</span>.OIDFieldName
+<span class="keyword">rows</span> = gp.SearchCursor(inputFC)
+<span class="keyword">row</span> = <span class="keyword">rows</span>.<span class="keyword">next</span>()
+gp.addmessage (<span class="string">"Loading all IDs into a list"</span>)
+while <span class="keyword">row</span>:
+    id = <span class="keyword">row</span>.GetValue(fldname)
+    inList.append(id)
+    <span class="keyword">row</span> = <span class="keyword">rows</span>.<span class="keyword">next</span>()
+
+selpnts = <span class="number">0</span>
+gp.addmessage(<span class="string">"Creating the list of randomly selected features"</span>)
+while len(randomList) &amp;lt;</span> numValues:
+    selpnts += 1
+    selItem = random.choice(inList)
+    randomList.append(selItem)
+    inList.remove(selItem)
+
+# <span class="operator"><span class="keyword">Select</span> features whose OID <span class="keyword">value</span> occurs <span class="keyword">in</span> the random list, generate
+# a *.lyr file <span class="keyword">from</span> this selection. (<span class="keyword">Leading</span> <span class="keyword">and</span> <span class="keyword">trailing</span> [ <span class="keyword">and</span> ] marks
+# need <span class="keyword">to</span> be removed <span class="keyword">from</span> the list object)
+theLen = len(str(randomList))
+sqlexp = <span class="string">'"'</span> + fldname + <span class="string">'"'</span> + <span class="string">" in "</span> + <span class="string">"("</span> + str(randomList)[<span class="number">1</span>:theLen - <span class="number">1</span>] + <span class="string">")"</span>
+selectionLyr = inputBasename + <span class="string">" selection"</span>
+gp.MakeFeatureLayer_management(inputFC, selectionLyr, sqlexp)
+gp.SaveToLayerFile_management(selectionLyr, outputLyr)
+
+gp.addmessage(<span class="string">"\nOutput layer "</span> + outputLyr + <span class="string">" contains features randomly selected from "</span> + inputBasename + <span class="string">"\n"</span>)</span>
+</code></pre><p>except:<br>    gp.adderror(“Error running script. Try specifying the full path to the input layer”)</p>
+<h1 id="END_OF_FILE">END OF FILE</h1>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/RandomSelection.zip" target="_blank" rel="external">RandomSelection</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Snippets++/">Snippets++</a>
+  </div>
+
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

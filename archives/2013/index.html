@@ -1,0 +1,1174 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2013 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2013</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-11-21T00:15:33.000Z"><a href="/2013/11/20/automated-user-agent-string-parsing/">Nov 20 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/11/20/automated-user-agent-string-parsing/">Automated User Agent string parsing</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Interpreting User-Agent strings is…well…not all that fun so why not an API to parse them and simply return the browser name for you?</p>
+<p>This python snippet takes an array of arrays of [User-Agent String, Count] - ostensibly retrieved from a log file parser</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre></td><td class="code"><pre><span class="keyword">import</span> requests, operator
+
+uas=[
+[<span class="string">'Mozilla/5.0+(compatible;+MSIE+9.0;+Windows+NT+6.1;+WOW64;+Trident/5.0)'</span>,<span class="number">4987</span>],
+[<span class="string">'Mozilla/5.0+(Windows+NT+6.1;+WOW64;+rv:25.0)+Gecko/20100101+Firefox/25.0'</span>,<span class="number">3917</span>],
+[<span class="string">'Mozilla/5.0+(compatible;+MSIE+10.0;+Windows+NT+6.1;+WOW64;+Trident/6.0)'</span>,<span class="number">1953</span>],
+]
+
+browsers = {}
+url = <span class="string">'http://www.useragentstring.com/?uas='</span>
+<span class="keyword">for</span> ua <span class="keyword">in</span> uas:
+    r = requests.get(url, params= {<span class="string">"uas"</span>: ua[<span class="number">0</span>], <span class="string">"getJSON"</span> : <span class="string">"agent_name"</span>})
+    useragent= str(r.json()[<span class="string">'agent_name'</span>])
+    <span class="keyword">try</span>:
+        browsers[useragent]+=ua[<span class="number">1</span>]
+    <span class="keyword">except</span>:
+        browsers[useragent]=ua[<span class="number">1</span>]
+
+    <span class="keyword">print</span> useragent
+
+browsers = sorted(browsers.iteritems(), key=operator.itemgetter(<span class="number">1</span>))
+browsers.reverse()
+
+<span class="keyword">for</span> key, val <span class="keyword">in</span> browsers:
+    print(key+<span class="string">", "</span>+str(val))
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-11-13T23:11:57.000Z"><a href="/2013/11/13/uploading-big-multipart-form-data-with-python-requests/">Nov 13 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/11/13/uploading-big-multipart-form-data-with-python-requests/">Uploading big multipart form data with python requests</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A few projects have found me needing to script the upload of large files via multipart-forms.  There are a few subtleties here and I recommend either Chrome dev tools or Fiddler to analyze the upload and then proceed to craft the incantation.</p>
+<p>Like the recent posts, this utilizes the <a href="http://docs.python-requests.org/en/v0.10.7/user/quickstart/" target="_blank" rel="external">requests library</a> for Python.  Here is the <a href="http://docs.python-requests.org/en/v0.10.7/user/quickstart/#post-a-multipart-encoded-file" target="_blank" rel="external">pagelink to multipart encoded form submission with requests</a>. </p>
+<p>Usually these types of forms have a central file upload named parameter and then a few plaintext params alongside.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre>s = requests.session()
+file = <span class="string">'X:/myKillerZipFile.zip'</span>
+url = <span class="string">'https://www.killeruploadsite.org/GIS/'</span>
+files = {<span class="string">'File'</span>:(file, open(file, <span class="string">'rb'</span>))}
+payload = {<span class="string">'uploadType'</span>:<span class="string">'KillerUpload'</span>}
+r = s.post(url, params=payload, files=files)
+</pre></td></tr></table></figure>
+
+<p>Note the read specification on the open command inside the files dict.  If you’re uploading plain text you can get away with not specifying this, but if you’re uploading a binary file you’ll need to spec.<br>Also notice the separation of the payload and the files arguments in the actual call.<br>In Fiddler/Chrome dev tools, these params are … indistinguishable… but you have to break them out in the scripted request.</p>
+<p>[<img src="/images/b73d30d9b7d33408d18ab1916485dd1260e4cb4a.gif" alt="the kipster"></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-11-13T06:09:48.000Z"><a href="/2013/11/12/create-tilemill-layer-objects-from-project-mml-from-scratch/">Nov 12 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/11/12/create-tilemill-layer-objects-from-project-mml-from-scratch/">Create tilemill layer objects (for Project.mml) from scratch.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Weird title, I know.</p>
+<p>Basically I have a bunch of (~50) shapefiles that I want to throw into a tilemill project and tile.<br>The shapefiles all have a common naming convention and will all be part of the same class - e.g. symbolized the same.</p>
+<p>The following script reprojects, shapeindexes, and then gets their extent to construct a geometry JSON object that can be inserted in the project.mml file.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+</pre></td><td class="code"><pre><span class="keyword">import</span> os
+<span class="keyword">from</span> osgeo <span class="keyword">import</span> ogr
+<span class="keyword">from</span> osgeo <span class="keyword">import</span> osr
+
+<span class="comment">#iterate shapefiles</span>
+<span class="keyword">for</span> dirname, dirnames, filenames <span class="keyword">in</span> os.walk(<span class="string">'D:/input/directory/'</span>):
+
+  <span class="keyword">for</span> filename <span class="keyword">in</span> filenames:
+    <span class="keyword">if</span> filename.endswith((<span class="string">'shp'</span>)):
+      shpfile = os.path.join(dirname, filename)
+
+      <span class="comment">#reproject it</span>
+      cmd=<span class="string">'ogr2ogr -f "ESRI Shapefile" D:/output/directory/'</span>+filename.replace(<span class="string">'.shp'</span>, <span class="string">'_webmerc.shp'</span>)+ <span class="string">' '</span> + shpfile + <span class="string">' -s_srs EPSG:2913 -t_srs EPSG:3857'</span>
+
+      os.system(cmd)
+
+      <span class="comment"># index it</span>
+      cmd = <span class="string">'shapeindex '</span> + shpfile
+
+      os.system(cmd)
+
+      <span class="comment">#construct the tilemill project.mml shred</span>
+      inDriver = ogr.GetDriverByName(<span class="string">"ESRI Shapefile"</span>)
+      inDataSource = inDriver.Open(shpfile, <span class="number">0</span>)
+      inLayer = inDataSource.GetLayer()
+      extent = inLayer.GetExtent()
+      source = osr.SpatialReference()
+      source.ImportFromEPSG(<span class="number">3857</span>)
+
+      target = osr.SpatialReference()
+      target.ImportFromEPSG(<span class="number">4326</span>)
+
+      transform = osr.CoordinateTransformation(source, target)
+      pnt1 = ogr.CreateGeometryFromWkt(<span class="string">"POINT ("</span>+str(extent[<span class="number">0</span>])+<span class="string">" "</span>+ str(extent[<span class="number">2</span>])+<span class="string">")"</span>)
+      pnt2 = ogr.CreateGeometryFromWkt(<span class="string">"POINT ("</span>+str(extent[<span class="number">1</span>])+<span class="string">" "</span>+ str(extent[<span class="number">3</span>])+<span class="string">")"</span>)
+      pnt1.Transform(transform)
+      pnt2.Transform(transform)
+      p1 = pnt1.GetPoint()
+      p2 = pnt2.GetPoint()
+
+      print(<span class="string">'{'</span>)
+      print(<span class="string">'"geometry": "linestring",'</span>)
+      print(<span class="string">'"extent": ['</span>)
+      print(str(p1[<span class="number">0</span>])+<span class="string">', '</span>)
+      print(str(p1[<span class="number">1</span>])+<span class="string">', '</span>)
+      print(str(p2[<span class="number">0</span>])+<span class="string">' ,'</span>)
+      print(str(p2[<span class="number">1</span>]))
+      print(<span class="string">'  ],'</span>)
+      print(<span class="string">'  "id": "'</span>+filename[<span class="number">0</span>:<span class="number">5</span>] +<span class="string">'",'</span>)
+      print(<span class="string">'  "class": "contour",'</span>)
+      print(<span class="string">'  "Datasource": {'</span>)
+      print(<span class="string">'  "file": "C:/temp/contours/'</span>+filename+<span class="string">'"'</span>)
+      print(<span class="string">'  },'</span>)
+      print(<span class="string">'  "srs-name": "900913",'</span>)
+      print(<span class="string">'  "srs": "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +naprint(dgrids=@null +wktext +no_defs +over",'</span>)
+      print(<span class="string">'  "advanced": {},'</span>)
+      print(<span class="string">'  "name": "'</span>+filename[<span class="number">0</span>:<span class="number">5</span>]+<span class="string">'"'</span>)
+      print(<span class="string">'},'</span>)
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-11-13T00:10:28.000Z"><a href="/2013/11/12/simple-web-server-test-python/">Nov 12 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/11/12/simple-web-server-test-python/">Simple web server test</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Yah - I make use of <a href="http://www.python-requests.org/en/latest/" title="Requests" target="_blank" rel="external">requests</a> with this one - WHICH again is first-year material.<br>It just logs the response time of a given website at 10 second increments - output to the console and write it into a log file.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="code"><pre><span class="keyword">import</span> requests
+<span class="keyword">import</span> time
+
+<span class="function"><span class="keyword">def</span> <span class="title">TestService</span><span class="params">(url)</span>:</span>
+  <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">100</span>):
+    s = time.clock()
+    r = requests.get(url)
+    f = open(<span class="string">'X:/my/killer/directory/log.txt'</span>, <span class="string">'a'</span>)
+    secx=str(time.clock() - s)
+    f.write(str(i)+<span class="string">'. '</span> + secx +<span class="string">'\n'</span>)
+    f.close()
+    time.sleep(<span class="number">10</span>)
+    <span class="keyword">print</span> secx
+
+TestService(<span class="string">'http://www.firstgradepython.com/'</span>)
+<span class="keyword">print</span> (<span class="string">'all done'</span>)
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-11-12T23:39:33.000Z"><a href="/2013/11/12/find-a-shred-of-text-in-a-dir-python/">Nov 12 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/11/12/find-a-shred-of-text-in-a-dir-python/">Find a shred of text in a dir.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I realize this is roughly first-year material.<br>But,…I can’t keep this stuff in my head…so I keep it here…for you, my reader, as well.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="code"><pre><span class="keyword">import</span> os
+
+search_string = raw_input(<span class="string">'Enter your search String:'</span>)
+
+<span class="keyword">for</span> dirname, dirnames, filenames <span class="keyword">in</span> os.walk(<span class="string">'X:/my/killer/directory/'</span>):
+    <span class="comment"># print path to all subdirectories first.</span>
+    <span class="comment">#for subdirname in dirnames:</span>
+    <span class="comment">#print os.path.join(dirname, subdirname)</span>
+
+    <span class="comment"># print path to all filenames.</span>
+    <span class="keyword">for</span> filename <span class="keyword">in</span> filenames:
+        <span class="comment">#print os.path.join(dirname, filename)</span>
+
+        <span class="keyword">with</span> open(os.path.join(dirname, filename), <span class="string">'r'</span>) <span class="keyword">as</span> f:
+            <span class="keyword">for</span> line <span class="keyword">in</span> f:
+                <span class="keyword">if</span> search_string <span class="keyword">in</span> line:
+                    <span class="keyword">print</span> os.path.join(dirname,filename)
+<span class="keyword">print</span> (<span class="string">'Done'</span>)
+</pre></td></tr></table></figure>
+
+<p>With joyous love and conscious benefaction to all.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2013/11/ace1.gif" target="_blank" rel="external"><img src="/images/63e60085274409d99480dd1ac3cef6970648d671.gif" alt="ace"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-08-09T00:29:05.000Z"><a href="/2013/08/08/creating-an-auto-increment-primary-key-in-oracle/">Aug 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/08/08/creating-an-auto-increment-primary-key-in-oracle/">Creating an auto-increment primary key in Oracle</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Coming from SQL Server this seems odd…but it’s not too hard.</p>
+<p>Step 1. Create Table (or skip to Step 2 if you’ve already accomplished this momentous task.)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> departments (
+  ID           <span class="keyword">NUMBER</span>(<span class="number">10</span>)    <span class="keyword">NOT</span> <span class="keyword">NULL</span>,
+  DESCRIPTION  VARCHAR2(<span class="number">50</span>)  <span class="keyword">NOT</span> <span class="keyword">NULL</span>);</span>
+
+<span class="operator"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> departments <span class="keyword">ADD</span> (
+  <span class="keyword">CONSTRAINT</span> dept_pk <span class="keyword">PRIMARY</span> <span class="keyword">KEY</span> (ID));</span>
+</pre></td></tr></table></figure>
+
+<p>Step 2a. Create a sequence</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> SEQUENCE dept_seq;</span>
+</pre></td></tr></table></figure>
+
+<p>OR</p>
+<p>Step 2b. If you’re retroactively creating a sequence you can include some special sauce to bring it up to speed.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> SEQUENCE dept_seq
+  MINVALUE <span class="number">1</span>
+  <span class="keyword">START</span> <span class="keyword">WITH</span> <span class="number">8008</span>
+  INCREMENT <span class="keyword">BY</span> <span class="number">1</span>;</span>
+</pre></td></tr></table></figure>
+
+<p>And there are 2 ways to utilize this sequence:</p>
+<p>1. Reference it in your inserts:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> departments
+(id, description)
+<span class="keyword">VALUES</span>
+(dept_seq.nextval, <span class="string">'Fraggle Rock'</span>);</span>
+</pre></td></tr></table></figure>
+
+<p>Or, if you like, you can create a trigger so that you don’t have to reference the PK in the insert query.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">OR</span> <span class="keyword">REPLACE</span> <span class="keyword">TRIGGER</span> dept_bir
+<span class="keyword">BEFORE</span> <span class="keyword">INSERT</span> <span class="keyword">ON</span> departments 
+<span class="keyword">FOR</span> <span class="keyword">EACH</span> <span class="keyword">ROW</span>
+
+<span class="keyword">BEGIN</span>
+  <span class="keyword">SELECT</span> dept_seq.NEXTVAL
+  <span class="keyword">INTO</span>   :new.id
+  <span class="keyword">FROM</span>   dual;</span>
+<span class="operator"><span class="keyword">END</span>;</span>
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-06-01T00:51:37.000Z"><a href="/2013/05/31/gdal-batch-reprojection/">May 31 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/31/gdal-batch-reprojection/">GDAL batch reprojection</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Here’s some quick Python for batch reprojection using GDALwarp:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="code"><pre><span class="keyword">import</span> os
+path=<span class="string">r"D:/imagery/2008/source/"</span>
+<span class="keyword">for</span> file <span class="keyword">in</span> os.listdir(path):
+    <span class="keyword">if</span> file.endswith(<span class="string">".tif"</span>):
+        <span class="keyword">print</span> path+<span class="string">"/"</span>+file
+        os.system(<span class="string">'"gdalwarp.exe"'</span>/
+            +<span class="string">' -dstnodata -multi -s_srs EPSG:2913 '</span>/
+            +<span class="string">'-t_srs EPSG:3857 -r cubic '</span>+path+<span class="string">"/"</span>+file/
+            +<span class="string">' D:/imagery/2008/3857/'</span>+file+<span class="string">' -wo NUM_THREADS=8'</span>)
+</pre></td></tr></table></figure>
+
+<p>Here’s the usage of gdalwarp:<br><a href="http://www.gdal.org/gdalwarp.html" target="_blank" rel="external">http://www.gdal.org/gdalwarp.html</a></p>
+<p>Note that this could also be accomplished using the GDAL Python bindings, but this is how I quickly chose to make it happen.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-05-23T02:06:39.000Z"><a href="/2013/05/22/getting-a-reprojected-features-envelope-using-gdal-in-python/">May 22 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/22/getting-a-reprojected-features-envelope-using-gdal-in-python/">Getting a reprojected feature&#39;s envelope using GDAL</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>The title is almost more complicated than the script.<br>This is just toooo easy.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></td><td class="code"><pre><span class="keyword">from</span> osgeo <span class="keyword">import</span> ogr, osr
+
+driver = ogr.GetDriverByName(<span class="string">'ESRI Shapefile'</span>)
+<span class="comment"># Open a shapefile</span>
+shapefileName = <span class="string">r"C:\Scratch\shapes\ncelem\ncelem.shp"</span>
+dataset = driver.Open(shapefileName, <span class="number">0</span>)
+
+inSpatialRef = osr.SpatialReference()
+inSpatialRef.ImportFromEPSG(<span class="number">900913</span>)
+
+outSpatialRef = osr.SpatialReference()
+outSpatialRef.ImportFromEPSG(<span class="number">4326</span>)
+
+coordTransform = osr.CoordinateTransformation(inSpatialRef, outSpatialRef)
+
+layer = dataset.GetLayer()
+<span class="keyword">for</span> index <span class="keyword">in</span> xrange(layer.GetFeatureCount()):
+    feature = layer.GetFeature(index)
+    geometry = feature.GetGeometryRef()
+    geometry.Transform(coordTransform)
+
+    <span class="comment">#geometry for polygon as WKT, inner rings, outer rings etc. </span>
+    <span class="keyword">print</span> geometry.GetEnvelope()
+</pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre>(-122.63655518583239, -122.59280510161125, 45.43793395315916, 45.46151415026308)
+(-122.60010320078501, -122.56573779381921, 45.39200403590585, 45.42230551408725)
+(-122.63357850542502, -122.5903026968823, 45.39562026284319, 45.42365050387651)
+(-122.5749279605997, -122.44982752661552, 45.36644096145888, 45.42722915904826)
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-05-15T00:48:59.000Z"><a href="/2013/05/14/jquery-live-vs-on/">May 14 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/14/jquery-live-vs-on/">jQuery .live() vs. .on()</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I’m trying to bind an event handler to dynamically loaded elements using jQuery.</p>
+<p>It doesn’t work to assign the event handler on page load as so:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>$(document).ready(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+  $(<span class="string">'.dynoData'</span>).click(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    alert($(<span class="keyword">this</span>).attr(<span class="string">'tlid'</span>));
+  });
+});
+</pre></td></tr></table></figure>
+
+<p>It also only works intermittently to reassign the event handler when the data is dynamically loaded:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre>$.ajax({
+  success: <span class="function"><span class="keyword">function</span><span class="params">(results)</span>{</span>
+  $(<span class="string">'.dynoData'</span>).click(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+alert($(<span class="keyword">this</span>).attr(<span class="string">'tlid'</span>));
+});
+  }
+});
+</pre></td></tr></table></figure>
+
+<p>It also doesn’t work to assign the .on() event handler on page load:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>$(document).ready(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+  $(<span class="string">'.dynoData'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    alert($(<span class="keyword">this</span>).attr(<span class="string">'tlid'</span>));
+  });
+});
+</pre></td></tr></table></figure>
+
+<p>What about the <a href="http://api.jquery.com/live/" target="_blank" rel="external">jQuery live()</a> function?</p>
+<p><strong>Description: </strong>Attach an event handler for all elements which match the current selector, now and in the future.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre>1
+2
+3
+</pre></td><td class="code"><pre>$(<span class="string">'.dynoData'</span>).live(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+alert($(<span class="keyword">this</span>).attr(<span class="string">'tlid'</span>));
+});
+</pre></td></tr></table></figure>
+
+<p>That might come in handy. Oh but, what’s that you say it’s deprecated? nice.</p>
+<p>So it turns out the correct way to do this is to use .on() but assign it to the parent container of the dynamic data.</p>
+<p>From <a href="http://stackoverflow.com/questions/8752321/jquery-live-vs-on-method-for-adding-a-click-event-after-loading-dynamic-ht" target="_blank" rel="external">this SO post</a>:</p>
+<blockquote>
+<p>It’s done this way because you can attach the event to the #parent object even when the #child object does not exist yet, but when it later exists and gets clicked on, the click event will bubble up to the #parent object, it will see that it originated on #child and there is an event handler for a click on #child and fire your event.</p>
+</blockquote>
+<p>So this is the right way and it works!</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre>$(document).ready(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+    $(<span class="string">'#datagrid'</span>).on(<span class="string">'click'</span>,<span class="string">'.dynoData'</span>, <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+        alert($(<span class="keyword">this</span>).attr(<span class="string">'tlid'</span>));
+    });
+});
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-05-15T00:04:30.000Z"><a href="/2013/05/14/oracle-full-text-index-and-optimizer-suggestion/">May 14 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/05/14/oracle-full-text-index-and-optimizer-suggestion/">Oracle Full Text Index and Optimizer Suggestion</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>— Create a full text index::</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> INDEX t2FTX <span class="keyword">ON</span> t2(addr) INDEXTYPE <span class="keyword">IS</span> CTXSYS.CONTEXT;</span>
+</pre></td></tr></table></figure>
+
+<p>— Optimizer suggestion</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">select</span> * /*+ INDEX(t2, t2FTX) */ <span class="keyword">from</span> t2 <span class="keyword">where</span> upper(addr) <span class="keyword">like</span> <span class="string">'99%'</span> <span class="keyword">and</span> rownum &lt; <span class="number">8</span></span>
+</pre></td></tr></table></figure>
+
+<p>—Keep in mind that Upper casing a target match field can be exponentially expensive, the more the table is scanned.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+    <a href="/archives/2013/page/2/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

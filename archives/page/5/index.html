@@ -1,0 +1,1058 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 5 | Archives | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">Archives</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-09-05T01:28:26.000Z"><a href="/2012/09/04/some-functions-for-dealing-with-maf-streets-addresses-etc/">Sep 4 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/09/04/some-functions-for-dealing-with-maf-streets-addresses-etc/">Some functions for dealing with MAF streets addresses etc.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Used this to convert all caps fulladdresses to proper</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="code"><pre>def fu(<span class="operator">a</span>):
+ import re
+ <span class="operator">a</span> = <span class="operator">a</span>.title()
+ <span class="operator">a</span> = <span class="operator">a</span>.<span class="built_in">replace</span>(<span class="string">' Nw '</span>, <span class="string">' NW '</span>)
+ <span class="operator">a</span> = <span class="operator">a</span>.<span class="built_in">replace</span>(<span class="string">' Sw '</span>, <span class="string">' SW '</span>)
+ <span class="operator">a</span> = <span class="operator">a</span>.<span class="built_in">replace</span>(<span class="string">' Ne '</span>, <span class="string">' NE '</span>)
+ <span class="operator">a</span> = <span class="operator">a</span>.<span class="built_in">replace</span>(<span class="string">' Se '</span>, <span class="string">' SE '</span>)
+ p=re.compile(<span class="string">"(.+\s\d?\d?\d)Th(\s.+)"</span>)
+ m=p.match(<span class="operator">a</span>)
+ <span class="keyword">if</span> m != None:
+	<span class="operator">a</span> = m.group(<span class="number">1</span>)+<span class="string">"th"</span>+m.group(<span class="number">2</span>)
+
+ p=re.compile(<span class="string">"(.+\s\d?\d?\d)Rd(\s.+)"</span>)
+ m=p.match(<span class="operator">a</span>)
+ <span class="keyword">if</span> m != None:
+	<span class="operator">a</span> = m.group(<span class="number">1</span>)+<span class="string">"rd"</span>+m.group(<span class="number">2</span>)
+
+ p=re.compile(<span class="string">"(.+\s\d?\d?\d)Nd(\s.+)"</span>)
+ m=p.match(<span class="operator">a</span>)
+ <span class="keyword">if</span> m != None:
+	<span class="operator">a</span> = m.group(<span class="number">1</span>)+<span class="string">"nd"</span>+m.group(<span class="number">2</span>)
+
+ p=re.compile(<span class="string">"(.+\s\d?\d?\d)St(\s.+)"</span>)
+ m=p.match(<span class="operator">a</span>)
+ <span class="keyword">if</span> m != None:
+	<span class="operator">a</span> = m.group(<span class="number">1</span>)+<span class="string">"st"</span>+m.group(<span class="number">2</span>)
+ <span class="constant">return</span> <span class="operator">a</span>
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-08-18T01:24:50.000Z"><a href="/2012/08/17/tms-vs-google-tilemill-vs-esri/">Aug 17 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/08/17/tms-vs-google-tilemill-vs-esri/">TMS vs Google Tile Format, Tilemill vs. ESRI Anti-aliasing</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <blockquote>
+<p>the nice thing about standards is that there’s so many to choose from.</p>
+</blockquote>
+<p>So I’ve started messing around with the buggy but powerful Tilemill.  </p>
+<p>ESRI (non-anti-aliased):<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/08/ESRI.png" target="_blank" rel="external"><img src="/images/13d08da4cd91a127d57a4a9aeff2d5072ad0358a.png" alt="ESRI Vector Tile" title="ESRI Vector Tile"></a><br>Or Tilemill:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/08/tilemill.png" target="_blank" rel="external"><img src="/images/074fb0e98e18b0a0185707fca006c598f910a02b.png" alt="Tilemill Vector Tile" title="Tilemill Vector Tile"></a></p>
+<p>Zoomed in:<br>ESRI (non-anti-aliased):<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/08/ESRIzoom.png" target="_blank" rel="external"><img src="/images/8c429b39de79238430871e2decb6d331148e84dc.png" alt="ESRI Zoomed in" title="ESRI Zoomed in"></a></p>
+<p>Tilemill:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/08/tileZoom.png" target="_blank" rel="external"><img src="/images/03e58ae66eed26dafd632e4e25f3d28f755dafa7.png" alt="Tilemill zoomed in" title="Tilemill zoomed in"></a></p>
+<p>I didn’t use ESRI’s anti-aliasing. Why not? because it actually seemed worse.</p>
+<p>And apparently while I wasn’t looking somebody came up with this thing called the <a href="http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification" target="_blank" rel="external">Tile Map Specification</a>.  And all’s you gotta do to get from one to the other is this:</p>
+<p><figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre>y = (<span class="number">2</span>^z - <span class="number">1</span>) - y
+hex(y)[<span class="number">2</span>:] <span class="comment">#pad to 8 chars and you got your coldir forESRI</span>
+</pre></td></tr></table></figure><br>Done.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-08-04T06:17:55.000Z"><a href="/2012/08/03/finding-duplicate-features-in-the-select-by-attributes-dialog-in-arcmap/">Aug 3 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/08/03/finding-duplicate-features-in-the-select-by-attributes-dialog-in-arcmap/">Finding duplicate features using the &#39;Select By Attributes&#39; dialog in ArcMap</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Never knew you could do this:</p>
+<p><a href="http://support.esri.com/en/knowledgebase/techarticles/detail/26332" target="_blank" rel="external">http://support.esri.com/en/knowledgebase/techarticles/detail/26332</a><br>if your datasource is sde or a personal geodatabase (jet engine) you can whisper this incantation directly in ArcMap:<br>[FIELD_NAME] In (SELECT [FIELD_NAME] FROM [TABLE_NAME] GROUP BY [FIELD_NAME] HAVING Count(*)&gt;1 )</p>
+<p>Now for some morning prayer with Skott and Behr:</p>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/H0vCqfsZLag" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-19T06:00:36.000Z"><a href="/2012/07/18/decrypting-arcgis-server-tokens/">Jul 18 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/18/decrypting-arcgis-server-tokens/">Decrypting ArcGIS Server Tokens</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>First, some context:</p>
+<ul>
+<li>We’re developing some python-based web services - no maps, just data to accompany our AGS map services.</li>
+<li>We want to use the same security context as ArcGIS Server.</li>
+<li>We use token-based authentication, for better or worse.</li>
+</ul>
+<p>Based on <a href="http://forums.arcgis.com/threads/42857-Validate-ArcGIS-Server-Token-From-External-Web-Service" target="_blank" rel="external">this forum post</a>, if I want to validate a token outside of ArcGIS Server, I have to <em>“use the token and ask ArcGIS Server something trivial”</em>.  ‘Bullshit’ I tell myself and those in surrounding cubicles - there must be a more direct method.</p>
+<p>So, I start reading up on tokens in the <a href="http://webhelp.esri.com/arcgisserver/9.3/java/index.htm#token_service.htm" target="_blank" rel="external">9.3 docs</a>: </p>
+<blockquote>
+<p>“The shared key for the Token Service is used to encrypt the token. … The server then uses the shared key to decrypt the token. … The shared key ensures that the server has created the token.</p>
+<p>Since the shared key is critical to ensuring the identity and authorization of the client, the key must be set to a unique value of proper length. To set the shared key, go to Security-Settings in Manager, and under the Security for GIS Services tab, click the Configure button (when you have chosen ArcGIS Token based Authentication). In the Settings dialog that appears, set the Shared key value. <strong>The key should be set to sixteen (16) characters (any characters beyond 16 are not used).</strong> It is recommended to use a set of random characters for the key. Any characters may be used, including non-alphanumeric characters. …</p>
+<p><strong>The token is encrypted with the key using the encryption method known as Advanced Encryption Standard (AES), also known as Rijndael.</strong> The 16 characters in the key represent the 128 bits used for encryption.”</p>
+</blockquote>
+<p>Note the part about the key needing to be 16 characters long.<br>I didn’t.<br>And it cost me several hours of my life.<br>Ours was 10 characters.</p>
+<p>So - I got my key and I got my Rijndael method - whatever the hell that is…let me just google “python Rijndael’ and I should have this thing nailed in a few minutes.</p>
+<p>After about an hour of fumbling about getting pyCrypto working on my box, (not straightforward)(hint: use pip)(and don’t try importing ‘pycrypto’ like i did - the module is ‘crypto’) and failing at some basic statements, I ran across this <a href="http://forums.arcgis.com/threads/16499-Looking-inside-AGS-Security-Tokens" target="_blank" rel="external">extremely useful ESRI forum post</a>.</p>
+<p>So, here’s how you’d do it in .Net:</p>
+<pre lang="csharp">
+using System;
+using ESRI.ArcGIS.TokenService;
+
+namespace AGSTokenDecryptor
+{
+   class Program
+  {
+    static void Main(string[] args)
+    {
+        if (args.Length != 2)
+        {
+            Console.WriteLine("Usage: AGSTokenDecryptor.exe [token] [secret key]");
+            return;
+        }
+
+        var token = args[0];
+        var key = args[1];
+        token = token.Replace("-", "+");
+        token = token.Replace("_", "/");
+
+        Console.WriteLine("Decrypting '" + token + "'");
+        var result = AesEncryptor.Decrypt(token, key);
+
+        Console.WriteLine("Decrypted: " + result);
+    }
+  }
+}
+</pre>
+(Grab the ESRI.ArcGIS.TokenService.dll here: `C:\Windows\assembly\GAC_32\ESRI.ArcGIS.TokenService`
+And yes, the OP was astute enough to realize that the hyphens and underscores are to be replaced as coded.
+
+Converting this to Python should be pretty easy RIGHT??????>>>????
+
+Not so much - I needed to make a trip to .Net reflector-land and decompile the above dll to better understand what was going on.
+here's the actual AesEncryptor.Decrypt() method:
+<pre lang="csharp">
+public static string Decrypt(string text, string password)
+{
+    RijndaelManaged managed = new RijndaelManaged {
+        Mode = CipherMode.CBC,
+        Padding = PaddingMode.PKCS7,
+        KeySize = 0x80,
+        BlockSize = 0x80
+    };
+    byte[] inputBuffer = Convert.FromBase64String(text);
+    byte[] bytes = Encoding.UTF8.GetBytes(password);
+    int length = bytes.Length;
+    byte[] destinationArray = new byte[0x10];
+    if (length > destinationArray.Length)
+    {
+        length = destinationArray.Length;
+    }
+    Array.Copy(bytes, destinationArray, length);
+    managed.Key = destinationArray;
+    managed.IV = m_IV;
+    try
+    {
+        byte[] buffer4 = managed.CreateDecryptor().TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
+        return Encoding.UTF8.GetString(buffer4);
+    }
+    catch
+    {
+    }
+    return "";
+}
+</pre>
+
+<p>And oh yeah, you’ll need the secret ESRI AesEncryptor m_IV variable or “Initialization Vector” as well.<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/capture2.png" target="_blank" rel="external"><img src="/images/476350e38dbeb687a4a7dcf71c826f1946f04562.png" alt="" title="capture2"></a></p>
+<iframe width="560" height="315" src="http://www.youtube.com/embed/JSZTPuJ14Ro" frameborder="0" allowfullscreen></iframe>
+
+<p>So - armed with the decompiled method and the IV we should now have what we need.</p>
+<pre lang="python">
+from Crypto.Cipher import AES
+from base64 import *
+
+iv =  '\x01'+ '\x02'+ '\x03'+ '\x04'+ '\x05'+ '\x06'+ '\x07'+ '\x08'+
+       '\x09'+ '\x0A'+ '\x0B'+ '\x0C'+ '\x0D'+ '\x0E'+ '\x0F' + '\x10'
+token = 'jUryRT9UkP8tK+dQKlJZUYWEfY3x2i2eZHYVfnIBxCVMlNfYZ/QcBsAqKPnMlsPM'
+token = b64decode(token, '-_')
+mode = AES.MODE_CBC
+#Make sure your key is 16 chars. if it's shorter pad it with 0s
+# longer then trim it at 16.
+key = <yourkey> # padding if needed +('\x00'*6)
+cipher = AES.new(key, mode, iv)
+print(cipher.decrypt(token))
+</yourkey></pre>
+
+<p>And here’s your guerilla for the day:</p>
+<pre lang="python">
+>>> cipher = AES.new(key, mode, iv)
+>>> print(cipher.decrypt(token))
+darkhelmet:1342637544150: :ref.testing
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-17T22:46:46.000Z"><a href="/2012/07/17/custom-png-decoder-for-silverlight/">Jul 17 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/17/custom-png-decoder-for-silverlight/">Custom PNG decoder for Silverlight</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I recently had a need to spawn a background thread, read an image in, run through the RGB values and store that data in a 2D array in memory.  I’m making use of the PNG format for some webby raster stuff.  It works well as a handshake format between ArcGIS and the Web.</p>
+<p>Turns out as soon as you try to do this:<pre lang="csharp"><br>new Thread(unused =&gt; { var t = new BitmapImage(); }).Start();<br></pre><br>You get an unauthorized access exception.  Apparently the Gods felt it would be <a href="http://stackoverflow.com/questions/1924408/invalid-cross-thread-access-issue" target="_blank" rel="external">unwise/unnecessary to allow any image handling in the background</a>. Strange and …kinda weak.  So, what I needed was a custom PNG decoder that didn’t require the instantiation of a BitmapImage.  I came across this Google Code stub - <a href="http://code.google.com/p/pngcs/" target="_blank" rel="external">PngCS</a> - ported from Java.  I had to massage the code a little to port it to Silverlight:  Changed the “ISO-8859-1” reference to Utf-8 in the pngHelperInternal.cs file, changed the ICSharpCode.SharpZipLib reference to a silverlight friendly (ICSharpCode.SharpZipLib.Silverlight) version of the file and had to alter an override of Encoder.GetString(bytes[]) that allows you to just pass a byte array in rather than the standard (and Silverlight-supported) 3-argument (byte[], start, length) argument set.</p>
+<p>After that, I applied a generous helping of <a href="http://www.codeproject.com/Articles/32639/Converting-NET-Assemblies-to-Silverlight-Assemblie" target="_blank" rel="external">SLasm</a>, and I was up and running with my Silverlight-enabled, custom PNG decoder.</p>
+<p>Here’s an example of how I use it: (Note that you could run this on a background thread)</p>
+<pre lang="csharp">
+using System;
+using System.Net;
+using System.Windows.Media.Imaging;
+using System.Windows.Resources;
+using System.Threading;
+using Hjg.Pngcs;
+
+namespace TestSilverlightPngDecoder
+{
+    public partial class MainPage
+    {
+        public MainPage()
+        {
+            InitializeComponent();
+
+            //download a png from the web site
+            var location = (System.Windows.Browser.HtmlPage.Window.GetProperty("location") 
+                as System.Windows.Browser.ScriptObject);
+            var r = location.GetProperty("href");
+            r = r.ToString().Substring(0, r.ToString().LastIndexOf('/'));
+            var wc = new WebClient();
+            wc.OpenReadCompleted += wc_OpenReadCompleted;
+            wc.OpenReadAsync(new Uri(r+ "/test.png", UriKind.Absolute));
+        }
+
+        void wc_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
+        {
+            var info = new StreamResourceInfo(e.Result, "");
+            var pngr = new PngReader(info.Stream);
+            //describes the png
+            Console.WriteLine(pngr.ToString());
+            var channels = pngr.ImgInfo.Channels;
+            if (channels < 3)
+                throw new Exception("This method is for RGB/RGBA images");
+            //Create an array
+            var foo = new int[pngr.ImgInfo.Rows * pngr.ImgInfo.Cols];
+            var counter = 0;
+            for (var row = 0; row < pngr.ImgInfo.Rows; row++)
+            {
+                var l1 = pngr.ReadRow(row);
+                for (var j = 0; j < pngr.ImgInfo.Cols; j++)
+                {
+                    foo[counter] = l1.Scanline[j * channels];
+                    counter++;
+                }
+            }
+            Console.WriteLine(foo.Length);
+        }
+    }
+}
+</pre>
+
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/slPngcs.7z" target="_blank" rel="external">Silverlight-Enabled PNG decoder</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-13T00:08:15.000Z"><a href="/2012/07/12/on-watches-and-filegeodatabase-null-values/">Jul 12 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/12/on-watches-and-filegeodatabase-null-values/">On watches and FileGeodatabase null values</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Ran into a glitch today. (What days do I not run into glitches?)</p>
+<p>I was trying to evaluate a field value in a feature class in a file geodatabase.  Where checking for null had worked fine in the context of a shapefile, it was not working in the feature class.</p>
+<pre lang="csharp">
+if(pftr2.get_Value(4)!= null)
+{
+var foo = (int)pftr2.get_Value(4); // <== kaboom="" -="" invalid="" cast="" exception="" }="" <="" pre="">
+
+<p>I spent a lot of time rewriting statements trying to determine what this value was if it wasn’t null.  Casting to a nullable type, Long, double, string etc.  And then remembered the watch window.</p>
+<p>As it turns out, a null value in a file geodatabase evaluates to a <a href="http://msdn.microsoft.com/en-us/library/system.dbnull.value.aspx" target="_blank" rel="external">dbNull</a>…</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/bewg.png" target="_blank" rel="external"><img src="/images/12f939a38b6137c94b60ad02f6c122825f32da67.png" alt="" title="bewg"></a></p>
+<p>Lessons?</p>
+<ul>
+<li><p>For debugging in Visual Studio and ArcMap - use the Attach to process function in Visual Studio (Note that you don’t hit F5 or explicitly start debugging - just attach).<br></p></li></ul></==></pre><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/attach.png" target="_blank" rel="external"><img src="/images/fb19fa0b483cce38a58cda4a14335d1885d9dbd8.png" alt="" title="attach"></a><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/07/attach3.png" target="_blank" rel="external"><img src="/images/00c1b05886224ee90ed37a2de07fa4b318ed4798.png" alt="" title="attach3"></a><p></p>
+
+<li><p>Watch for dbNull values in file geodatabases</p>
+</li>
+<li>The watch window is your friend, especially considering the expense of firing up ArcMap to debug.</li>
+
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-12T13:48:27.000Z"><a href="/2012/07/12/nightsky-model/">Jul 12 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/12/nightsky-model/">Nightsky model</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>For a recent project we set out to identify the darkest place in the contiguous United States.</p>
+<p>For this purpose, we used the following datasets:</p>
+<p>[gallery exclude=”1688”]<br>Line and point density functions were used to grid the input data as well as euclidean distance and simple binary classification (e.g. roadless area or not).  All input data were reclassified into 5 classes and composited to produce a final nightsky ‘index’ map.</p>
+<p>After constructing the composite, we created a 150x50 lattice and performed a zonal analysis. We then ranked polygons on their mean cell values to arrive at the following finalists:</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-06T02:06:36.000Z"><a href="/2012/07/05/a-snippet-and-a-thorn/">Jul 5 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/05/a-snippet-and-a-thorn/">A snippet and a thorn</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>So I’m trying to run a very simple script in arcpy that adds 4 bounding box (Xmin, Ymin, etc) fields and calculates them using the python !shape! object.<br>This, of course, works fine via the attribute table in ArcMap but fails in scriptland here:</p>
+<pre lang="python">
+arcpy.management.CalculateField(fc, "XMIN1", "!shape!.extent.xmin", "PYTHON")
+</pre>
+
+<p>This forum post informed me that I need to change the PYTHON part to PYTHON_9.3 to make this work.</p>
+<pre lang="python">
+import arcpy
+
+fc = "c:/users/sainsbury/desktop/osmmonitor/OSMNet_10_by10W.shp"
+arcpy.management.AddField(fc, "XMIN1", "DOUBLE")
+arcpy.management.AddField(fc, "YMIN1", "DOUBLE")
+arcpy.management.AddField(fc, "XMAX1", "DOUBLE")
+arcpy.management.AddField(fc, "YMAX1", "DOUBLE")
+
+arcpy.management.CalculateField(fc, "XMIN1", "!shape!.extent.xmin", "PYTHON_9.3")
+arcpy.management.CalculateField(fc, "YMIN1", "!shape!.extent.ymin", "PYTHON_9.3")
+arcpy.management.CalculateField(fc, "XMAX1", "!shape!.extent.xmax", "PYTHON_9.3")
+arcpy.management.CalculateField(fc, "YMAX1", "!shape!.extent.ymax", "PYTHON_9.3")
+</pre>
+
+<p>As my heroes Tim and Eric put it:<br>Great Job</p>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/l7u9hP4r1S8" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-07-05T13:29:54.000Z"><a href="/2012/07/05/teensy-pantilt-servo-nes-controller/">Jul 5 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/07/05/teensy-pantilt-servo-nes-controller/">Teensy + Pan/Tilt Servo + NES Controller</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>As you can probably tell from some of my <a href="http://blog.guerrillagis.net/?p=1591" title="The Teensy and the 4-Digit 7-Segment display" target="_blank" rel="external">recent blog posts</a>, I’m getting deep into the hardware side of things.  My current project is a scanning laser rangefinder mounted on a pan/tilt servo unit.  For practical purposes, I’m using the <a href="http://blog.guerrillagis.net/?p=1630" target="_blank" rel="external">NES controller library outlined several posts ago</a>… It makes for a handy little pan/tilt controller. Basically the setup is a <a href="http://www.pololu.com/catalog/product/522" target="_blank" rel="external">GWS S125 1T</a> 360 degree ball bearing servo, a <a href="http://www.radioshack.com/product/index.jsp?productId=12296088" target="_blank" rel="external">Radio Shack Parallax 180 degree servo</a>, <a href="http://www.trossenrobotics.com/p/pan-tilt-kit-noservos.aspx?feed=Froogle" target="_blank" rel="external">a Lynxmotion pan/tilt bracket</a> and my beloved <a href="http://www.pjrc.com/teensy/" target="_blank" rel="external">Teensy microcontroller</a>.<br>I’ve set up the directional control pad buttons to pan/tilt accordingly and the start button to run a simple scan routine with steady increment/decrement of pan/tilt.</p>
+<p>I’ll let the vid explain the rest:</p>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/jl9XTR_tTfQ" frameborder="0" allowfullscreen></iframe>
+
+<p>And of course, the code..crude as it is…</p>
+<pre lang="c">
+#include <servo.h>
+#include <controller.h>
+
+Controller cbar(2,3,4);
+Servo pan;
+Servo tilt;
+boolean up;
+boolean right;
+boolean start;
+int del;
+int ppos=1500;
+int tpos=90;
+
+/* SETUP */
+void setup() {
+tilt.attach(9);
+pan.attach(10);
+
+}
+
+void loop() {
+cbar.update();
+
+if(cbar.isPressed(START))
+    { start=!start;    }
+
+    if(start==true)
+    {
+    del=8;
+        if(up==true) //tilt
+        {
+            if(tpos<146) {="" tpos+="1;" tilt.write(tpos);="" }="" else="" up="false;" if(tpos="">5)
+            {
+                tpos-=1;
+                tilt.write(tpos);
+            }
+            else
+            {
+                up=true;
+            }
+        }
+
+        if(right==true) //pan
+        {
+
+            if(ppos<1976) {="" ppos+="5;" pan.writemicroseconds(ppos);="" }="" else="" right="false;" if(ppos="">825)
+            {
+                ppos-=5;
+                pan.writeMicroseconds(ppos);
+            }
+            else
+            {
+                right=true;
+            }
+        }
+    }
+    else
+    {
+    del=15;
+    if (cbar.isDown(LEFT)){
+    if(ppos<1976) {="" ppos+="25;" pan.writemicroseconds(ppos);="" }="" if="" (cbar.isdown(right)){="" if(ppos="">825)
+    {
+     ppos-=25;
+     pan.writeMicroseconds(ppos); 
+    }
+ }
+
+   if (cbar.isDown(DOWN)){
+    if(tpos<146) {="" tpos+="5;" tilt.write(tpos);="" }="" if="" (cbar.isdown(up)){="" if(tpos="">5)
+    {
+     tpos-=5;
+     tilt.write(tpos); 
+    }
+ }
+
+    }
+    delay(del);
+}
+</146)></1976)></1976)></146)></controller.h></servo.h></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-06-26T23:48:48.000Z"><a href="/2012/06/26/quick-vs-2010-keystroke/">Jun 26 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/06/26/quick-vs-2010-keystroke/">Quick VS 2010 Keystroke</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>CTRL M + CTRL O ==</p>
+<p>Collapses to definitions. </p>
+<p>CTRL + SHIFT + F9 ==</p>
+<p>Removes all breakpoints<br>badass.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/page/4/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/archives/page/6/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

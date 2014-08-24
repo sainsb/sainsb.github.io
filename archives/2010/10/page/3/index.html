@@ -1,0 +1,362 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 3 | Archives: 2010/10 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2010/10</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-05T06:02:00.000Z"><a href="/2010/10/04/google-earth-arcgis-server/">Oct 4 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/04/google-earth-arcgis-server/">Google Earth + ArcGIS Server</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Awhile back I created a test app that would pull KML from ArcGIS Server for use in Google Earth. I wrapped this in a webpage along with the draggable marker control I developed.</p>
+<p>This is what it looks like:</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/fufsldkj.png" target="_blank" rel="external"><img src="/images/b2fd12b609fd6327aa0394de5f94321d8e544e32.png" alt="" title="GE_plus_AGS"></a></p>
+<p>This stuff could pretty easily be built up to include a TOC for some ArcGIS Server Layers. Or alternatively could be used for Public Works or Health Workers to drag and drop incidents/assets on the map and annotate them.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/GEarth_+_ArcGISServer.zip" target="_blank" rel="external">GEarth_+_ArcGISServer</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-02T03:00:00.000Z"><a href="/2010/10/01/server-2003-x64-iis-6-asp-net-4-0-framework/">Oct 1 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/01/server-2003-x64-iis-6-asp-net-4-0-framework/">Server 2003, x64, IIS 6, ASP.NET 4.0 Framework</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Here are the steps we took to get the 4.0 Framework working in IIS 6 on a Windows 2003 x64 Server - This was quite a struggle due to the strange decision not to show an ASP.NET tab in an applications/Virtual Directory’s properties.</p>
+<ol>
+<li><p>Figure out how IIS is running -<pre lang="dos">cscript C:/inetpub/adminscripts/adsutil.vbs GET W3SVC/AppPools/Enable32BitAppOnWin64’</pre></p>
+</li>
+<li><p>Should see</p>
+<pre lang="dos">Enable32BitAppOnWin64 : (BOOLEAN) True.'</pre>
+</li>
+<li><p>32-bit compatibility mode for legacy apps? If not ‘<pre lang="dos">cscript C:/inetpub/adminscripts/adsutil.vbs SET W3SVC/AppPools/Enable32BitAppOnWin64 True’</pre></p>
+</li>
+<li>D/L the 32-bit version of the 4.0 Framework and ‘<pre lang="dos">aspnet_regiis -i’</pre></li>
+<li>run the following from Windows\System32 <pre lang="dos">cscript iisext.vbs /ListFile</pre></li>
+<li>This will tell you what IIS extensions are enabled(1) and disabled(0).</li>
+<li>IF the 4.0 Framework is disabled you will need to run ‘<pre lang="dos">cscript iisext.vbs /EnFile C:/WINDOWS/Microsoft.NET/Framework/v4.0.30319/aspnet_isapi.dll’.</pre></li>
+<li>OK, you should now see a ‘1’ in the status of the desired Framework.</li>
+<li>Now nav to your Framework folder - run ‘<code>aspnet_regiis -lv&#39;</code>to “List the status and installation path of all versions of ASP.NET that are installed on the computer’</li>
+<li>Notice the (Root) note that specifies this is the default Framework.</li>
+<li>We’ll now run  ‘<code>aspnet_regiis -lk&#39;</code> to list the path and version of all IIS metabase keys where ASP.NET is mapped.</li>
+<li>Note in the attached image that the desired application DSMapApp is still targeting the 2.0 framework EVEN THOUGH running aspnet_regiis -i is supposed to switch all apps to the specified Framework.</li>
+<li>To switch a particular application’s targeted Framework we’ll need the -s switch to ‘Update scriptmaps and application-pool assignments for the specified application and for all sub-applications’.&nbsp; This <em>I think</em> would be equivalent to changing each entry in Figure 2.</li>
+<li>Voila…application is now targeting the correct framework.</li>
+<li>Sure could’ve used a tab…<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/jarjarbinks.bmp" target="_blank" rel="external"><img src="/images/1d32b05cc033cb31d10f5046a2622a8034a1f226.bmp" alt="" title="jarjarbinks"></a></li>
+</ol>
+<p>Figure 1. DOS view.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/dumb1.png" target="_blank" rel="external"><img src="/images/c690703cbc20f65472f80ddfe469d74af8b8961b.png" alt="" title="dumb1"></a></p>
+<p>Figure 2. Script mappings.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/2010/10/page/2/" class="alignleft prev">Prev</a>
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

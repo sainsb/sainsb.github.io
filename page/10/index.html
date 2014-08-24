@@ -1,0 +1,769 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 10 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-24T06:01:24.000Z"><a href="/2012/01/23/batch-geocoding/">Jan 23 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/23/batch-geocoding/">Batch geocoding</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Recently I was asked by an acquaintance of a friend what the best way to geocode millions of addresses would be.  The friend was trying to put together a bid for a company who wanted to know how much it would cost and how long it would take.</p>
+<p>I spent a while formulating my thoughts around this and here is what I came up with:</p>
+<h3 id="Option_A">Option A</h3>
+<p>Pay ESRI $5000 for the use of their geocoding engine ($50*25,000) + whatever their commercial software licensing fee is(~$2000?) for using ArcGIS Desktop (you can’t use a student/eval copy for commercial use right?)<br>•    Feel bad about paying ESRI an exorbitant amount of monay.<br>•    Feel good about the quality of the results.<br>•    Feel good about the legality/ethics of throwing 2.5 million records at their server.</p>
+<h3 id="Option_B">Option B</h3>
+<p>Pay Yahoo or Google or some other established company offering a geocoding web service whatever their commercial licensing fee is (I have no idea but likely less than ESRI’s) and roll your own custom client to consume their geocoder.<br>•    Feel good about not paying ESRI an exorbitant amount of monay.<br>•    Feel good about the quality of the results.<br>•    Feel good about the legality/ethics of throwing 2.5 million records at their server.</p>
+<h3 id="Option_C">Option C</h3>
+<p>Find a free geocoding engine (Oregon State’s, geocode.us) and roll your own custom client to consume their geocoder.<br>•    Feel good about not paying anyone an exorbitant amount of monay.<br>•    Feel unsure about the legality/ethics of throwing 2.5 million records at it.<br>•    Feel unsure about the quality of the results and perform some modest QA/QC.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-21T07:35:28.000Z"><a href="/2012/01/20/reading-from-a-resource-in-silverlight/">Jan 20 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/20/reading-from-a-resource-in-silverlight/">Reading from a resource in Silverlight</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This post is completely lifted from <a href="http://www.michaelsnow.com/2010/12/28/silverlight-reading-from-a-file-contained-in-your-xap/" target="_blank" rel="external">Michael Snow’s blog ‘Everything Silverlight’</a> - Go check it out. So here we go:<br>Add a reference to System.Windows.Resources<br>Add an image, a text file or what have you, to your project and mark it as a resource:</p>
+<pre lang="csharp">
+var uri = new Uri("[yourNamespace];component/[yourFile]", UriKind.Relative);
+var streamInfo = Application.GetResourceStream(uri); 
+</pre>
+
+<p>Here’s how to reference it:</p>
+<pre lang="csharp">
+if (null != streamInfo)
+{
+    var stream = streamInfo.Stream;
+    var sr = new StreamReader(stream);
+    string line = String.Empty;
+    while ((line = sr.ReadLine()) != null)
+    {
+    //doStuff
+    }
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-19T12:30:00.000Z"><a href="/2012/01/19/coding-humor/">Jan 19 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/19/coding-humor/">Coding humor and potpourri</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="https://www.destroyallsoftware.com/talks/wat" target="_blank" rel="external">This bit</a> on idiosyncratic Ruby and JavaScript is pretty entertaining.</p>
+<p>Tonight I was watching <a href="http://science.discovery.com/tv/sci-fi-science/" target="_blank" rel="external">Sci Fi Science with Michio Kaku - a pretty cool show on the discovery channel</a>…I think it might be a few years old by now.<br>At any rate, this particular show was on AI and robotics.  Toward the beginning, he’s listing off his ingredients for his perfect robot and there’s some dramatic text scrolling in the background.  I happened to glance at it to discover that it’s an Oracle Spatial stored proc of some sort…check it out won’t you?<br>[gallery]</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-18T05:26:24.000Z"><a href="/2012/01/17/javascript-iteratoris/">Jan 17 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/17/javascript-iteratoris/">Javascript iteratoris</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Assigning the Member in the iteratingCondition:</p>
+<pre lang="javascript">
+for (var i=0, each; each = arr[i]; i++) {
+    doSomething(each);
+}
+</pre>
+
+<p><a href="http://javascriptweblog.wordpress.com/2010/10/11/rethinking-javascript-for-loops/" target="_blank" rel="external">This post</a> has some pretty cool ideas on the for loop…</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-14T00:13:30.000Z"><a href="/2012/01/13/friday-link-explosion/">Jan 13 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/13/friday-link-explosion/">Friday link explosion</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Damn, <a href="http://www.prodevelop.es/es/blog/11/12/11/rendering-local-shapefiles-html5" target="_blank" rel="external">this guy beat me to the <a href="http://www.html5rocks.com/en/tutorials/file/dndfiles/" target="_blank" rel="external">HTML5 FileAPI</a> version of a JavaScript shapefile parser</a>.  Just Wow.  Pure client-side shapefile parsing.  Now we just need a little more love for the FileAPI in the ‘Modern Browser’.</p>
+<p>I never knew about <a href="http://javascript.about.com/library/blequals.htm" target="_blank" rel="external">equals, equals, equals in javascript</a>.  I’m not sure how that one slipped through the cracks.  Wanna strict compare? ===. wanna loose compare? ==. saweet.</p>
+<p><a href="http://geojason.info/google-vector-layers/demos/arcgis-server/" target="_blank" rel="external">A new and refreshing library supporting ArcGIS Server vectors in Google Maps</a>. This one could be useful…</p>
+<p>Just when I was about to close the book on ESRI (yeah right, like that’ll ever happen…) I see <a href="http://help.arcgis.com/en/webapi/javascript/arcgis/demos/exp/exp_rasterlayer.html" target="_blank" rel="external">this intriguing canvas map showing world elevations</a>.  Gonna have to get me some of that raster support.</p>
+<p>Visual Studio is the finest piece of software I have ever used.  I just discovered <a href="http://weblogs.asp.net/scottgu/archive/2010/04/08/javascript-intellisense-improvements-with-vs-2010.aspx" target="_blank" rel="external">javascript (why do they keep calling it JScript?) intellisense</a> and I am fully floored.  Thank you so much for this amazing product.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-12T06:13:33.000Z"><a href="/2012/01/11/this-hole-is-deep/">Jan 11 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/11/this-hole-is-deep/">Overview of compiled vs interpreted, static vs dynamic, and late/early binding</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is one deep hole.<br>Having spent the past few weeks in coder’s purgatory as Silverlight’s future appears shaky and HTML5/JS/WebGL is hyperactively killing it, I’ve realized I really, <em>really</em> need to understand these waters in order to better navigate them.</p>
+<h3 id="Interpreted_vs-_Compiled">Interpreted vs. Compiled</h3>
+<p>When I sat down with a friend a few months back and mentioned to him that I was really into C# those days, he said, oh yeah, that runs on a virtual machine right?  Being a noob, I thought, like VirtualPC? Kindly, he explained, but it didn’t really fit with my understanding.</p>
+<p></p><p>Here’s the deal, in as much of my own words as possible:  I always sort of understood that dynamically-typed languages like R, Python and JavaScript are interpreted by a runtime; R.exe, Python.exe, the browser {Chrome : V8, IE : Chakra, Firefox : Spidermonkey} etc. but I was err in thinking that .Net and Java code is compiled.  Because it is not.  Well, not as in converted to machine code to be run directly by the CPU (an extremely powerful integrated circuit(IC) (a collection of resistors, transistors and capacitors merged into a cell on a circuit board).  </p>
+<h3 id="All_-Net_and_Java_code_(whether_it’s_C#_or_VB)_is_‘compiled’_to_a_bytecode-like_language_in_the_same_way_that_Python,_JavaScript,_R,_PHP,_your_favorite_dynamic_language_is-">All .Net and Java code (whether it’s C# or VB) is ‘compiled’ to a bytecode-like language <em>in the same way that Python, JavaScript, R, PHP, your favorite dynamic language</em> is.</h3>
+<p></p><p>With .Net it is called <a href="http://en.wikipedia.org/wiki/Common_Intermediate_Language" target="_blank" rel="external">Common Intermediate Language (CIL)</a> (formerly Microsoft Intermediate Language (MSIL)) and with Java, it’s called <a href="http://en.wikipedia.org/wiki/Java_bytecode#Support_for_dynamic_languages" target="_blank" rel="external">Java Bytecode</a>.  And again the bytecode is interpreted and JIT compiled – with .Net the Common Language Runtime (CLR) Virtual Machine executes the CIL or with Java the Java Virtual Machine(JVM) executes the Java bytecode.  Both can be Ahead-of-Time (AOT) compiled with either the Native Image Generator (NGEN) (.Net) or the GNU compiler for Java (both of which seem relatively unused).<br>Contrast this with the Keil Embedded IDE where the C++ (native code) is compiled and then sent to the Atmel IC.  It is not open to interpretation. It is compiled to machine code and sent to the chip to run independently.</p>
+<h3 id="Just_in_Time_Compilation_(Wikipedia)">Just in Time Compilation (Wikipedia)</h3>
+<blockquote>
+<p>Interpreted code is translated from a high-level language to a machine code continuously during every execution, whereas statically compiled code is translated into machine code before execution, and only requires this translation once.<br>JIT compilers represent a hybrid approach, with translation occurring continuously, as with interpreters, but with caching of translated code to minimize performance degradation. It also offers other advantages over statically compiled code at development time, such as handling of late-bound data types and the ability to enforce security guarantees.<br>So part of the story behind the dynamic language (mostly JS but Python also) craze is that the new breed of runtimes, utilizing JIT, perform <em>very</em> well.  As well as C#, Java and potentially native code (C++/Objective-C).  And the question is, why shouldn’t they? <em>since they are all high-level languages that are interpreted from bytecode</em>. Here’s <a href="http://origin.cuttherope.ie/dev/" target="_blank" rel="external">some context:</a><br>In the past, JavaScript had a reputation of being a slow language. Frankly, that reputation was initially valid. Older JavaScript engines were designed for simple “scripting” kinds of tasks (hence the name). Today, however, JavaScript engines have been highly optimized. With features like just-in-time compilation, JavaScript now can execute at near native speeds.</p>
+</blockquote>
+<h3 id="Early_Binding/Late_Binding">Early Binding/Late Binding</h3>
+<p>Late binding allows you to tell the ‘compiler’ that you’re not exactly sure what the type is going to be at run time and you’re willing to trade optimizations for ‘uncertainty’ or rather ‘flexibility’.<br>According to MSDN:</p>
+<blockquote>
+<p>You should use early-bound objects whenever possible, because they allow the compiler to make important optimizations that yield more efficient applications. Early-bound objects are significantly faster than late-bound objects and make your code easier to read and maintain by stating exactly what kind of objects are being used. Another advantage to early binding is that it enables useful features such as automatic code completion and Dynamic Help because the Visual Studio integrated development environment (IDE) can determine exactly what type of object you are working with as you edit the code. Early binding reduces the number and severity of run-time errors because it allows the compiler to report errors when a program is compiled.<br><del datetime="2012-01-11T21:02:26+00:00">Now I see it’s funny that you can use var in C# 3.0 - YOU SHOULD ALWAYS HAVE BEEN ABLE TO DO THIS - because it’s really no different than JavaScript when it comes down to it…it’s just late-binding.</del><br>No. wait, that’s not right – with var the type is inferred from the assignment so it is still statically typed as far as the CLR is concerned.<br>A comment on a <a href="‘http://stackoverflow.com/questions/484214/c-sharp-early-and-late-binding">stub on SO</a>&gt; Dynamic typing is not the same as late binding. The difference is subtle, but it’s important. Late binding still binds to a type, it just does it at runtime. Dynamic typing does not bind; instead, it resolves member information at runtime irrespective of type. – Michael Meadows Jan 27 ‘09 at 18:23<br>A search on “dynamic typing vs late binding” led me to this <a href="http://www.shubho.net/2011/02/dynamic-typing-late-binding-c-40.html" target="_blank" rel="external">horridly-edited-yet-informational blog post</a> which introduces the Dynamic type at C# 4.0. Aha – the ‘dynamic’ type in a statically compiled language. <a href="http://msdn.microsoft.com/en-us/magazine/ee336309.aspx‘" target="_blank" rel="external">This MS press release</a> seems like a decent plateau.<br>Soooo… why static?<br>Why? <a href="http://perl.plover.com/yak/typing/notes.html‘" target="_blank" rel="external">This is why</a>:<br>The idea we have is that the computer is going to keep track of the type of value stored at each part of its memory, whether it’s part of a string, or an integer, or a floating-point number, or whatever. Each operation such as multiplication will also have a type. The compiler or assembler can check to make sure that the types of an operator and its operands match, and raise a compile-time error if they don’t, and so hopefully detect some sorts of bugs early on before they have a chance to cause real trouble.<br>Real trouble huh? Like exploding capacitors trouble? Now this sounds like fun.<br>Why is everything early bound in C#/VB since it is JITted by the CLR?  Why do .Net languages pretend to be statically-typed? Why did I ever Dim anything if I’m JIT’ing?   <a href="http://www.youtube.com/watch?v=5hR5YNqE3K8" target="_blank" rel="external">To make the compiler’s life easier?</a><br>Under the <a href="http://msdn.microsoft.com/en-us/library/7ee5a7s1%28v=VS.80%29.aspx" target="_blank" rel="external">2005 MSDN Dim Statement stub</a> – this is the first remark:<br>You should declare every variable you use in your program, to tell the Visual Basic compiler the variable’s data type and other information such as what code can access it.<br>Then in the 2010 version, this is the first remark:<br>The Visual Basic compiler uses the Dim statement to determine the variable’s data type and other information, such as what code can access the variable.</p>
+</blockquote>
+<p>Intense. Enough for one post. Thanks for listening. Maybe you learnd something.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-03T04:23:41.000Z"><a href="/2012/01/02/1250/">Jan 2 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/02/1250/">Open Government and GIS data.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/01/Goodspeed-23_2_0.pdf" target="_blank" rel="external">An interesting article on Open Government and GIS data.</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-31T04:47:02.000Z"><a href="/2011/12/30/quick-excel-custom-format-snip/">Dec 30 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/30/quick-excel-custom-format-snip/">Quick Excel custom format snip</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Context - I have a spreadsheet with positive and negative numbers in a column.  Since the topic of the column is change, I want to emphasize positive numbers with a plus sign.<br>I tried the custom format of ‘+0’ but that inserted the plus sign after ‘-‘ symbols in negative numbers….not so good.<br>In order to format positive numbers with a ‘+’ sign in front of them and leave negatives and zeroes alone use this custom formatter:</p>
+<pre lang="python">
++0;-0;0
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-30T04:30:10.000Z"><a href="/2011/12/29/brain-explosion-netresharper64-bit-silverlightwaterfox/">Dec 29 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/29/brain-explosion-netresharper64-bit-silverlightwaterfox/">Brain explosion {.NET/Resharper/64-bit Silverlight/Waterfox}</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Couldn’t sleep last night.  Gears grinding in head.<br>Perhaps part of my restlessness was <a href="http://www.hanselman.com/blog/WhatGreatNETDevelopersOughtToKnowMoreNETInterviewQuestions.aspx" target="_blank" rel="external">this Scott Hanselman post</a> … I realized I don’t know a lot of the stuff that even a mid-level developer should know.  I then hit <a href="http://stackoverflow.com/questions/380819/common-programming-mistakes-for-net-developers-to-avoid" target="_blank" rel="external">this SO stub</a>.<br>I then bounced off FxCop(fail) and hit <a href="http://www.jetbrains.com/resharper/" target="_blank" rel="external">Resharper</a>.</p>
+<p>Holy shit.</p>
+<p>Not only does this make my code better, it makes me a better coder.  Really gels a lot of the concepts I’ve been on the brink of understanding. Cannot even begin to describe the benefits here.</p>
+<p>Assignment and LINQ?</p>
+<blockquote>
+<p>In general, you should avoid changing object state inside of a linq query. Linq is from the functional programming mindset, where state never changes (instead, new objects are created with the needed state).</p>
+</blockquote>
+<p><a href="http://msdn.microsoft.com/en-us/library/dwhawy9k.aspx" target="_blank" rel="external">ToString() explicit formatting </a></p>
+<p>FBE = fist bump explosion.<br>Late binding vs Early binding.<br>Embed web service URL in web.config =&gt; .aspx host file.<br><a href="http://forums.silverlight.net/p/18298/61599.aspx" target="_blank" rel="external">http://forums.silverlight.net/p/18298/61599.aspx</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-26T00:29:26.000Z"><a href="/2011/12/25/sprocs-to-use-or-not-to-use/">Dec 25 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/25/sprocs-to-use-or-not-to-use/">SPROCS: to use or not to use</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I’ve been attempting to learn PL/SQL lately in order to create some stored procedures in our Oracle 11g database.  I discovered that the <a href="http://www.oracle.com/technetwork/topics/dotnet/index-085163.html" target="_blank" rel="external">Oracle Data Provider (ODP.NET) library</a> provided a substantial performance boost over the traditional ODBC library.  The jury is still out over dynamic mid-tier SQL versus parameterized stored procs.  This post is going to be a living list of the/my pros and cons associated with stored procedures and a .NET/Oracle platform specifically.</p>
+<p>Pros:</p>
+<ul>
+<li>Stored procedures feel right from a traditional perspective (eg. I’m used to them).</li>
+<li>Stored procedures theoretically protect against SQL injection - though I’m not certain on the nitty gritty of how exactly.</li>
+<li>Stored procedures are pre-compiled so you know your SQL is tight.</li>
+<li>New developments to the OPD.NET library allow you to pass a .NET class as a user-defined type to a stored proc as an input parameter (that sounds weird, but I’m not sure how else to phrase it. maybe that’s a clue.)  The class has to implement several interfaces(IOracleCustomType, INullable) and it and it’s members must be decorated with the OracleCustomTypeMapping attribute.    I haven’t tested this but <a href="http://www.codeproject.com/KB/database/ORACLE_UDT.aspx" target="_blank" rel="external">this codeproject stub</a> lays it down pretty well.</li>
+<li>I’ve always been taught that stored procedures are highly performant</li>
+<li><p>I’m not doing Test-Driven Development<br>Cons:</p>
+</li>
+<li><p>What the %$#@ is up with PL/SQL? Some pretty silly conventions. No continue in a try catch?</p>
+</li>
+<li>What the %$#@ is up with newer versions of SQL Developer not compiling stored procs that older versions can?</li>
+<li>How married is my agency to Oracle? Is it better to decouple amidst platform volatility? (probably)</li>
+<li>How convertible to T-SQL is PL/SQL?</li>
+<li><a href="http://www.codinghorror.com/blog/2004/10/who-needs-stored-procedures-anyways.html" target="_blank" rel="external">Jeff Atwood’s blog post from 2004</a> (7 years ago, dear god am I really that far behind in this technology?) Is pretty edutaining, however, comment number 1 is a pretty good response.</li>
+<li>I’m not doing Test-Driven Development</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+
+<nav id="pagination">
+  
+    <a href="/page/9/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/page/11/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

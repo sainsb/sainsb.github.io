@@ -1,0 +1,913 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2012/4 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2012/4</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-28T12:45:46.000Z"><a href="/2012/04/28/the-teensy-and-the-4-digit-7-segment-display/">Apr 28 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/28/the-teensy-and-the-4-digit-7-segment-display/">The Teensy and the 4-Digit 7-Segment display</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I ordered a couple of <a href="http://www.sparkfun.com/products/9483" target="_blank" rel="external">4-Digit 7-Segment displays from Sparkfun</a> the other day.  Not entirely sure what I’ll do with them but they have been fun to familiarize myself with.  I began by following some <a href="http://allaboutee.com/2011/07/09/arduino-4-digit-7-segment-display-tutorial/" target="_blank" rel="external">blogged instructions at AllAboutEE</a>. While there are some valuable gems there, the setup is not correct and has resistors inline with the digit pins instead of the segment pins.  In the end, I got more out of <a href="http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1265669651" target="_blank" rel="external">an old Arduino Forum post</a> describing the method of connecting this to the Arduino.</p>
+<p>Here is my horrible Fritzing diagram:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/Capture21.png" target="_blank" rel="external"><img src="/images/31684356ce52fc47ec2c132bcd0ced0fcba8cba6.png" alt="" title="Capture2"></a></p>
+<p>And a slightly less horrible video:</p>
+<iframe width="560" height="315" src="http://www.youtube.com/embed/RxAGUGdUzSY" frameborder="0" allowfullscreen></iframe>
+
+<p>Pin diagram:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/Capture1.png" target="_blank" rel="external"><img src="/images/ce8005d0290c7ab5965140f03922e7c158826a1c.png" alt="" title="Capture"></a><br>Source Code: (Note the use of the Teensy PORTB - it made for horrible wiring but simple and efficient coding.)</p>
+<pre lang="c">
+int digit0 = 7; 
+byte numbers[10] =
+{
+  B11000000, // 0
+  B11111001, // 1
+  B10100100, // 2
+  B10110000, // 3
+  B10011001, // 4
+  B10010010, // 5
+  B10000010, // 6
+  B11111000, // 7
+  B10000000, // 8
+  B10010000  // 9
+};
+
+void setup()
+{
+  DDRB=0xff;
+  PORTB=0x00;
+  for (byte digit = 0; digit < 4; digit++)
+    pinMode(digit0+digit,OUTPUT);
+}
+
+int perDigitTime = 100;
+int digitPosition = 1;  
+unsigned long previousMillis = 0;
+
+int value = 0;
+int powerOfTen[] = {1,10,100,1000};
+
+void RefreshDisplay()
+{
+  digitalWrite(digit0 + digitPosition, LOW);
+  digitPosition++;
+  if (digitPosition > 3) digitPosition = 0;
+
+  int digitValue = value % powerOfTen[ digitPosition+1 ] / powerOfTen[digitPosition];
+  int number =  numbers[ digitValue ];
+
+  if ((number > 0) || (value < powerOfTen[ digitPosition+1 ]))
+  {
+  PORTB=number;
+  digitalWrite(digit0 + digitPosition, HIGH);
+  delay(4);
+  }
+}
+
+void loop()
+{
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis > perDigitTime)
+  {
+    previousMillis = currentMillis;
+    value++;
+  }
+
+  RefreshDisplay();
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-24T23:32:05.000Z"><a href="/2012/04/24/two-awesome-vids/">Apr 24 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/24/two-awesome-vids/">Two awesome vids</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Chrome Multitask mode:</p>
+<iframe width="560" height="315" src="http://www.youtube.com/embed/UiLSiqyDf4Y" frameborder="0" allowfullscreen></iframe>
+
+<p>Kinect self-awareness:</p>
+<iframe width="560" height="315" src="http://www.youtube.com/embed/cVCghLfdzsY" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-21T23:21:06.000Z"><a href="/2012/04/21/the-rotary-encoder/">Apr 21 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/21/the-rotary-encoder/">The rotary encoder.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I am pretty noob when it comes to embedded development. A few months back I received a blown up amplifier from my in-laws…I took it apart to discover a failed relay critical to switching on power…After googling for awhile it appeared to be a common problem with an expensive solution. Long story short, I bastardized the controls on the front of it in search of potentiometers for some learning I was doing at the time. What I pulled off were not potentiometers. I did not know what they were for the longest time and when I wired one up as an analog potentiometer to my <a href="http://netduino.com/" target="_blank" rel="external">Netduino</a>…I got a rather disturbing <em>BLINK</em> on the board and decided to immediately stop and work on something else. ~6 months later I’ve learned a little more and decided to give this dial a go.  Here’s the breakdown pulled directly from <a href="http://www.candrian.gr/index.php/3-pin-rotary-encoder-how-to/" target="_blank" rel="external">a sharp fellow’s</a> site</p>
+<p>Well the potentiometers have some disadvantage.</p>
+<ul>
+<li>Produce noise at knob turn over the uses or if dust has passed in.</li>
+<li>They are not that accurate.</li>
+<li>To use them in a digital circuit you have to use an Analog To Digital converter.</li>
+</ul>
+<p>On the other hand Rotary Encoder.</p>
+<ul>
+<li>There is no noise production (if you use the appropriate capacitors).</li>
+<li>They are accurate (they have steps).</li>
+<li>There is no need of a digital to analog converter.</li>
+</ul>
+<p>I’m not going to go in to the particulars of the device, the aforementioned link provides a nice little tour for beginners.  Ultimately, I wired up my <a href="http://www.pjrc.com/teensy/td_libs_Encoder.html" target="_blank" rel="external">Teensy</a> to my 10-LED bar.  The action on encoders is very smooth with subtle bumps for feedback.  The LEDs were pretty simple and so for extra credit I included some mouse and keyboard commands to adjust the volume on my box whilst using the excellent <a href="http://matthew.malensek.net/" target="_blank" rel="external">3RVX.exe global volume controller for Windows</a>.  Here are the results:</p>
+<iframe width="560" height="315" align="center" src="http://www.youtube.com/embed/5XvbVp9m8Q0" frameborder="0" allowfullscreen></iframe>
+
+<p>How bout some source love…<a href="http://www.pjrc.com/teensy/td_libs_Encoder.html" target="_blank" rel="external">The encoder library</a> is about as solid as they come and saves you a lot of time spent dicking around with bounce.</p>
+<p><pre lang="c"></pre></p>
+<h1 id="include_">include <encoder.h></encoder.h></h1>
+<p>Encoder knobLeft(0, 1);</p>
+<p>void setup() {<br>    pinMode(21, OUTPUT);<br>    pinMode(20, OUTPUT);<br>    pinMode(19, OUTPUT);<br>    pinMode(18, OUTPUT);<br>    pinMode(17, OUTPUT);<br>    pinMode(16, OUTPUT);<br>    pinMode(15, OUTPUT);<br>    pinMode(14, OUTPUT);<br>    pinMode(13, OUTPUT);<br>    pinMode(12, OUTPUT);<br>}</p>
+<p>long positionLeft  = -999;<br>long val;<br>void loop() {<br>    long newLeft;<br>    newLeft = knobLeft.read();<br>    if (newLeft &gt; positionLeft) {<br>        if(newLeft<44) {="" if(val="" !="newLeft/4)" val="newLeft/4;" lights(val);="" keyboard.set_modifier(modifierkey_gui);="" keyboard.send_now();="" delay(5);="" mouse.scroll(+2);="" keyboard.set_modifier(0);="" }="" positionleft="newLeft;" else="" knobleft.write(43);="" if(newleft="" <="" positionleft)="">0) {<br>            if(val != newLeft/4) {<br>                val = newLeft/4;<br>                lights(val);<br>                Keyboard.set_modifier(MODIFIERKEY_GUI);<br>                Keyboard.send_now();<br>                delay(5);<br>                Mouse.scroll(-2);<br>                Mouse.scroll(-2);<br>                delay(5);<br>                Keyboard.set_modifier(0);<br>                Keyboard.send_now();<br>        }<br>        positionLeft = newLeft;<br>        }<br>        else {<br>            positionLeft=0;<br>            knobLeft.write(0);<br>        }<br>    }<br>}</44)></p>
+<p>void lights(int val) {<br>    int mypins[] = {12,13,14,15,16,17,18,19,20,21};<br>    int i;<br>    for (i = 0; i &lt; val; i = i + 1) {<br>        digitalWrite(mypins[i], HIGH);<br>    }</p>
+<pre><code><span class="keyword">for</span> (<span class="built_in">i</span> = val; <span class="built_in">i</span> &lt; <span class="number">10</span>; <span class="built_in">i</span> = <span class="built_in">i</span> + <span class="number">1</span>) <span class="cell">{
+    digitalWrite(mypins[i], LOW);
+}</span>
+</code></pre><p>}<br></p>
+<p></p><p align="center"><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/Capture2.png" target="_blank" rel="external"><img src="/images/cc07caf62655450c228af3794d8c76dd62267af2.png" alt="" title="Capture2"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-20T04:52:53.000Z"><a href="/2012/04/19/hooking-up-input-parameters-in-custom-script-tools/">Apr 19 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/19/hooking-up-input-parameters-in-custom-script-tools/">Hooking up input parameters in custom script tools</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This functionality has been a mystery to me for awhile but I took the time to figure out what’s going on. (And now I’m sharing it with you (because sharing is caring))</p>
+<p>Say you create a geoprocessing script with an input and then want to also specify fields within the input dataset as part of the task (Make sense? if not it will). I set up an input param of type ‘Raster Dataset’ and two input params of type ‘Field’ and foolishly expected the field inputs to automagically wire themselves up to the specified dataset. Turns out it takes a little more than that and there’s a few curve balls.</p>
+<ul>
+<li>Use the ‘String’ type instead of ‘Field’ for the input params that you want to wire up to respond to your source. Like this:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/natural2.png" target="_blank" rel="external"><img src="/images/28371a15cec75070fc2b74a2b755e6c711b2ea78.png" alt="" title="natural2"></a></li>
+</ul>
+<p>Ok - next, click over to the Validation Tab on your script properties:</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/natural.png" target="_blank" rel="external"><img src="/images/071a3f64bf9588c3829a36fd5b7d767d7202f0c4.png" alt="" title="natural"></a></p>
+<p>You’re going to be working with the updateMessages function. My first inclination was to set the input param to the describe(dataset).fields object. Negative…<br>Here’s the goods assuming one input dataset as the first param and two following input params that take there cue from the specified dataset:</p>
+<p><pre lang="python">class ToolValidator:<br>  “””Class for validating a tool’s parameter values and controlling<br>  the behavior of the tool’s dialog.”””</pre></p>
+<p>  def <strong>init</strong>(self):<br>    “””Setup arcpy and the list of tool parameters.”””<br>    import arcpy<br>    self.params = arcpy.GetParameterInfo()</p>
+<p>  def initializeParameters(self):<br>    “””Refine the properties of a tool’s parameters.  This method is<br>    called when the tool is opened.”””<br>    return</p>
+<p>  def updateParameters(self):<br>    “””Modify the values and properties of parameters before internal<br>    validation is performed.  This method is called whenever a parmater<br>    has been changed.”””<br>    ds = self.params[0].value<br>    if ds:<br>        self.params[1].filter.list = [str(field.name) for field in arcpy.Describe(ds).fields]<br>        self.params[2].filter.list = [str(field.name) for field in arcpy.Describe(ds).fields]<br>    return</p>
+<p>  def updateMessages(self):<br>    “””Modify the messages created by internal validation for each tool<br>    parameter.  This method is called after internal validation.”””<br>    return<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/yay.png" target="_blank" rel="external"><img src="/images/0e9b6cf0d2871334c85367e4ed7730da01ca4213.png" alt="" title="yay"></a></p>
+<p><span style="color: #ff0000;"><strong>Update—-</strong></span><br><span style="color: #333333;"><strong> Thanks to Jason Scheirer</strong></span> for pointing out that when your primary input is of type Table, you can use the ‘Obtained from’ option in the parameters section:</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/garage.png" target="_blank" rel="external"><img src="/images/e35ae8298bd46c7336b9e1251cd175c3b0578daf.png" alt="" title="garage"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-12T04:23:59.000Z"><a href="/2012/04/11/arcpy-to-list-services/">Apr 11 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/11/arcpy-to-list-services/">Arcpy to list services</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Short, sweet snippet:</p>
+<pre lang="python">
+import arcpy
+serviceList = arcpy.mapping.ListMapServices("https://myserver/arcgis/services","myserver")
+for serviceName in serviceList:
+    print serviceName
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-11T03:49:57.000Z"><a href="/2012/04/10/quick-python-urllib-snippet/">Apr 10 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/10/quick-python-urllib-snippet/">Quick Python urllib snippet</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Just a quick snip to post params to a url:</p>
+<pre lang="python">
+import urllib, urllib2
+url = 'http://www.myspecialplace.com'
+values = {'pw' : 'foo',
+          'userName' : 'bar'}
+
+data = urllib.urlencode(values)
+req = urllib2.Request(url, data)
+response = urllib2.urlopen(req)
+print response.geturl()
+print response.info()
+the_page = response.read()
+print the_page
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-10T02:54:20.000Z"><a href="/2012/04/09/welcome-to-git/">Apr 9 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/09/welcome-to-git/">Welcome to Git</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This will be my attempt to document getting a VS2010 project setup and running with Git.</p>
+<p>Get your Git structure in place:<br>I’m using <a href="http://code.google.com/p/msysgit/" target="_blank" rel="external">MsysGit</a>, <a href="http://code.google.com/p/gitextensions/" target="_blank" rel="external">GitExtensions</a>, and <a href="http://gitscc.codeplex.com/" target="_blank" rel="external">Git Source Control Provider</a> to make the magic happen.  I won’t go into the configuration details behind these three mainly since I don’t really understand them.  Until the abstraction leaks, we’ll run with it ;)<br><strong>So, in VS 2010, create a new project:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step1.png" target="_blank" rel="external"><img src="/images/d0b4acb3179eaaaf702c78e4cb45e8c4bbec02f3.png" alt="" title="step1"></a><br><strong>Step 2 - Intialize your repository:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step2.png" target="_blank" rel="external"><img src="/images/d46d96271b38767f50bf3c879b98c47cd8d76974.png" alt="" title="step2"></a><br><strong>Step 3 - Choose repository type:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step3.png" target="_blank" rel="external"><img src="/images/8351653e28ce978693720f77a22a8076c00e721e.png" alt="" title="step3"></a><br><strong>Step 4 - Celebrate your milestone:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step4.png" target="_blank" rel="external"><img src="/images/f44795065a0a0f7b1cb3ae5733e21ffb3a2553f4.png" alt="" title="step4"></a><br><strong>Step 5 - Refresh your Solution Explorer to see the status of your files:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step6.png" target="_blank" rel="external"><img src="/images/039f7ab38fde2e27fd20e812c4c0a7c70f0758d9.png" alt="" title="step6"></a><br><strong>Steps 6 and 7 - Stage and commit your baseline code:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step5.png" target="_blank" rel="external"><img src="/images/12b14e6a54dd3326c43f79f386bd6da5462027d9.png" alt="" title="step5"></a><br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step71.png" target="_blank" rel="external"><img src="/images/e2bdc37949db445129653312f50dd963379f9987.png" alt="" title="step7"></a><br><strong>Step 8 - Assuming you were able to commit, refresh solution explorer:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step81.png" target="_blank" rel="external"><img src="/images/a3518c7874f987bfbe564ca313166e31d50a0fca.png" alt="" title="step8"></a><br><strong>Step 9 - Create a new repo on the remote server, we’ll use GitHub for an example:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/Step9.png" target="_blank" rel="external"><img src="/images/23123bb6d8bca1430552b807c3f56aa72cca86dc.png" alt="" title="Step9"></a><br><strong>Step 10 - Push up to remote:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step11.png" target="_blank" rel="external"><img src="/images/cc9fd1cfbd0a0535af26d5abae649f73b40ea7ee.png" alt="" title="step11"></a><br><strong>Step 11 - Use your new projects uri:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step12.png" target="_blank" rel="external"><img src="/images/499a0498c0b4002d66a9d8815866d6bd96891f6d.png" alt="" title="step12"></a><br><strong>Step 12 - Milestone celebration!</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/04/step13.png" target="_blank" rel="external"><img src="/images/948fd75d73887c63424b91d71f719048ae869b71.png" alt="" title="step13"></a><br><strong>Step 13 - Reaffirm yourself</strong></p>
+<iframe width="420" height="315" align="middle" src="http://www.youtube.com/embed/-DIETlxquzY" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-09T12:09:31.000Z"><a href="/2012/04/09/mysql-geometry-to-shapefile/">Apr 9 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/09/mysql-geometry-to-shapefile/">Converting MySQL geometry to Shapefile</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I was recently faced with the task of converting MySQL Geometry  (stored in a remote db) as WKB to a shapefile to an ESRI File Geodatabase.<br>Since it’s a remote database stored with my web hosting provider access is rather limited (e.g no console access). The dataset is ~33,000 features with 20-some fields - calling a dump from the phpMyAdmin web interface works but returns WKB. I tried reading this stuff with Shapely, but it wasn’t having it…messed around with encodings to no avail.  And while one can export the geometry as text, my dump limits are thus severely limited to ~2000 records per export (phpMyAdmin has a 5mb limit per export file as I recall).  I used to suffer through this when time was less valuable and I was less competent but not no more.</p>
+<p>I decided to extract the geometry separately and join the attribution in later.  This made coding the automated extraction a little easier.  So how did I do it?  I went out and grabbed the <a href="http://www.mysql.com/downloads/connector/net/" target="_blank" rel="external">MySQL Connector for .NET</a>, threw in my credz and went to town 5 at a time so as not to stress the server.</p>
+<pre lang="csharp">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MySql.Data.MySqlClient;
+using System.Web;
+using System.IO;
+using System.Threading;
+
+namespace myBitchinMySQLExtractor
+{
+    class Program
+    {
+        const string MyConString = "connectionStuff";
+        const int numRecords = 35000;
+        static void Main(string[] args)
+        {
+            for (int t = 0; t < numRecords; t += 5)
+            {
+                try
+                {
+                    getData(t);
+                }
+                catch (Exception ex)
+                {
+                    try
+                    {
+                        Thread.Sleep(10000);
+                        getData(t);
+                    }
+                    catch (Exception exc)
+                    {
+                        Console.Write("Lost connection at " + t);
+                    }
+                }
+                Thread.Sleep(3000);
+            }
+        }
+
+        private static void getData(int t)
+        {
+            var connection = new MySqlConnection(MyConString);
+            MySqlCommand command = connection.CreateCommand();
+            MySqlDataReader Reader;
+            connection.Open();
+            command.CommandText = "SELECT ID, astext(geometry)"+
+                "as geom from table where 1 limit " + t + ",5;";
+
+            Reader = command.ExecuteReader();
+            while (Reader.Read())
+            {
+                string thisrow = "";
+                for (int i = 0; i < Reader.FieldCount; i++)
+                {
+                    var s = Reader.GetValue(i);
+                    if (s.GetType() != typeof(byte[]))
+                    {
+                        thisrow += s.ToString() + ", ";
+                    }
+                    else
+                    {
+                        thisrow += Encoding.UTF8.GetString((byte[])s, 0, ((byte[])s).Length);
+                    }
+                }
+                using (var sw = new StreamWriter("C:/myFile.txt", true))
+                {
+                    sw.WriteLine(thisrow);
+                }
+                Console.WriteLine(thisrow + Environment.NewLine + Environment.NewLine);
+            }
+            connection.Close();
+        }
+    }
+}
+</pre>
+
+<p>Ok, so now I had a big-ass file full of ids and geometry in WKT.  What next? <a href="http://pypi.python.org/pypi/Shapely" target="_blank" rel="external">Shapely</a> and <a href="http://pypi.python.org/pypi/geojson/" target="_blank" rel="external">GeoJSON</a> to the rescue. </p>
+<pre lang="python">
+from shapely.wkt import loads
+from geojson import dumps
+import re
+import sys
+import string
+
+output=r"C:/myOutput.txt"
+input=r"C:/myInput.txt"
+f = open(output, "a")
+f.write("{ \"type\": \"FeatureCollection\",\"features\": [")
+
+def processWKT(id, line):
+    x = loads(line)
+    y = dumps(x)
+    f.write("{\"type\": \"Feature\",\"geometry\": " +
+                y + ", \"properties\" : {\"id\" :\"" + id+"\"}},\n")
+
+file = open(input, "r")
+
+for line in file.read().split("\n"):
+    #parse the id out
+    #grab everything up to the first comma
+    s=re.match("[^,]*,\s",line)
+    t=s.group()
+    l = string.replace(line,t, "")
+    y = string.replace(t,", ","")
+
+    processWKT(y,l)
+    print y
+
+f.write("]}")
+file.close()
+f.close()
+</pre>
+
+<p>Ok, so now after I go in and delete a comma in the last line, I have a valid geojson file with all my IDs and geometry.  What next? <a href="http://www.gdal.org/" target="_blank" rel="external">GDAL</a>.  Converting the geojson to a shapefile is a one-liner with ogr2ogr:</p>
+<pre lang="python">
+ogr2ogr -f "ESRI Shapefile" c:/myshapes.shp c:/myOutput.js OGRGeoJSON
+</pre>
+
+<p>So, yes, it is a painful process but these three steps helped to expedite the extraction of data from a remote MySQL db, convert it to the middle-ground format of GeoJSON, and on to a shapefile using GDAL.  All, with free and open-source libraries and platforms. Since my data comprises fields of &gt; 256 characters, I’ll convert the shapefile to a file geodatabase and then populate the attribution using ESRI tools.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-04-02T06:15:07.000Z"><a href="/2012/04/01/weekend-notes-on-the-physical/">Apr 1 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/04/01/weekend-notes-on-the-physical/">Weekend notes on the physical.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>The weather being such fucking shit here lately it’s given me a lot of time to devote to my growing electronics hobby. While voltage and amperage seem like simple concepts, I have to admit, even with the water analogies, the concept of amperage has, for the most part, eluded me. A few things that clicked this weekend were:</p>
+<ul>
+<li>Amperage is a rate. not a force.</li>
+<li>Amperage is “the same at all points in a similar circuit.  It has to be, because the flow of electrons has no place to go” (Platt, 22).</li>
+<li>Car batteries are designed so as to sustain massive draw.  Hundreds of amps may be required to spin the flywheel.</li>
+<li>Current generates a magnetic force. Hence the I in Ohm’s Law (V=I*R) refers to inductance.</li>
+<li>Conversely, a magnetic force can generate current. You can actually light up an LED by passing a high-powered magnet through the center of a coil.<br>I’ve been wondering lately about using microprocessors with external power sources and found this <a href="http://itp.nyu.edu/physcomp/Tutorials/HighCurrentLoads" target="_blank" rel="external">great tutorial</a>.</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

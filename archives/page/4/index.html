@@ -1,0 +1,1038 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 4 | Archives | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">Archives</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-02-09T04:50:43.000Z"><a href="/2013/02/08/arcobjects-license-checkout-and-afr-export/">Feb 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/02/08/arcobjects-license-checkout-and-afr-export/">ArcObjects License Checkout and AFR Export</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Two gems here - the first being how to check out a license in a static (console) context.</p>
+<p>The second, how to export an AFR file to a tif.  An AFR file is a function raster dataset and is a product of the <a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#//009t000001tm000000" target="_blank" rel="external">Image Analysis</a> window.  The AFR file is not the data, but rather a pointer to the data with the process included.</p>
+<p>ESRI sez:</p>
+<blockquote>
+<p>A function raster dataset when saved to a file (.afr) defines the processing to be performed on a dataset with a location for the dataset. It does not change the pixels of the original dataset.</p>
+</blockquote>
+<p>Here’s the goods:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+</pre></td><td class="code"><pre><span class="keyword">using</span> System;
+<span class="keyword">using</span> ESRI.ArcGIS.DataSourcesRaster;
+<span class="keyword">using</span> ESRI.ArcGIS.Geodatabase;
+<span class="keyword">using</span> ESRI.ArcGIS.esriSystem;
+
+namespace convertAFRTORaster
+{
+    <span class="keyword">internal</span> <span class="keyword">class</span> Program
+    {
+        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Main</span>(<span class="keyword">string</span>[] args)
+        {
+
+            <span class="keyword">if</span> (args.Length &lt; <span class="number">4</span>)
+            {
+                Console.WriteLine(<span class="string">"Please enter inWorkspace, inRaster, outWorkspace,"</span> +
+                                  <span class="string">" outRaster"</span>);
+                Console.WriteLine(<span class="string">@"Example: convertAFRTORaster.exe"</span>+
+                            <span class="string">@"C:/temp myafrfile.afr c:/temp myoutputfile.tif"</span>);
+                <span class="keyword">return</span>;
+            }
+
+            <span class="keyword">var</span> inWorkspace = args[<span class="number">0</span>];
+            <span class="keyword">var</span> inRaster = args[<span class="number">1</span>];
+            <span class="keyword">var</span> outWorkspace = args[<span class="number">2</span>];
+            <span class="keyword">var</span> outRaster = args[<span class="number">3</span>];
+
+            <span class="preprocessor">#<span class="keyword">region</span> Initialize license</span>
+
+            AoInitialize aoInit;
+            <span class="keyword">try</span>
+            {
+                ESRI.ArcGIS.RuntimeManager.Bind(ESRI.ArcGIS.ProductCode.Desktop);
+                aoInit = <span class="keyword">new</span> AoInitializeClass();
+                esriLicenseStatus licStatus = aoInit.Initialize(
+                    esriLicenseProductCode.esriLicenseProductCodeArcView);
+                Console.WriteLine(<span class="string">"License Checkout successful."</span>);
+            }
+            <span class="keyword">catch</span> (Exception exc)
+            {
+                <span class="comment">// If it fails at this point, shutdown.</span>
+                Console.WriteLine(exc.Message);
+            }
+
+            <span class="preprocessor">#<span class="keyword">endregion</span></span>
+
+            <span class="keyword">try</span>
+            {
+                Console.WriteLine(<span class="string">"Begin AFR conversion...."</span>);
+                <span class="comment">// Create a raster workspace factory.</span>
+                IWorkspaceFactory
+                    workspaceFactory = <span class="keyword">new</span> RasterWorkspaceFactory();
+                <span class="comment">// Open the workspace pointing to the input folder.</span>
+                IWorkspace workspace = workspaceFactory.OpenFromFile(inWorkspace, <span class="number">0</span>);
+                IRasterWorkspace rasterWorkspace = (IRasterWorkspace) workspace;
+                <span class="comment">// Open the .afr file as a raster dataset.</span>
+                IRasterDataset myRasterDataset = rasterWorkspace.OpenRasterDataset(
+                    inRaster);
+                <span class="comment">// Open the output workspace pointing to the output folder.</span>
+                IWorkspace outputWorkspace = workspaceFactory.OpenFromFile(outWorkspace, <span class="number">0</span>);
+                <span class="comment">// Use the SaveAs interface to convert the raster dataset into ISaveAs object.</span>
+                ISaveAs saveAsRaster = (ISaveAs) myRasterDataset;
+                <span class="comment">// Use SaveAs function to save it to the output dataset with the output format.</span>
+                saveAsRaster.SaveAs(outRaster, outputWorkspace, <span class="string">"tiff"</span>);
+                Console.WriteLine(<span class="string">"AFR conversion complete."</span>);
+                Console.WriteLine(<span class="string">"Have a nice day."</span>);
+            }
+            <span class="keyword">catch</span> (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+    }
+}
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-02-01T00:37:13.000Z"><a href="/2013/01/31/arcpy-management-getcount/">Jan 31 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/01/31/arcpy-management-getcount/">arcpy.management.GetCount()</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Accessing the value in code derived from the GetCount Tool in ArcPy is <em>not</em> straightforward.</p>
+<p>Here’s how:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="keyword">import</span> arcpy.management <span class="keyword">as</span> mgt
+
+cnt=mgt.GetCount(<span class="string">r'c:\scratch\shapefile.shp'</span>)
+cnt=int(cnt.getOutput(<span class="number">0</span>))
+<span class="comment">#now you can use cnt as a number</span>
+</pre></td></tr></table></figure>
+
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2013/01/lebowski.gif" target="_blank" rel="external"><img src="/images/9d7de3d2be82d2ba1032d99e06d0d21040be0040.gif" alt="gold brickin"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-01-25T06:51:26.000Z"><a href="/2013/01/24/blank-arctoolbox-tools/">Jan 24 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/01/24/blank-arctoolbox-tools/">Blank ArcToolbox Tools</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>If you have blank ArcToolbox Tools that look like this:</p>
+<p><img src="/images/b823fd9eae804fc8dab6bc04b2eb6cdd81bea792.png" alt="Dude where&#39;s my GP Tool?"></p>
+<p>Then it is highly likely that you have javascript, or as IE likes to call it ‘Active Scripting’, disabled.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-01-15T03:11:01.000Z"><a href="/2013/01/14/oracle-inner-join-update/">Jan 14 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/01/14/oracle-inner-join-update/">Oracle Inner Join Update</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Syntax for Oracle Inner Join Update:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">update</span> x <span class="keyword">SET</span> (x.coord_x,x.coord_y)=
+	(<span class="keyword">SELECT</span> y.POINT_X, y.POINT_Y <span class="keyword">from</span> y <span class="keyword">where</span> y.id = x.id)</span>
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-01-09T05:16:41.000Z"><a href="/2013/01/08/oracle-spatial-index-commands/">Jan 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/01/08/oracle-spatial-index-commands/">Oracle Spatial Index Commands</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Oracle Spatial index commands:</p>
+<p>Get Spatial Reference ID of FC:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">select</span> sde.ST_SRID(shape) <span class="keyword">from</span> MYSTGEOMFC <span class="keyword">where</span> rownum &lt; <span class="number">2</span></span>
+</pre></td></tr></table></figure>
+
+<p>Query Average Feature size:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">SELECT</span> (<span class="aggregate">AVG</span>(SDE.ST_MAXX.shape – SDE.ST_MINX.shape) +
+ <span class="aggregate">AVG</span>(SDE.ST_MAXY.shape – SDE.ST_MINY.shape)) / <span class="number">2</span>  <span class="keyword">from</span> MYSTGEOMFC</span>
+</pre></td></tr></table></figure>
+
+<p>Create an Index:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">create</span> index sa_idx <span class="keyword">on</span> MYSTGEOMFC(shape) indextype <span class="keyword">is</span>
+ sde.st_spatial_index parameters(<span class="string">'st_grids=1700 st_srid=2913'</span>)</span>
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-12-28T04:10:48.000Z"><a href="/2012/12/27/oracle-stored-functions/">Dec 27 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/12/27/oracle-stored-functions/">Oracle Stored Functions</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>When you see the following warning:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/12/2012-12-27_120700.png" target="_blank" rel="external"><img src="/images/a5af66ea566f5bb4486333f70579c26115ef98d5.png" alt="" title="2012-12-27_120700"></a><br>Don’t ignore it!!!</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">OR</span> <span class="keyword">REPLACE</span>
+FUNCTION GETHOUSEGEOM
+(intlid <span class="keyword">IN</span> VARCHAR2) RETURN CLOB <span class="keyword">IS</span> rdata CLOB;</span>
+<span class="operator"><span class="keyword">BEGIN</span>
+  <span class="keyword">SELECT</span> sde.st_astext(sde.st_transform(shape, <span class="number">4152</span>)) <span class="keyword">into</span> 
+  	rdata <span class="keyword">from</span> buildings.houses <span class="keyword">where</span> tlid = intlid;</span>
+  return rdata;
+<span class="operator"><span class="keyword">END</span> GETHOUSEGEOM;</span>
+</pre></td></tr></table></figure>
+
+<p>I was getting this warning on the input parameter intlid.  Turns out the field is actually NVARCHAR.  By simply changing the in param type from VAR… to NVAR… the response was improved by .1 second. (yes, that is a lot).  Surprise, surprise.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-12-27T08:38:55.000Z"><a href="/2012/12/27/python-sequence-by-instance/">Dec 27 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/12/27/python-sequence-by-instance/">Python sequence by instance</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>So my co-worker spatially joined points to taxlots and came up with many-to-one cardinality (points to taxlots).<br>He then needed to sequence each point for each taxlot. Still with me?</p>
+<p>something like going from this:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Point ID</th>
+<th style="text-align:center">NumberInSequence</th>
+<th style="text-align:right">TLID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">43</td>
+<td style="text-align:center"></td>
+<td style="text-align:right">1ABCD</td>
+</tr>
+<tr>
+<td style="text-align:left">76</td>
+<td style="text-align:center"></td>
+<td style="text-align:right">1ABCD</td>
+</tr>
+<tr>
+<td style="text-align:left">87</td>
+<td style="text-align:center"></td>
+<td style="text-align:right">1ABCD</td>
+</tr>
+<tr>
+<td style="text-align:left">26</td>
+<td style="text-align:center"></td>
+<td style="text-align:right">2DCBA</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:center"></td>
+<td style="text-align:right">2DCBA</td>
+</tr>
+</tbody>
+</table>
+<p>to this:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Point ID</th>
+<th style="text-align:center">NumberInSequence</th>
+<th style="text-align:right">TLID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">43</td>
+<td style="text-align:center">1</td>
+<td style="text-align:right">1ABCD</td>
+</tr>
+<tr>
+<td style="text-align:left">76</td>
+<td style="text-align:center">2</td>
+<td style="text-align:right">1ABCD</td>
+</tr>
+<tr>
+<td style="text-align:left">87</td>
+<td style="text-align:center">3</td>
+<td style="text-align:right">1ABCD</td>
+</tr>
+<tr>
+<td style="text-align:left">26</td>
+<td style="text-align:center">1</td>
+<td style="text-align:right">2DCBA</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:right">2DCBA</td>
+</tr>
+</tbody>
+</table>
+<p>We came up with this very simple field calculation:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre>globalDict = {}
+<span class="function"><span class="keyword">def</span> <span class="title">trackSequences</span><span class="params">(TLID)</span>:</span>
+ <span class="keyword">try</span>:
+  globalDict[TLID] += <span class="number">1</span>
+ <span class="keyword">except</span>:
+  globalDict[TLID] = <span class="number">1</span>
+ <span class="keyword">return</span> globalDict[TLID]
+</pre></td></tr></table></figure>
+
+<p>And set the variable to || trackSequences(!TLID!) ||<br>Booyah.<br>Kinda strange that you’re able to fill a global python dict up in the context of a field calculation…but you won’t hear any complaints from me.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-26T23:24:43.000Z"><a href="/2012/10/26/oracle-regex/">Oct 26 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/26/oracle-regex/">Oracle Regex and Loop</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Couple of fun little things here:<br> Oracle Loop syntax is bizarre…I’m curious to know the origin of the ‘dot dot’ symbol…<br> Regular expressions are supported, expensive, but available if needed.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre>DECLARE
+ counter NUMBER;
+<span class="operator"><span class="keyword">BEGIN</span>
+<span class="keyword">FOR</span> i <span class="keyword">IN</span> <span class="number">1.</span><span class="number">.10</span> LOOP
+<span class="keyword">SELECT</span> <span class="aggregate">COUNT</span>(*) <span class="keyword">INTO</span> counter <span class="keyword">FROM</span> AUTOSUGGEST <span class="keyword">WHERE</span> REGEXP_LIKE(addr, <span class="string">'^9703\d$'</span>);</span>
+<span class="operator"><span class="keyword">END</span> LOOP;</span>
+<span class="operator"><span class="keyword">END</span>;</span>
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-10-02T00:27:08.000Z"><a href="/2012/10/01/linkroll-2/">Oct 1 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/10/01/linkroll-2/">Linkroll</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This <a href="http://simpleprogrammer.com/2012/07/23/when-being-good-is-bad/" target="_blank" rel="external">Making the Complex Simple blog post</a> really hit home with me.<br>If you don’t read John Sonmez’ blog, you’re like, really missing out.</p>
+<p>Why do hackers get more done? because even if they end up destroying 80% of their work, that’s 80% more experience they have over those who didn’t attempt it. It seems to touch on risk aversion as well although I don’t think it’s a super clean analogy, the more risks you take, the more experience/exposure to adversity you have. Now go bet the bank on black at the roulette table. ;)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-09-15T05:41:44.000Z"><a href="/2012/09/14/i-make-me-laugh/">Sep 14 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/09/14/i-make-me-laugh/">I make me laugh</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I just got a stack overflow exception…<br>wonder why?</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="code"><pre>
+<span class="keyword">var</span> noneboxes = <span class="keyword">new</span> List&lt;RadioButton&gt;();
+
+<span class="keyword">var</span> chknone = <span class="keyword">new</span> RadioButton ();
+
+noneboxes.Add(chknone);
+
+chknone.Checked += <span class="keyword">delegate</span> {
+  <span class="keyword">foreach</span> (<span class="keyword">var</span> c <span class="keyword">in</span> noneboxes) {
+     c.IsChecked = <span class="keyword">true</span>;
+   }
+};
+</pre></td></tr></table></figure>
+
+<p>now go moisten your fencewood.</p>
+<iframe width="420" height="315" src="http://www.youtube.com/embed/ygc_NZo6_HM" frameborder="0" allowfullscreen></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/page/3/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/archives/page/5/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

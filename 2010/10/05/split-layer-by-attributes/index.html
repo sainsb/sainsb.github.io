@@ -1,0 +1,497 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Split layer by attributes | </title>
+  <meta name="author" content="Che Geovara">
+  
+  <meta name="description" content="A python script for splitting a layer by attributes.
+
+
+#SplitLayerByAttributes.py
+&#39;&#39;&#39;
+Author:
+  Dan Patterson
+  Dept of Geography and Environmental St">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Split layer by attributes"/>
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-06T01:11:00.000Z"><a href="/2010/10/05/split-layer-by-attributes/">Oct 5 2010</a></time>
+      
+      
+  
+    <h1 class="title">Split layer by attributes</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A python script for splitting a layer by attributes.</p>
+<p></p><p></p>
+<pre lang="python">
+#SplitLayerByAttributes.py
+'''
+Author:
+  Dan Patterson
+  Dept of Geography and Environmental Studies
+  Carleton University, Ottawa, Canada
+  Dan_Patterson@carleton.ca
+
+Date created June 23 2005
+Modified     Jan  24 2010
+
+Purpose:
+  Converts each shape in a feature class to a separate shapefile
+
+Properties (right-click on the tool and specify the following)
+General
+  Name   SplitLayerByAttributes
+  Label  Split Layer By Attributes
+  Desc   Splits a layer according to attributes within the selected field producing
+         a separate shapefile for common attributes.
+
+Source script SplitLayerByAttributes.py
+
+Parameter list
+                              Parameter Properties
+          Display Name         Data type        Type      Direction  MultiValue
+  argv[1]  Input feature class  Feature Layer    Required  Input      No
+  argv[2]  Field to query       Field            Required  Input      No
+  argv[3]  File basename        String           Optional  Input      No
+  argv[4]  Output folder        Folder           Required  Input      No
+'''
+#--------------------------------------------------------------------
+#Functions
+
+def gp_create(vers=None):
+  '''create the geoprocessor, 9.3, 9.2 or empty for win32com.client.Dispatch'''
+  if vers &gt;= 9.2:   #try 9.2 or above
+    try:
+      import arcgisscripting
+      gp = arcgisscripting.create(vers)
+      gp_version = vers
+    except:
+      import arcgisscripting
+      gp = arcgisscripting.create()
+      gp_version = 9.2
+  else:
+    try:
+      import win32com.client
+      gp = win32com.client.Dispatch("esriGeoprocessing.GpDispatch.1")
+      gp_version = 9.1
+    except:
+      gp = None
+      gp_version = 9.1
+  #
+  return [gp, gp_version]
+
+def gp_toolboxes(toolboxes, gp):
+  '''a list of toolboxes to add to the geoprocessor, gp'''
+  tbx_home = os.environ['ARCGISHOME'].replace("\","/") + 
+             "ArcToolbox/Toolboxes/"
+  msg = ""
+  passed = True
+  for a_tbx in toolboxes:
+    try:
+      tbx = tbx_home + a_tbx
+      gp.AddToolbox(tbx)
+      msg = msg + "\n  Adding toolbox: " + str(tbx)
+    except:
+      msg = msg + "\n  The toolbox:  " + str(tbx) + 
+            "\n  could not be loaded.  Check your toolbox path " + \
+            "\n  and availability, edit BoundingContainers.py to " + \
+            "\n  reflect its location."
+      passed = False
+  return [gp, msg, passed]
+
+#--------------------------------------------------------------------
+#Import the standard modules and the geoprocessor
+#
+import os, sys, string  #common examples
+
+gp, gp_version = gp_create(9.2)  #use 9.2 gp to permit enumerations
+
+gp, msg, passed = gp_toolboxes(["Data Management Tools.tbx"], gp)
+
+gp.AddMessage(msg)
+if not passed:
+  gp.AddMessage("\n  Exiting ..... \n")
+  del gp
+  sys.exit()
+
+gp.OverWriteOutput = 1
+#
+#Get the input feature class, optional fields and the output filename
+inFC = sys.argv[1]
+inField = sys.argv[2]
+theFName = sys.argv[3]
+outFolder = sys.argv[4]
+desc = gp.Describe
+theType = desc(inFC).ShapeType
+FullName = desc(inFC).CatalogPath
+thePath = (os.path.split(FullName)[0]).replace("\","/")
+if theFName != "#":
+  theFName = theFName.replace(" ","_")
+else:
+  theFName = (os.path.split(FullName)[1]).replace(".shp","")
+
+outFolder = outFolder.replace("\","/")
+
+#Determine if the field is integer, decimal (0 scale) or string field
+
+gp.AddMessage("\n  Checking for appropriate field type" 
+              + "(  string, decimal (0 scale) or integer)")
+
+theFields = gp.ListFields(inFC)
+inType = ""
+OIDField = desc(inFC).OIDFieldName
+OKFields = [OIDField]
+aField = theFields.next()
+gp.AddMessage("%-10s %-10s %-6s %-6s " % ("Field","Type","Scale","Useable"))
+
+while aField:
+  fType = aField.Type
+  fScale = aField.Scale
+  fName = aField.Name
+  if fName == inField:
+    inType = fType   #used to determine field type later on
+    inScale = fScale
+    inName = fName
+  isOK = "Y"
+  if (fType == "String"):
+    OKFields.append(fName)
+  elif ((fScale == 0) and (fType not in ["Geometry", "Date"])):
+    OKFields.append(fName)
+  else:
+    isOK = "N"
+
+  gp.AddMessage("%-10s %-10s %-6s %-6s " % (fName, fType, fScale,isOK))
+  aField = theFields.next()
+#
+if inField not in OKFields:
+  gp.AddMessage("The field " + inField + " is not an appropriate" + 
+                " field type.  Terminating operation.  " + 
+                "Convert date fiels to strings, and ensure integers " 
+                "are positive" + "n")  
+  del gp
+  sys.exit()
+#  
+#Determine unique values in the selected field
+
+gp.AddMessage(inField + " is being queried for unique values.")
+valueList = []
+rows = gp.SearchCursor(inFC)
+row = rows.next()
+aString = ""
+aLen = 0; aFac = 1
+
+while row:
+  aVal = row.GetValue(inField)
+  if aVal not in valueList:
+    valueList.append(aVal)
+    aLen = len(aString)
+    if aLen &gt; 50 * aFac:
+      aString = aString + "\n"
+      aFac = aFac + 1
+    aString = aString + " " + str(aVal)
+  row = rows.next()
+gp.AddMessage("Unique values: " + "\n" + aString)
+#
+gp.AddMessage("\n  Processing: " + FullName )
+#
+#Do the actual work of producing the unique shapefiles
+aMax = 1
+for aVal in valueList:
+  aMax = max(aMax, len(str(aVal)))
+for aVal in valueList:
+  if (str(aVal).isdigit()) and (not inType == "String"):
+    fs = '"' + "%" + str(aMax) + "." + str(aMax) + 'i"'
+    aSuffix = fs % aVal
+    aVal = str(aVal)
+  elif inType == "Double" and inScale == 0:
+    aSuffix = str(aVal).replace(".0","")  ###### 
+    aVal = str(aVal).replace(".0","")
+  else:
+    aSuffix = str(aVal) 
+    aVal = str(aVal)
+  try:
+    aSuffix = aSuffix.replace(" ","_")  #replace garbage in output files
+    aSuffix = aSuffix.replace('"',"")
+    aSuffix = aSuffix.replace("/","")
+    aSuffix = aSuffix.replace("-","")
+    outName = theFName + aSuffix + ".shp"
+
+    outShapeFile = outFolder + "/" + outName
+    outShapeFile = outShapeFile.replace("\","/")
+
+    if (not aVal.isdigit()) or (inType == "String"):
+      aVal = "'" + aVal + "'"
+    whereClause = "%s = %s" % (inField, aVal)
+    gp.MakeFeatureLayer(inFC, "TempLayer", whereClause)
+    gp.CopyFeatures("TempLayer",outShapeFile)
+    gp.AddMessage("Output and query: " + aSuffix + "  " + whereClause)
+  except:
+    whereClause = "%s = %s" % (inField, aVal)
+    gp.AddMessage("Output and query: " + aSuffix + "  " + whereClause + " did not work ")
+#
+gp.Addmessage("n  Processing complete" + "\n")
+del gp</pre>
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/Snippets++/">Snippets++</a>
+  </div>
+
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

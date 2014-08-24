@@ -1,0 +1,843 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 12 | Archives | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">Archives</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-11-23T05:27:57.000Z"><a href="/2011/11/22/server-object-extension-notes/">Nov 22 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/11/22/server-object-extension-notes/">Server Object Extension notes</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A few notes while this is fresh in the gray matter.</p>
+<ul>
+<li>When registering a SOE, you <em>can’t</em> use the standard .NET regasm.exe, you have to use esriRegasm.exe which is commonly located at C:\Program Files (x86)\Common Files\ArcGIS\bin.  When running this utility you’ll be prompted to choose the application that the library will be associated with (Server, Desktop, Engine).</li>
+<li>Next thing to make sure when registering your SOE is that the SOM account has read access to the .dll…Note that I’m ~85% sure of this, I was making changes fast and read this elsewhere…seems harmless enough if incorrect</li>
+<li>You can register multiple operations under one SOE - under the CreateRestSchema method where REST methods are registered, just add to the RestResource.operations collection.</li>
+<li>The RestOperation constructor takes 4 basic params (name, input arg names, response formats, and handler method) with 2 overloads (required capabilities (for security), and a bool for post only)</li>
+<li>Apparently it is possible to alter the MIME type of the response - <a href="http://forums.arcgis.com/threads/7993-SOE-REST-Web-Service-How-to-return-different-MIME-content-types" target="_blank" rel="external">this thread</a> in the ESRI support forum is good stuff.</li>
+<li>Debugging live SOEs is actually pretty straightforward.  Once the SOE is registered, publish a service (SOEs can only be associated with MapServer services at this point)[weak],  add the SOE functionality to the service, and attach to the process. I only had one service running on my dev box so it was rather easy to figure out which ArcSOC.exe proc to attach to.  I’m assuming the SOE’s are marked by the T-SQl/Managed code attributes…<a href="http://blog.guerrillagis.net/wp-content/uploads/2011/11/attach.png" target="_blank" rel="external"><img src="/images/367fa75b9d2a3dc078aea26e3e30fdb9d940533d.png" alt="" title="attach"></a></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-11-19T08:03:10.000Z"><a href="/2011/11/19/arcgis-server-find-on-tiled-service/">Nov 19 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/11/19/arcgis-server-find-on-tiled-service/">ArcGIS Server Find on tiled service</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Often times when creating a tiled map service for vector features, you can link to the data source and allow for identify and find functionality at the REST endpoint.<br>Note that the ‘Query’ method is not available as this is specific to vector services.  BUT the ‘Find’ function does give us some pretty potent access to the data, especially with the new ‘Layer Definitions’ field.   A certain individual was interested in querying Multnomah County’s taxlot data based on sale date…</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/11/RESTFIND.png" target="_blank" rel="external"><img src="/images/a08ef09ae76f08b34d1f5ed69941463689aebb7d.png" alt="" title="RESTFIND"></a><br>Note that in the Search Text field you must type something in (a string) and then in the next field you can choose whether or not you want the query to use ‘LIKE’ (contains) or not (‘=’) this obvious limits your query strength..  Note that you can only query string fields here - don’t even bother trying to query a numeric field…Even if you specify it in the ‘Search Fields’ field.  My initial thought was to put OR and specify the SITUSSTATE field…turns out that field is left null in some cases… So how ‘bout something loose? here we’ll select every record that contains an A in any of it’s fields…that ought a cover our bases on that limitation.</p>
+<p>Moving on to the Layer Definitions field, here is where you can add some special sauce: Note that I can actually specify a like statement and quotes on the string and where I want my wildcards…I could use numerics here as well, less than, greater than etc. Feasibly to extract all data from a service with a 1000 record limit we would iterate through OID &lt; 1000, OID &gt;999 AND OID&lt;2000, OID &gt; 1999 AND OID &lt;3000 etc.etc.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-11-19T01:16:46.000Z"><a href="/2011/11/18/sql-for-the-mobile-client/">Nov 18 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/11/18/sql-for-the-mobile-client/">SQL for the mobile client...</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>After the dev meetup last night and talking to Alan Laframboise about the dodgy future of Silverlight, I’m feeling I must gel some thoughts here.</p>
+<p>Silverlight is going away.  get used to it.</p>
+<p>The thing I can’t figure out is why Microsoft is pushing HTML 5 so hard when their browser is the most pathetic supporter of it? I keep seeing crazy cool Google-centric HTML5 demos but I ain’t really seen shit from MS pushing the HTML5 envelope.</p>
+<p><a href="http://www.theverge.com/2011/11/9/2548975/microsoft-may-halt-development-work-on-silverlight-after-next-release" target="_blank" rel="external">This article on the potential demise of Silverlight</a> after the next release had an interesting discussion thread….<br>This comment I found interesting:</p>
+<blockquote>
+<p>I haven’t really said anything that I was implying so I’ll say this, Apple had a hand in the advancement of HTML5 just as Google and Microsoft have. Apple refusing to support flash has helped increase the speed that HTML5 is developing and HTML5 replaces some uses of Silverlight but not all of them.<br>The reason MS would be likely to stop development of Silverlight after 5 is because the WinRT platform is a successor. It provides the functionality of Silverlight and incorporates HTML5+Javascript+CSS but still allows the use of C# or whatever supported language you prefer. Apple really had no hand in the replacement of Silverlight so that is why I question the statement “ Apple just took out two birds with one stone”</p>
+</blockquote>
+<p>Whoa, whoa whoa…the <strong>functionality of Silverlight</strong>? meaning? rich graphics engine?</p>
+<p><strong>incorporates HTML5+Javascript+CSS</strong> (Oh good, because I just loooooove CSS)…can’t wait to get back to that bullshit.</p>
+<p><strong>Still allows the use of C#</strong> - ok, this is the center of my relief and it continues to reinforce my belief that the lower you go, the less shit changes all the time….</p>
+<p>Maybe I’ll just become a DBA…</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-11-18T05:34:08.000Z"><a href="/2011/11/17/maf-notes-to-self/">Nov 17 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/11/17/maf-notes-to-self/">MAF notes to self</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>These are exception type streets in the master address database.</p>
+<p><pre>OBJECTID <em>    TLID </em>    HOUSE <em>    PRE_DIR </em>    STR_NAME <em>    STR_TYPE </em>    UNIT_TYPE    UNIT_NO    ADDRESSP *    STATE    ZIP<br>457429    1N230AD18600    2405    NE    CAFÉ    WY            2405 NE CAFÉ WY    OR    97124<br>457430    1N230AD18100    2410    NE    CAFÉ    WY            2410 NE CAFÉ WY    OR    97124<br>457431    1N230AD18500    2421    NE    CAFÉ    WY            2421 NE CAFÉ WY    OR    97124<br>457432    1N230AD18400    2433    NE    CAFÉ    WY            2433 NE CAFÉ WY    OR    97124<br>457433    1N230AD18200    2442    NE    CAFÉ    WY            2442 NE CAFÉ WY    OR    97124<br>457434    1N230AD18300    2459    NE    CAFÉ    WY            2459 NE CAFÉ WY    OR    97124</pre><br>CAFE with the umlaut should just be cafe</p>
+<p>FID 465271 = nothing.<br>18630 SW Boones Ferry RD, TUALATIN, OR 97062 should be caps<br>18755 #7 90TH AV APT #718 PRE_DIR should be SW</p>
+<p><pre>OBJECTID <em>    TLID </em>    HOUSE <em>    PRE_DIR </em>    STR_NAME <em>    STR_TYPE </em>    UNIT_TYPE    UNIT_NO    ADDRESSP *    STATE    ZIP<br>71238    1N331DB04700    2348        NATURES    WALK            2348 NATURES WALK    OR    97116<br>71237    1N331DB04600    2354        NATURES    WALK            2354 NATURES WALK    OR    97116<br>71236    1N331DB04500    2418        NATURES    WALK            2418 NATURES WALK    OR    97116<br>71235    1N331DB04400    2424        NATURES    WALK            2424 NATURES WALK    OR    97116<br>71234    1N331DB04300    2430        NATURES    WALK            2430 NATURES WALK    OR    97116</pre><br>WALK is not a STR_TYPE….WALK is part of the name…I think.</p>
+<p><pre>No house numbers<br>OBJECTID <em>    TLID </em>    HOUSE <em>    PRE_DIR </em>    STR_NAME <em>    STR_TYPE </em>    UNIT_TYPE    UNIT_NO    ADDRESSP *    STATE    ZIP<br>86466    1S107BC28200        SW    ANNAMAE    LN            SW ANNAMAE LN    OR    97006<br>86467    1S107BC28300        SW    ANNAMAE    LN            SW ANNAMAE LN    OR    97006<br>86468    1S107BC28400        SW    ANNAMAE    LN            SW ANNAMAE LN    OR    97006<br>86469    1S107BC28500        SW    ANNAMAE    LN            SW ANNAMAE LN    OR    97006<br>86470    1S107BC28600        SW    ANNAMAE    LN            SW ANNAMAE LN    OR    97006<br>86471    1S107BC28700        SW    ANNAMAE    LN            SW ANNAMAE LN    OR    97006</pre></p>
+<p><pre>OBJECTID <em>    TLID </em>    HOUSE <em>    PRE_DIR </em>    STR_NAME <em>    STR_TYPE </em>    UNIT_TYPE    UNIT_NO    ADDRESSP *    STATE    ZIP<br>83999    1S106BB00100    18455    SW    SALIX    RIDG            18455 SW SALIX RIDG    OR    97006<br>84000    1S106BB00200    18435    SW    SALIX    RIDG            18435 SW SALIX RIDG    OR    97006<br>84001    1S106BB00300    18415    SW    SALIX    RIDG            18415 SW SALIX RIDG    OR    97006<br>84002    1S106BB00400    18395    SW    SALIX    RIDG            18395 SW SALIX RIDG    OR    97006<br>84003    1S106BB00500    18365    SW    SALIX    RIDG            18365 SW SALIX RIDG    OR    97006<br>84004    1S106BB00600    18345    SW    SALIX    RIDG            18345 SW SALIX RIDG    OR    97006<br>84005    1S106BB00700    18325    SW    SALIX    RIDG            18325 SW SALIX RIDG    OR    97006<br>84006    1S106BB00800    18305    SW    SALIX    RIDG            18305 SW SALIX RIDG    OR    97006<br>84007    1S106BB00900    18285    SW    SALIX    RIDG            18285 SW SALIX RIDG    OR    97006<br>84008    1S106BB01000    18265    SW    SALIX    RIDG            18265 SW SALIX RIDG    OR    97006<br>84009    1S106BB01100    18245    SW    SALIX    RIDG            18245 SW SALIX RIDG    OR    97006<br>84010    1S106BB01200    18225    SW    SALIX    RIDG            18225 SW SALIX RIDG    OR    97006<br>84011    1S106BB01300    18205    SW    SALIX    RIDG            18205 SW SALIX RIDG    OR    97006<br>84012    1S106BB01400    18185    SW    SALIX    RIDG            18185 SW SALIX RIDG    OR    97006<br>84013    1S106BB01500    18165    SW    SALIX    RIDG            18165 SW SALIX RIDG    OR    97006<br>84014    1S106BB01600    18145    SW    SALIX    RIDG            18145 SW SALIX RIDG    OR    97006<br>84015    1S106BB01700    18125    SW    SALIX    RIDG            18125 SW SALIX RIDG    OR    97006<br>84017    1S106BB01900    18085    SW    SALIX    RIDG            18085 SW SALIX RIDG    OR    97006<br>84018    1S106BB02000    18065    SW    SALIX    RIDG            18065 SW SALIX RIDG    OR    97006<br>84019    1S106BB02100    18045    SW    SALIX    RIDG            18045 SW SALIX RIDG    OR    97006<br>84020    1S106BB02200    18025    SW    SALIX    RIDG            18025 SW SALIX RIDG    OR    97006<br>84021    1S106BB02300    18005    SW    SALIX    RIDG            18005 SW SALIX RIDG    OR    97006<br>84022    1S106BB02401    17985    SW    SALIX    RIDG            17985 SW SALIX RIDG    OR    97006<br>84023    1S106BB02501    17965    SW    SALIX    RIDG            17965 SW SALIX RIDG    OR    97006<br>84024    1S106BB02700    18020    SW    SALIX    RIDG            18020 SW SALIX RIDG    OR    97006<br>84025    1S106BB02800    18040    SW    SALIX    RIDG            18040 SW SALIX RIDG    OR    97006<br>84026    1S106BB02900    18060    SW    SALIX    RIDG            18060 SW SALIX RIDG    OR    97006<br>84027    1S106BB03000    18080    SW    SALIX    RIDG            18080 SW SALIX RIDG    OR    97006<br>84028    1S106BB03100    18100    SW    SALIX    RIDG            18100 SW SALIX RIDG    OR    97006<br>84056    1S106BB05900    18210    SW    SALIX    RIDG            18210 SW SALIX RIDG    OR    97006<br>84057    1S106BB06000    18290    SW    SALIX    RIDG            18290 SW SALIX RIDG    OR    97006<br>84058    1S106BB06100    18340    SW    SALIX    RIDG            18340 SW SALIX RIDG    OR    97006<br>84060    1S106BB06300    18380    SW    SALIX    RIDG            18380 SW SALIX RIDG    OR    97006<br>84061    1S106BB06400    18400    SW    SALIX    RIDG            18400 SW SALIX RIDG    OR    97006<br>84062    1S106BB06500    18430    SW    SALIX    RIDG            18430 SW SALIX RIDG    OR    97006</pre><br>RIDG is not a street type it is part of the name….or if it is a street part it should be spelled correctly.</p>
+<p><pre>OBJECTID <em>    TLID </em>    HOUSE <em>    PRE_DIR </em>    STR_NAME <em>    STR_TYPE </em>    UNIT_TYPE    UNIT_NO    ADDRESSP *    STATE    ZIP<br>93408    1S112AA03900    6812    SW    CANYON    CR            6812 SW CANYON CR    OR    97225<br>93414    1S112AA04500    7040    SW    CANYON    CR            7040 SW CANYON CR    OR    97225<br>93378    1S112AA01900    7080    SW    CANYON    CR            7080 SW CANYON CR    OR    97225<br>93397    1S112AA02900    7021    SW    CANYON    CR            7021 SW CANYON CR    OR    97225<br>93403    1S112AA03400    6721    SW    CANYON    CR            6721 SW CANYON CR    OR    97225<br>93422    1S112AA05300    6810    SW    CANYON    CR            6810 SW CANYON CR    OR    97225<br>93387    1S112AA01901    7030    SW    CANYON    CR    APT    9    7030 SW CANYON CR APT 9    OR    97225<br>93389    1S112AA01901    7030    SW    CANYON    CR            7030 SW CANYON CR    OR    97225<br>93412    1S112AA04300    7060    SW    CANYON    CR            7060 SW CANYON CR    OR    97225<br>93413    1S112AA04400    7050    SW    CANYON    CR            7050 SW CANYON CR    OR    97225<br>93381    1S112AA01901    7030    SW    CANYON    CR    APT    3    7030 SW CANYON CR APT 3    OR    97225<br>93400    1S112AA03101    6913    SW    CANYON    CR            6913 SW CANYON CR    OR    97225<br>93401    1S112AA03200    6809    SW    CANYON    CR            6809 SW CANYON CR    OR    97225<br>93405    1S112AA03600    6702    SW    CANYON    CR            6702 SW CANYON CR    OR    97225<br>93407    1S112AA03800    6808    SW    CANYON    CR            6808 SW CANYON CR    OR    97225<br>93411    1S112AA04200    7020    SW    CANYON    CR            7020 SW CANYON CR    OR    97225<br>93398    1S112AA03000    7009    SW    CANYON    CR            7009 SW CANYON CR    OR    97225<br>93406    1S112AA03700    6706    SW    CANYON    CR            6706 SW CANYON CR    OR    97225<br>93409    1S112AA04000    6904    SW    CANYON    CR            6904 SW CANYON CR    OR    97225<br>93385    1S112AA01901    7030    SW    CANYON    CR    APT    7    7030 SW CANYON CR APT 7    OR    97225<br>93404    1S112AA03500    6701    SW    CANYON    CR            6701 SW CANYON CR    OR    97225<br>93370    1S112AA01000    6665    SW    CANYON    CR            6665 SW CANYON CR    OR    97225<br>93380    1S112AA01901    7030    SW    CANYON    CR    APT    2    7030 SW CANYON CR APT 2    OR    97225<br>93382    1S112AA01901    7030    SW    CANYON    CR    APT    4    7030 SW CANYON CR APT 4    OR    97225<br>93384    1S112AA01901    7030    SW    CANYON    CR    APT    6    7030 SW CANYON CR APT 6    OR    97225<br>93399    1S112AA03100    6903    SW    CANYON    CR            6903 SW CANYON CR    OR    97225<br>93402    1S112AA03300    6801    SW    CANYON    CR            6801 SW CANYON CR    OR    97225<br>93410    1S112AA04100    7008    SW    CANYON    CR            7008 SW CANYON CR    OR    97225<br>93377    1S112AA01800    7081    SW    CANYON    CR            7081 SW CANYON CR    OR    97225<br>93379    1S112AA01901    7030    SW    CANYON    CR    APT    1    7030 SW CANYON CR APT 1    OR    97225<br>93383    1S112AA01901    7030    SW    CANYON    CR    APT    5    7030 SW CANYON CR APT 5    OR    97225<br>93386    1S112AA01901    7030    SW    CANYON    CR    APT    8    7030 SW CANYON CR APT 8    OR    97225<br>93388    1S112AA01901    7030    SW    CANYON    CR    APT    10    7030 SW CANYON CR APT 10    OR    97225</pre><br>CR is not a street type it is part of the name…I think.</p>
+<p><pre>OBJECTID <em>    TLID </em>    HOUSE <em>    PRE_DIR </em>    STR_NAME <em>    STR_TYPE </em>    UNIT_TYPE    UNIT_NO    ADDRESSP *    STATE    ZIP<br>482550    52E08C 01000    872    W    MAIN ST        BLDG    F    872 W MAIN ST BLDG F    OR    97038<br>482558    52E08C 01000    872    W    MAIN ST        BLDG    G    872 W MAIN ST BLDG G    OR    97038<br>482587    52E08C 01000    872    W    MAIN ST        BLDG    E    872 W MAIN ST BLDG E    OR    97038<br>482600    52E08C 01000    872    W    MAIN ST        BLDG    H    872 W MAIN ST BLDG H    OR    97038<br>482629    52E08C 01000    872    W    MAIN ST        BLDG    D    872 W MAIN ST BLDG D    OR    97038<br>482648    52E08C 01000    872    W    MAIN ST        BLDG    I    872 W MAIN ST BLDG I    OR    97038<br>482713    52E08C 01000    872    W    MAIN ST        BLDG    C    872 W MAIN ST BLDG C    OR    97038<br>482714    52E08C 01000    872    W    MAIN ST        BLDG    J    872 W MAIN ST BLDG J    OR    97038<br>482762    52E08C 01000    872    W    MAIN ST        BLDG    B    872 W MAIN ST BLDG B    OR    97038<br>482811    52E08C 01000    872    W    MAIN ST        BLDG    A    872 W MAIN ST BLDG A    OR    97038</pre><br>STREET NAME is NOT ‘MAIN ST’ street name is main, str_type is ST</p>
+<p><pre>OBJECTID <em>    TLID </em>    HOUSE <em>    PRE_DIR </em>    STR_NAME <em>    STR_TYPE </em>    UNIT_TYPE    UNIT_NO    ADDRESSP *    STATE    ZIP<br>93134    1S111DB05000    9400    SW    MALCOLM    GLEN            9400 SW MALCOLM GLEN    OR    97225<br>93133    1S111DB04900    9420    SW    MALCOLM    GLEN            9420 SW MALCOLM GLEN    OR    97225<br>93136    1S111DB05200    9440    SW    MALCOLM    GLEN            9440 SW MALCOLM GLEN    OR    97225<br>93135    1S111DB05100    9449    SW    MALCOLM    GLEN            9449 SW MALCOLM GLEN    OR    97225<br>93137    1S111DB05300    9450    SW    MALCOLM    GLEN            9450 SW MALCOLM GLEN    OR    97225</pre><br>MALCOLM GLEN is name of road.</p>
+<p><pre>OBJECTID <em>    TLID </em>    HOUSE <em>    PRE_DIR </em>    STR_NAME <em>    STR_TYPE </em>    UNIT_TYPE    UNIT_NO    ADDRESSP *    STATE    ZIP<br>519792    31E02BA02500    1720        KNAPPS    AL            1720 KNAPPS AL    OR    97068<br>519802    31E02BA02500    1726        KNAPPS    AL            1726 KNAPPS AL    OR    97068<br>519819    31E02BA02400    1754        KNAPPS    AL            1754 KNAPPS AL    OR    97068<br>519926    31E02BA03500    1832        KNAPPS    AL            1832 KNAPPS AL    OR    97068<br>519935    31E02BA03500    1838        KNAPPS    AL            1838 KNAPPS AL    OR    97068<br>519944    31E02BA03400    1848        KNAPPS    AL            1848 KNAPPS AL    OR    97068<br>519966    31E02BA03400    1868        KNAPPS    AL            1868 KNAPPS AL    OR    97068<br>519979    31E02BA03300    1870        KNAPPS    AL            1870 KNAPPS AL    OR    97068<br>519991    31E02BA03300    1872        KNAPPS    AL            1872 KNAPPS AL    OR    97068<br>520012    31E02BA03200    1876        KNAPPS    AL            1876 KNAPPS AL    OR    97068</pre><br>What kind of a street is an AL?</p>
+<p><pre>OBJECTID <em>    TLID </em>    HOUSE <em>    PRE_DIR </em>    STR_NAME <em>    STR_TYPE </em>    UNIT_TYPE    UNIT_NO    ADDRESSP *    STATE    ZIP<br>516711    37E05B 02000    66395    E    TILLICUM    SPUR            66395 E TILLICUM SPUR    OR    97067<br>516692    37E05B 01900    66401    E    TILLICUM    SPUR            66401 E TILLICUM SPUR    OR    97067<br>516651    37E05B 01800    66461    E    TILLICUM    SPUR            66461 E TILLICUM SPUR    OR    97067<br>516459    37E05B 02200    66464    E    TILLICUM    SPUR            66464 E TILLICUM SPUR    OR    97067</pre><br>is spur a type? maybe…</p>
+<p><pre>OBJECTID <em>    TLID </em>    HOUSE <em>    PRE_DIR </em>    STR_NAME <em>    STR_TYPE </em>    UNIT_TYPE    UNIT_NO    ADDRESSP *    STATE    ZIP<br>154356    2S105BA08200    12130    SW    SHELDRAKE    WALK            12130 SW SHELDRAKE WALK    OR    97007<br>154371    2S105BA09700    12175    SW    SHELDRAKE    WALK            12175 SW SHELDRAKE WALK    OR    97007<br>154372    2S105BA09800    12145    SW    SHELDRAKE    WALK            12145 SW SHELDRAKE WALK    OR    97007</pre><br>is walk a type or is that the road name?</p>
+<p>&nbsp;</p>
+<p>Duplicate addresses different taxlots?</p>
+<p>102349                 1S117AD90093     15000   SW      FARMINGTON                                         RD                            15000 SW FARMINGTON RD<br>102425                 1S117AD90533     15000   SW      FARMINGTON                                         RD                            15000 SW FARMINGTON RD</p>
+<p><pre><br>OBJECTID  TLID             HOUSE   PRE_DIR STR_NAME  STR_TYPE UNIT_TYPE UNIT_NO    ADDRESSP                      STATE ZIP   ZIP4 X_COORD         Y_COORD       MAF_ID  MAIL_CITY  </pre></p>
+<hr>
+<p>676730    2S102AA03100     8732    SW      SCOFFINS  ST       STE       100        8732 SW SCOFFINS ST STE 100   OR    97223 6224 7620508.92717   651289.5292   676730  TIGARD<br>33161     2S102AA03000     8732    SW      SCOFFINS  ST       STE       100        8732 SW SCOFFINS ST STE 100   OR    97223 6226 7620282.15026   651262.28642  33161   TIGARD<br>676767    2S102AA03100     8732    SW      SCOFFINS  ST       STE       120        8732 SW SCOFFINS ST STE 120   OR    97223 6224 7620522.35794   651275.06529  676767  TIGARD<br>33162     2S102AA03000     8732    SW      SCOFFINS  ST       STE       120        8732 SW SCOFFINS ST STE 120   OR    97223 6226 7620295.58104   651247.82251  33162   TIGARD<br>676768    2S102AA03100     8732    SW      SCOFFINS  ST       STE       140        8732 SW SCOFFINS ST STE 140   OR    97223 6224 7620535.78871   651258.5351   676768  TIGARD<br>33163     2S102AA03000     8732    SW      SCOFFINS  ST       STE       140        8732 SW SCOFFINS ST STE 140   OR    97223 6226 7620309.01181   651231.29232  33163   TIGARD<br><br>Duplicates</p>
+<p><pre><br>OBJECTID TLID             HOUSE   PRE_DIR STR_NAME STR_TYPE UNIT_TYPE UNIT_NO    ADDRESSP          STATE ZIP   ZIP4 X_COORD        Y_COORD       MAF_ID  MAIL_CITY  </pre></p>
+<hr>
+<p>450753   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7592418.92684  685675.43438  450753  BEAVERTON<br>461471   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593032.33891  686033.3084   461471  BEAVERTON<br>461807                    505     NW      185TH    AV                            505 NW 185TH AV   OR               7594878.63287  685766.04068  461807<br>460434   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7592934.23655  685570.87106  460434  BEAVERTON<br>463498   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7592081.9685   685979.99803  463498  BEAVERTON<br>448754   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591345.95735  685715.85728  448754  BEAVERTON<br>450144   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593170.00131  686813.99377  450144  BEAVERTON<br>458049   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591741.81398  685971.67389  458049  BEAVERTON<br>459442   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593185.42159  686809.72769  459442  BEAVERTON<br>462401   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593089.14206  686678.62631  462401  BEAVERTON<br>449095   1N236DD00300     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7594389.41634  685821.43176  449095  BEAVERTON<br>449141   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7592676.57776  685935.62434  449141  BEAVERTON<br>450423   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591351.64928  685673.64239  450423  BEAVERTON<br>461096   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7592996.18373  685216.66699  461096  BEAVERTON<br>447769                    505     NW      185TH    AV                            505 NW 185TH AV   OR               7594863.1542   685771.07087  447769<br>475059   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7592832.83891  685724.30413  475059  BEAVERTON<br>475098   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591986.29528  685731.87467  475098  BEAVERTON<br>479258   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591856.90157  685506.90289  479258  BEAVERTON<br>473806   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593476.85991  686219.71555  473806  BEAVERTON<br>476521   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593031.0794   686070.22572  476521  BEAVERTON<br>477915   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593231.35728  685959.23195  477915  BEAVERTON<br>476638   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591966.08661  685980.96161  476638  BEAVERTON<br>471211   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591359.56824  685380.71194  471211  BEAVERTON<br>472556   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591050.8773   685531.30479  472556  BEAVERTON<br>472594   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591270.58465  685762.96522  472594  BEAVERTON<br>472664   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593349.97211  685808.99902  472664  BEAVERTON<br>474038   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591358.32808  685437.21752  474038  BEAVERTON<br>478209   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593081.25328  685745.31266  478209  BEAVERTON<br>472777   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593569.10039  685667.62172  472777  BEAVERTON<br>476925   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593611.74278  686724.40223  476925  BEAVERTON<br>472837   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591338.97802  685588.29232  472837  BEAVERTON<br>478504   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591445.45407  685619.14468  478504  BEAVERTON<br>474479   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591523.00361  685629.18799  474479  BEAVERTON<br>477270   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7592946.32579  686034.52001  477270  BEAVERTON<br>478628   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593125.12303  685361.17159  478628  BEAVERTON<br>474558   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593125.83432  686755.08629  474558  BEAVERTON<br>477285   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591965.4813   686101.02658  477285  BEAVERTON<br>476021   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593631.55315  686717.7021   476021  BEAVERTON<br>474869   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7593029.50853  686289.09875  474869  BEAVERTON<br>476275   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591481.22966  685400.24377  476275  BEAVERTON<br>476287   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591333.82972  685638.63681  476287  BEAVERTON<br>473568   1N2360003404     505     NW      185TH    AV                            505 NW 185TH AV   OR    97006 3448 7591528.73589  685496.18077  473568  BEAVERTON<br><br>Duplicates</p>
+<p>SELECT COUNT(<em>) FROM MASTER_ADDRESS WHERE MAIL_CITY = ‘ ‘; = 4 ???<br>SELECT COUNT(</em>) FROM MASTER_ADDRESS WHERE MAIL_CITY IS NULL; = 96495</p>
+<p>OBJECTID               TLID             HOUSE   PRE_DIR STR_NAME                                           STR_TYPE UNIT_TYPE UNIT_NO    ADDRESSP                                                      STATE ZIP   ZIP4 X_COORD                Y_COORD                MAF_ID                 MAIL_CITY            SHAPE                  </p>
+<hr>
+<p>683375                 1S435CD09200     304             SALTER                                             ST                            304 SALTER ST                                                 OR    97119      7523374.64303          655730.5383            626092                 GASTON               683375<br>697076                 1S435CD07800     304             SALTER                                             ST                            304 SALTER ST                                                 OR    97119      7523373.09592          655780.03186           644992                 GASTON               697076                 </p>
+<p>OBJECTID               TLID             HOUSE   PRE_DIR STR_NAME                                           STR_TYPE UNIT_TYPE UNIT_NO    ADDRESSP                                                      STATE ZIP   ZIP4 X_COORD                Y_COORD                MAF_ID                 MAIL_CITY            SHAPE                  </p>
+<hr>
+<p>386164                 22E33A 00500     17105   S       MEADOW VIEW                                        DR                            17105 S MEADOW VIEW DR                                        OR    97045 9030 7672068.59591          623643.73459           363840                 OREGON CITY          386164<br>678970                 22E33A 00400     17105   S       MEADOW VIEW                                        DR                            17105 S MEADOW VIEW DR                                        OR    97045 9030 7672108.10759          623504.19335           645245                 OREGON CITY          678970                 </p>
+<p>147312         1S1E30DD  -00900 4702    SW      LURADEL            ST       4702 SW LURADEL ST     OR    97219 6855 7631143.749            658128.365             146249                 PORTLAND             147312<br>699771         1S1E30DD  -01100 4702    SW      LURADEL            ST       4702 SW LURADEL ST     OR    97219 6848 7631042.167            658137.165             643787                 PORTLAND             699771 </p>
+<p>SELECT HOUSE, PRE_DIR, STR_NAME, STR_TYPE, UNIT_TYPE, UNIT_NO, ZIP, MAIL_CITY, COUNT(<em>) from master_address group by HOUSE, PRE_DIR, STR_NAME, STR_TYPE, UNIT_TYPE, UNIT_NO, ZIP, MAIL_CITY having COUNT(</em>) &gt; 1<br>Find duplicates…</p>
+<p>SELECT DISTINCT STR_TYPE, COUNT(STR_TYPE) as cnt from master_address_11_21_11 GROUP BY STR_TYPE ORDER BY cnt<br>The first 11 of these seem pretty bogus to me…<br>STR_TYPE CNT                    </p>
+<hr>
+<p>SPUR     4<br>GLEN     5<br>LNDG     8<br>WALK     8<br>AL       13<br>PATH     24<br>PT       30<br>VW       30<br>SQ       32<br>RIDG     35<br>CR       36<br>TRL      320<br>PKWY     4831<br>LP       4979<br>CIR      5355<br>HWY      7304<br>TER      10499<br>BLVD     17178<br>WY       20779<br>PL       22459<br>LN       28829<br>CT       40410<br>RD       72349<br>DR       72622<br>ST       156344<br>AV       176058   </p>
+<p>View as suffix? no…<br>or yes…<br>SELECT DISTINCT STR_NAME, STR_TYPE  FRom master_address_11_21_11 WHERE STR_NAME like ‘WESTWOOD VIEW’ OR STR_TYPE=’VW’<br>STR_NAME                                           STR_TYPE </p>
+<hr>
+<p>SHANNON                                            VW<br>WESTWOOD VIEW                               NULL</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-11-17T07:19:57.000Z"><a href="/2011/11/16/bruce-reminds-us/">Nov 16 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/11/16/bruce-reminds-us/">Bruce reminds us</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/11/Bruce-Lee-Wallpaper-03.png" target="_blank" rel="external"><img src="/images/b508c14f7c5d28b2a108c71950421b4ce920e261.png" alt="" title="Bruce-Lee-Wallpaper-03"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-11-03T06:03:02.000Z"><a href="/2011/11/02/numpy-npz-file-stuff/">Nov 2 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/11/02/numpy-npz-file-stuff/">Numpy npz file stuff</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>For some raster analysis I’ve been storing datasets as numpy ndarrays in an npz file.  Kind of like pickled but more numpy-ish.  For some of the rasters I loaded, the null value came out to be 255 - I needed to change them to 0 so here’s what I came up with.</p>
+<pre lang="python">
+from numpy import *
+from PIL import Image
+
+#use this script to retro replace 255s with 0s in the input rasters.
+f = load('C:/Scratch/inputs.npz')
+
+replace={255:0}
+
+bike = copy(f['bike'])
+for k, v in replace.iteritems(): bike[f['bike']==k]=v
+
+block = copy(f['block'])
+for k, v in replace.iteritems(): block[f['block']==k]=v
+
+savez('C:/Scratch/inputs2.npz',bike=bike, block=block)
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-10-25T06:09:03.000Z"><a href="/2011/10/24/python-field-calculator-part-count/">Oct 24 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/10/24/python-field-calculator-part-count/">Python field calculator part count</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Yep…<br>spent way too much time looking for this:<br>‘!SHAPE!.partcount’</p>
+<p>‘!SHAPE!.pointcount’</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-10-23T05:29:49.000Z"><a href="/2011/10/22/null-coalesce/">Oct 22 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/10/22/null-coalesce/">Null coalesce</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>What do two question marks together in C# mean?</p>
+<p>This is the ‘Null Coalescing operator’ -</p>
+<p>As answered at StackOverflow:</p>
+<pre lang="csharp">
+FormsAuth = formsAuth ?? new FormsAuthenticationWrapper();
+</pre>
+
+<p>expands to:</p>
+<pre lang="csharp">
+FormsAuth = formsAuth != null ? formsAuth : new FormsAuthenticationWrapper();
+</pre>
+which further expands to:
+<pre lang="csharp">
+if(formsAuth != null)
+    FormsAuth = formsAuth;
+else
+    FormsAuth = new FormsAuthenticationWrapper();
+</pre>
+In English, it means "If whatever is to the left is not null, use that, otherwise use what's to the right."
+
+In JavaScript the null coalesce is simply a logical OR:
+
+<pre lang="javascript">
+var whatIWant = someString || "Cookies!";
+</pre>
+
+<p>Similarly, in Python it’s simply ‘or’</p>
+<pre lang="python">
+other = s or "some default value"
+
+# however
+
+42    or "something"    # returns 42
+0     or "something"    # returns "something"
+None  or "something"    # returns "something"
+False or "something"    # returns "something"
+""    or "something"    # returns "something"
+</pre>
+
+<p>Note that these last 2 snippets were stolen outright from Stack Overflow.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-10-22T12:38:00.000Z"><a href="/2011/10/22/lighter-weight-json-deserialization/">Oct 22 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/10/22/lighter-weight-json-deserialization/">Lighter-weight JSON deserialization</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Wow, I’ve been using the System.Runtime.Serialization.Json.DataContractJsonSerializer for awhile now but just came across <a href="http://www.drowningintechnicaldebt.com/ShawnWeisfeld/archive/2010/08/22/using-c-4.0-and-dynamic-to-parse-json.aspx" target="_blank" rel="external">this</a> and my life is soooo much easier,  no more writing classes to deserialize the data into…now it’s just dynamic types…</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-10-18T01:43:38.000Z"><a href="/2011/10/17/oracle-battle-royale/">Oct 17 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/10/17/oracle-battle-royale/">Oracle battle royale</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Lately I’ve become obsessed with delivering a stored function/proc to query ST_Geometry (ArcSDE) to reproduce our existing RLISQuery service.  This idea is not my own but rather that of a recently retired co-worker who was here from day 1.<br>Historically the service has been created through an intersect of multiple reference feature classes; neighborhoods, sewer district, census tracts etc.  This intersect results in a very large dataset and resembles something like stained glass when viewed in ArcMap. The process for extracting the information previously was an intersect(?) with a passed in point(?) not sure about this…but whatever it was it was a geoprocessing task of some sort (see ‘proprietary’ and , ‘suboptimal’).</p>
+<p>Here were the steps that were necessary to get up and running:</p>
+<ol>
+<li><p><strong>Grant user permissions</strong> to use the ST_* functions of the sde user.  Although this is default behavior, our database has always been migrated rather than rebuilt from scratch and so those options quietly came online but were never ‘granted’ by sys to public….Here’s an example of what I’m talking about::<br><pre lang="SQL">GRANT EXECUTE ON SDE.ST_DISTANCE TO PUBLIC;<br>GRANT EXECUTE ON SDE.ST_DISJOINT TO PUBLIC;<br>GRANT EXECUTE ON SDE.ST_ENVINTERSECTS TO PUBLIC;<br>GRANT EXECUTE ON SDE.ST_SPATIAL_INDEX TO PUBLIC;</pre><br>We spent a lot of time on the phone with ESRI trying to figure it out.  The problem manifested itself as being able to create a feature class in ArcSDE with the ST_Geometry configuration keyword but not being able to see the actual geometry (our workaround was to recreate the spatial index).  We figured it was a bug for quite some time until we created a feature class as sde and were able to view the geometry statim (that’s latin for immediately).  Lost in the permissions maze for days we were but finally triumphed through the granting of permissions.</p>
+</li>
+<li><p><strong>Convert data</strong> to the ST_Geometry datatype.  This was pretty straightforward using the Migrate Data tool in the Data Management/Database Toolbox.</p>
+</li>
+<li><p><strong>Writing the function</strong>.  This took awhile.  PL/SQL according to Wikipedia : is Oracle Corporation’s procedural extension language for SQL and the Oracle relational database. PL/SQL’s general syntax resembles that of Ada or Pascal. Yikes.  butt puckerage statim.  I’m used to SQL Server and T-SQL which is just SQL with a few more methods…so yeah…my function body eventually came out looking something like this:</p>
+<pre lang="sql">create or replace
+FUNCTION RLISQUERY
+( lat IN NUMBER DEFAULT 7681671
+, lng IN NUMBER DEFAULT 652231
+)
+return VARCHAR
+IS
+foo VARCHAR(255) := 'null';
+Begin
+Select bar into foo from x where z
+return 'result:' || foo;
+end;</pre>
+</li>
+<li><p><strong>Tuning the query</strong>.  My initial attempts at the query yielded excellent results. But then things started to look bleak when queries like this:</p>
+<pre lang="sql">Select foo from bar where sde.st_relation_operators.st_contains_f(shape,st_point(lat,lng, 5))=1</pre>
+on feature classes of ~&gt;100,000 features were tanking.  And I mean tanking...Eventually came across [this blog](http://www.palladiumconsulting.com/blog/sebastian/2008/05/sde-92s-stgeometry-part-one-perhaps.html) post wherein the author meticulously deconstructs the patheticness of the ST_Geometry query and never really arrives at a solution.<p>Thinking all was lost, I desperately tried messing around with [different spatial operators](http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/A_quick_tour_of_SQL_functions_used_with_ST_Geometry_and_ST_Raster_types/006z0000003n000000/); contains, within, touches etc.  I stumbled upon the st_envintersects predicate and noted the comparatively blazing speed at which this query performed.</p><p><span style="color: #ff9900;">---POP--- lightbulb</span> - while the results of the envintersects don't really work with a point (query might return multiple results) what if you could perform the fine-grained predicate on the results of the envintersect? AHA!
+<pre lang="sql">
+select FOO into foo_ from (SELECT shape, FOO from table WHERE sde.st_envintersects (shape, st_point (lat, lng, 5) ) = 1 ) where sde.st_relation_operators.st_contains_f(shape,st_point(lat,lng, 5))=1;
+-- This also works
+select FOO into foo_ from table WHERE sde.st_envintersects (shape, st_point (lat, lng, 5) ) = 1 AND sde.st_relation_operators.st_contains_f(shape,st_point(lat,lng, 5))=1;
+</pre>
+</p></li>
+<li><p>I stumbled upon several humorous ESRI knowledge base articles in my quest… <a href="http://support.esri.com/en/knowledgebase/techarticles/detail/32601" target="_blank" rel="external">this one</a> is particularly hilarious.  It gives an example query and the autotrace results and then tells you how to write the same query but force Oracle to use the spatial index.  I like how when you force it to use the spatial index the query goes from taking 10 seconds to 1 minute and 56 seconds…Great tip…<strong>if you suck</strong>.   <a href="http://support.esri.com/en/knowledgebase/techarticles/detail/36158" target="_blank" rel="external">The next one</a> carries a slight emotional flavor and confirms that no, it is in fact, not necessary to include the st_envintersects operator in your ST_geometry queries.   Like…someone put you up to it or something.   No you don’t have to use it but your queries will likely <strong>suck</strong> if you do not.</p>
+</li>
+<li>Stored functions and procs are compiled in Oracle as opposed to MySQL and SQL Server…I guess I like this, even if it seems strange.  Here, however the problem became getting the function to compile.  I normally use SQL Developer because it was on my box and I didn’t know any better.  Crafting the function was not fun but I eventually got it to work.  I then thought, well…If I’m going to be working in the db more, maybe I’d rather use Navicat or Toad, or a newer version of SQL Developer.  Strangely, none of these IDEs were able to compile my function.  I’m not sure if they use a newer version of PL/SQL or what the deal is …With Navicat and Toad I kept getting  Oracle Error 302 component ‘NAMEOFFUNCTION’ must be declared.  And with the newer version of SQL Developer I was getting a pretty generic server failure message.  Don’t ask my why the function only compiles in an older version of SQL Developer…some extension or plugin that’s not available to the rest.</li>
+<li><strong>Dealing with null values</strong> in certain feature classes.  Solution, wrap ‘em in begin/end and throw and exception handler in there. Something a la<br><pre lang="sql"><br>Begin<br>select x from y where z<br>EXCEPTION<pre><code>  <span class="keyword">WHEN</span> NO_DATA_FOUND <span class="keyword">THEN</span>
+  dbms_output.put_line(<span class="string">' '</span>);
+</code></pre>end;<br></pre><br>In this way I’m able to get past nulls in the queries.  Seems like Oracle could do better at catching errors and continuing but both Oracle and PL/SQL seem to be a dying breed based on all my google searching…aka documentation on most all of the above sucks.<br>Alright, well I finished my tutorial/rant, stay tuned to see where my road leads next.</li>
+</ol>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/page/11/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/archives/page/13/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

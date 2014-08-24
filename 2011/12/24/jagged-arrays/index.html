@@ -1,0 +1,338 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Jagged arrays and smooth rainbows | </title>
+  <meta name="author" content="Che Geovara">
+  
+  <meta name="description" content="I had never heard the term ‘Jagged Array‘ before and having done this many times it’s nice to have a label.
+For awhile now, I’ve thought it would be f">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Jagged arrays and smooth rainbows"/>
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-24T14:53:14.000Z"><a href="/2011/12/24/jagged-arrays/">Dec 24 2011</a></time>
+      
+      
+  
+    <h1 class="title">Jagged arrays and smooth rainbows</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I had never heard the term ‘<a href="http://msdn.microsoft.com/en-us/library/2s05feca.aspx" target="_blank" rel="external">Jagged Array</a>‘ before and having done this many times it’s nice to have a label.</p>
+<p>For awhile now, I’ve thought it would be fun to create a ‘color tuner’ circuit wherein, with an RGB LED and a potentiometer, one could dial through the colors of the rainbow.</p>
+<p>Here is the crappy video elucidating the result:</p>
+<p><iframe width="420" height="315" src="http://www.youtube.com/embed/ZIaL5GcpvJc" frameborder="0" allowfullscreen></iframe><br>Note that you can’t see that I’m dialing the potentiometer in order to cause the hue change (with one hand no less).</p>
+<p>In brief the circuit is using a 5K linear potentiometer, a Netduino (not plus), a cheap radio shack RGB LED and 3 470k resistors.  Since the RGB is common anode, I am ‘sinking’ voltage in three of the Netduino’s PWM pins and supplying 5V to the anode.  This means that the SetPulse and SetDutyCycle methods of the PWM pins will be inverted but it seems to work well given my equipment on hand. The potentiometer is regulating analog input into the Netduino.  I originally used <a href="http://forums.netduino.com/index.php?/topic/638-basic-analog-input-circuit-and-program/" target="_blank" rel="external">this link</a> to set up the simple analog input but <a href="http://davidsandor.com/post/2011/08/02/Netduino-Day-1-Variable-resistor-%28analog-input%29-controlling-onboard-LED-flashing.aspx" target="_blank" rel="external">this method</a> is even simpler.  The analog input comes in a range of 0 to 1023.  I perform a linear conversion (converting one range of numbers to a different range) <a href="http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio" target="_blank" rel="external">[as explained on SO]</a></p>
+<pre lang="python">
+NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
+
+Or a little more readable:
+OldRange = (OldMax - OldMin)
+NewRange = (NewMax - NewMin)
+NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
+</pre>
+
+<p> which is then used for a lookup in the jagged array.  The three values in the inner arrays are then fed into the SetPulse method of the LED.  While I originally had 16 colors set up, I ramped it up to 52.  It’s surprising how noticeable the jump still is from color to color.  Maybe I need to create 1023 different colors.  Anyway, here’s the source code with 16 colors for brevity, note the syntax on the inline jagged array initialization took a few extra minutes to figure out:</p>
+<pre lang="csharp">
+using System.Text;
+using Microsoft.SPOT;
+using System.Threading;
+using SecretLabs.NETMF.Hardware;
+using SecretLabs.NETMF.Hardware.Netduino;
+using System.Collections;
+
+namespace NDP_ColorTuner
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            PWM red = new PWM(Pins.GPIO_PIN_D6);
+            PWM blue = new PWM(Pins.GPIO_PIN_D5);
+            PWM green = new PWM(Pins.GPIO_PIN_D9);
+
+            AnalogInput a5 = new AnalogInput(Pins.GPIO_PIN_A0);
+            uint[][] colors = new uint[16][]{
+            new uint[] { 0,100,100 },new uint[] { 20,80,100 }, 
+           new uint[] { 40, 60, 100 },new uint[] { 60, 40, 100 }, 
+           new uint[] { 80, 20, 100 },new uint[] { 100, 0, 100 },
+           new uint[] { 100, 20, 80 },new uint[] { 100, 40, 60 }, 
+           new uint[] { 100, 60, 40 },new uint[] { 100, 80, 20 }, 
+            new uint[] { 100, 100, 0 }, new uint[] { 80, 100, 20 },
+            new uint[] { 60, 100, 40 }, new uint[] { 40, 100, 60 },
+            new uint[] { 20, 100, 80 }, new uint[] { 0, 100, 100 }
+        };
+
+            while (true)
+            {
+                int n = ((a5.Read() * 15 ) / 1023);
+
+                red.SetDutyCycle(colors[n][0]);
+                green.SetDutyCycle(colors[n][1]);
+                blue.SetDutyCycle(colors[n][2]);
+            }
+        }
+    }
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/CNET/">C#.NET</a>, <a href="/categories/CNET/Snippets++/">Snippets++</a>
+  </div>
+
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

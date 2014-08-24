@@ -1,0 +1,808 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 26 | Archives | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">Archives</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-16T07:24:00.000Z"><a href="/2010/07/16/new-app-headaches/">Jul 16 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/16/new-app-headaches/">External GIS app user complaints</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>The most common problems so far:<br><strong><br>1)&nbsp;&nbsp;&nbsp; Inability to set custom scale</strong><br> I hope to research this more in the next month.&nbsp; I have not found any scripts/forum stubs regarding this a la the new ESRI APIs.&nbsp; This was mostly unforeseen.<br><strong>2)&nbsp;&nbsp;&nbsp; <span style="text-decoration:line-through;">Inability to mark coordinates on the map</span></strong><br>This is developed and tested and will be pushed into prod when I get back.&nbsp; I would do it before I leave but then it would inevitably fail ;P.<br><strong>3)&nbsp;&nbsp;&nbsp; Inability to print/export.</strong><br>I didn&rsquo;t realize the breadth of browser pop-up blockers.&nbsp; When I have walked people through disabling them in IE it usually still fails.&nbsp; I later discover that it a 3rd party toolbar&hellip;I&rsquo;ve put comprehensive help in the FAQs for this.<br><strong>4)&nbsp;&nbsp;&nbsp; Inability to measure in IE7.</strong><br>One person reported this&hellip;I cannot reproduce it&hellip;but have taken note.<br><strong>5)&nbsp;&nbsp;&nbsp; Blank map when printing from the print_parcel.aspx page with IE7.</strong><br>Little issues keep coming up for people with IE7 that I cannot reproduce.<br><strong>6)&nbsp;&nbsp;&nbsp; X layer doesn&rsquo;t appear at Y scale&hellip;</strong><br>I am making note of these and can adjust accordingly.<br><strong>7)&nbsp;&nbsp;&nbsp; <span style="text-decoration:line-through;">No aerial photo coverage</span></strong><br>I tiled the NAIP imagery but have now decided to go with a dynamic layer instead so as to get coverage (albeit crappy coverage) at &gt;1:10,000 scales.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-10T00:06:00.000Z"><a href="/2010/07/09/service-tuning/">Jul 9 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/09/service-tuning/">Service tuning...</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Based on the stats I’m seeing, and advice from Jeremiah w/ESRI I’ve decided to roll back some changes I made on Wednesday to service instance pooling.&nbsp;</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/toppagesdetail1.png" target="_blank" rel="external"><img src="/images/8debbde438c0f1f93a96ffd1b33a5f5ec4dc3953.png" alt="" title="toppagesdetail1"></a></p>
+<p>I set the top 4 services (property, labels, roads and land1) to use a maximum of 2 instances (instead of 1).&nbsp; Based on the production GIS web server’s performance after the lsass.exe fix, I don’t think it will be a problem.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-08T07:25:00.000Z"><a href="/2010/07/08/initial-thoughts-on-tuning-mapserver/">Jul 8 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/08/initial-thoughts-on-tuning-mapserver/">Initial thoughts on tuning ArcGIS Server</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Our production GIS web server died again today at 3:50.&nbsp; I was not surprised.&nbsp; I had been watching the load not dip below 98% for a sustained period (like an hour).&nbsp; We rebooted.&nbsp; Ops had already made their system modifications and I made the following modifications:</p>
+<p>Set the maximum number of instances for each service from 2 to 1.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/25345435.bmp" target="_blank" rel="external"><img src="/images/a437b46c6800c9a95104bb566c91fa0661e34ed2.bmp" alt="" title="25345435"></a></p>
+<p>Set all services that are not supposed to be running (File_gdb test services and secured services) to not start automatically and stopped them.</p>
+<p>Set the host/SOC capacity to 100 - According to ESRI - “capacity limits the number of service instances that can run on a container machine (SOC)” - I’m not really sure how this translates&nbsp; - in a way it doesn’t make sense since if you only have 10 services and have set their maximum number of instances to 1 each then it seems to me you would never have more than 10 service instances.?? Am I missing something? I have a hunch that within each ArcSOC instance on the web server there are multiple instances running. This is the only way the capacity number makes sense to me…</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/111.bmp" target="_blank" rel="external"><img src="/images/87244fccb691208ce5e386189bafbb28bb4b2d3f.bmp" alt="" title="111"></a></p>
+<p>If/when the server begins to overheat again we will try the following additional settings:</p>
+<p>Setting the services to run in low isolation - according to ESRI - “the isolation level determines whether these instances run in separate processes or share processes” - low isolation implies that service instances will share processes and according to ESRI “can significantly improve memory consumption on your server” but is risky in that “if a process experiences a shutdown or crash” (I don’t know why one would) “all instances sharing the process will be destroyed.”</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/2222.bmp" target="_blank" rel="external"><img src="/images/5979144f04acbff366041978fabfa9a1613b3a28.bmp" alt=""></a></p>
+<p><strong>ALSO:</strong>I noticed that the lsass.exe process is coming out as a prime suspect in overheating Mapserver. After googling ArcGIS Server and lsass.exe voila! arrived at <a href="http://resources.arcgis.com/content/kbase?fa=articleShow&amp;d=32620" target="_blank" rel="external">this ESRI kb article</a> outlining the correlation, or should I say causation.&nbsp; It seems that every REST and SOAP request require the use of the LSASS (Local Security Authority Subsystem Service). By creating a new app pool and invoking additional IIS incantations, you can “disable per request authentication.”</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-08T04:11:00.000Z"><a href="/2010/07/07/python-script-to-search-for-string-in-directory-of-files/">Jul 7 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/07/python-script-to-search-for-string-in-directory-of-files/">Python script to search for string in directory of files</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This code searches for a string in a directory and includes subdirectories…Note the “for file in index([yourDirectory])” and “if line.find([yourString]).</p>
+<pre lang="python">import os
+
+def index(directory):
+    # like os.listdir, but traverses directory trees
+    stack = [directory]
+    files = []
+    while stack:
+        directory = stack.pop()
+        for file in os.listdir(directory):
+            fullname = os.path.join(directory, file)
+            files.append(fullname)
+            if os.path.isdir(fullname) and not os.path.islink(fullname):
+                stack.append(fullname)
+    return files
+
+#User enters string
+myStr = str(raw_input("String to search for:"))
+for file in index("c:/inetpub/wwwroot/ycMapDev/"):
+    if os.path.isdir(file):
+        continue
+    print("."), #just lets us know something is happening
+    filecheck = open(file)
+    for line in filecheck:
+        if line.find(myStr)!= -1:
+            print file +" HERE IT IS"
+            if not line: break
+    filecheck.close()</pre>
+
+<p>&nbsp;</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-08T04:09:00.000Z"><a href="/2010/07/07/arcgis-server-usage/">Jul 7 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/07/arcgis-server-usage/">ArcGIS Server Usage</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Just for everyone’s reference:</p>
+<p><strong>Page views by hour of day</strong>:</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/123.png" target="_blank" rel="external"><img src="/images/b0a9c0e56656a52008b9113a34e48d48c461f9b6.png" alt=""></a></p>
+<p><strong>Visits by hour of day:</strong></p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/456.png" target="_blank" rel="external"><img src="/images/f42312090a4c5f937d96e3d3cd8861572155c97c.png" alt=""></a></p>
+<p>Looks like between 9 and 3 our external server is getting hit the hardest with a climax point around 2:00pm.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-08T03:55:00.000Z"><a href="/2010/07/07/arcgis-server-error-logging/">Jul 7 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/07/arcgis-server-error-logging/">ArcGIS Server Error Logging</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>ArcGIS Server Logs are located at “\ArcGIS\Server\User\log”.&nbsp; A new log file is created each time the SOC is restarted.</p>
+<p>Per <a href="http://viswaug.wordpress.com/2008/09/14/a-better-way-to-read-arcgis-server-logsand-some-weird-errors-being-logged/" target="_blank" rel="external">this</a> blog post, I picked up baretail and the configuration file offered with it.&nbsp; Makes viewing the log file clearer and also updates the file on the fly.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/rererwe.bmp" target="_blank" rel="external"><img src="/images/bca7223e18a1409a6a28d3b6a019f686fd886750.bmp" alt="" title="rererwe"></a></p>
+<p>I’m just starting to correlate the errors and messages with actions performed.&nbsp; It seems to me that many of them are rather sensationalized.&nbsp; For instance, if I click on a service that is not started in ArcCatalog the log file logs this:</p>
+<p>&lt;Msg time=’2010-07-07T12:01:17’ type=’ERROR’ code=’1013’ target=’ae2009.MapServer’ thread=’420’ elapsed=’0.00000’&gt;Configuration service.server is not started.&lt;/Msg&gt;</p>
+<p>Thank you ArcGIS Server but I already knew that the service was not started by the little red square on the icon.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/qqqq.bmp" target="_blank" rel="external"><img src="/images/1026828755f00fc27e9de46bf7c98e467021a143.bmp" alt="" title="rererwe"></a></p>
+<p>Also, when you get messages like this:</p>
+<p>&lt;Msg time=’2010-07-07T11:41:28’ type=’WARNING’ code=’2033’ target=’zoning.MapServer’ thread=’3912’&gt;The Server Object instance is shutting down because the Idle Timeout Interval has elapsed&lt;/Msg&gt;</p>
+<p>It merely means that the service has not been requested again within the idle timeout period - which by default is 30 minutes.&nbsp; Thanks for the warning that no one used this service for 30 minutes(?) should I care?</p>
+<p>At any rate, hopefullly this will provide further ammunition in debugging the spasms that our server has been experiencing lately.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-07T05:39:00.000Z"><a href="/2010/07/06/blocking-ip-blocks-in-iis/">Jul 6 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/06/blocking-ip-blocks-in-iis/">Blocking IP blocks in IIS</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Discovered several unauthorized spiders crawling our servers…</p>
+<p>I initially setup a detection script to redirect them to a dummy page, but per a co-worker went into IIS and setup deny rules.&nbsp;</p>
+<p>Since the IP addresses were known groups - you can set 75.126.0.0 and match the subnet mask with 255.255.0.0</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/sdfsdf.bmp" target="_blank" rel="external"><img src="/images/07816cac848329d00b563912a2fc8fbae400780d.bmp" alt="" title="sdfsdf"></a></p>
+<p>The IP address groups that were blocked are:</p>
+<ul>
+<li>67.228.<em>.**   74.86.</em>.<strong>   75.126.*.</strong>   174.36.<em>.**   174.37.</em>.<strong>   208.43.*.</strong>   69.50.208.*</li>
+</ul>
+<p>I don’t know how long this has been going on but I bet it is awhile.&nbsp; The queries were for complete first/last name pairs.&nbsp; I ran a few to see if they actually turned up anything but none of them did.</p>
+<p>*Update - Looking at the log file from this day (7/6/10) can you tell when the spiders were shut down?</p>
+<p>(The green is spider traffic)</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/hourofdayactivity.png" target="_blank" rel="external"><img src="/images/b16f73c29f53c1a2308da08e69981bb4be33ab5f.png" alt="" title="hourofdayactivity"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-03T08:52:00.000Z"><a href="/2010/07/03/friday-wrap-up/">Jul 3 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/07/03/friday-wrap-up/">Friday wrap-up</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>The small things:</p>
+<ul>
+<li>Created a robots.txt file for our external web server in hopes that it cuts down on the spider bandwidth.</li>
+<li>Tried to get the external app web services to be SOAP compliant through the use of XMLInclude attribute tags.&nbsp; May need to parse search type client side and break out parseText. Update - I never did get this working due to namespace collisions with my webservices.  Since I was consuming them in a REST/JSON fashion, it was never a problem, but SOAP is much stricter.</li>
+<li>Working on map annotation for users.&nbsp; Got the API working but worried about print service….will need to detect them clientside and send the point and text to printserver.asmx…</li>
+<li>Tiled Aerials Express out to level 17.</li>
+<li>Learned that you can have 2 remote sessions open if you reconnect and the terminal isn’t happy.</li>
+<li>Learned that memory usage in the task manager doesn’t nec. indicate CPU usage.</li>
+<li>Listening to: <a href="http://www.archive.org/details/db2010-06-12.flac" target="_blank" rel="external">Disco Biscuits live at Bonnaroo</a><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/07/untitled.PNG" target="_blank" rel="external"><img src="/images/7e629f28d20f6a8f9a1d51eb6b9e39fd52b5bb6a.PNG" alt="" title="untitled"></a></li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-07-01T02:15:00.000Z"><a href="/2010/06/30/vba-to-set-all-raster-symbology-in-toc/">Jun 30 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/06/30/vba-to-set-all-raster-symbology-in-toc/">VBA to set all raster symbology in TOC</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Takes the symbology of the first raster in the TOC and sets all the rest to it.  Handy when you have a ton of sids in there whose noData/background value needs to be set to no color or if you need to set their scale properties the same.</p>
+<pre lang="vb">Sub CopyRenderer()
+
+Dim pMxDoc As IMxDocument: Set pMxDoc = Application.Document
+Dim pMap As IMap: Set pMap = pMxDoc.FocusMap
+
+Dim pFromLayer As IRasterLayer
+Set pFromLayer = pMap.Layer(0)
+Dim pToLayer As IRasterLayer
+Dim pFromlayerEffects As ILayerEffects
+Dim pToLayerEffects As ILayerEffects
+Set pFromlayerEffects = pFromLayer
+Dim i As Integer
+
+For i = 1 To pMap.LayerCount - 1
+    If TypeOf pMap.Layer(i) Is IRasterLayer Then
+        Set pToLayer = pMap.Layer(i)
+        Set pToLayer.Renderer = pFromLayer.Renderer
+        Set pToLayerEffects = pToLayer
+        pToLayerEffects.Contrast = pFromlayerEffects.Contrast
+        pToLayerEffects.Brightness = pFromlayerEffects.Brightness
+        pToLayerEffects.Transparency = pFromlayerEffects.Transparency
+        pToLayer.MaximumScale = 0
+        pToLayer.MinimumScale = 175000
+    End If
+Next i
+
+pMxDoc.UpdateContents
+pMxDoc.activeView.Refresh
+
+End Sub</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-06-30T02:33:00.000Z"><a href="/2010/06/29/python-address-validation/">Jun 29 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/06/29/python-address-validation/">Python address validation</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Found an address range verification script yesterday afternoon that proved very easy to adapt and run.  I customized it to strip out extraneous fields and ran it on each city’s roads data.  (This I created from simple select by locations using city bounds.)</p>
+<p>The tool generates three feature classes - parity, range and overlaps.&nbsp; I’m not sure the difference between the parity and range feature classes, and indeed sometimes the same road segment appears in both, however, the errors are valid.&nbsp; The roads_overlaps is usually two or more segments with overlapping address ranges.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/06/test.PNG" target="_blank" rel="external"><img src="/images/a1d801cf762a09ec06df0f5d7413b1cd01629f61.PNG" alt="" title="test"></a></p>
+<p><strong>Sample of the parity table.</strong></p>
+<table style="border-collapse:collapse;table-layout:fixed;width:490px;" border="1" cellspacing="0" cellpadding="0"><br><col style="width:128pt;" width="170"> <col style="width:48pt;" span="5" width="64"><br><tbody><br><tr class="xl63380" style="height:15pt;"><br><td class="xl63380" style="height:15pt;width:128pt;" width="170" height="20"><strong>FULL   NAME #</strong></td><br><td class="xl63380" style="width:48pt;" width="64"><strong>LEFT ADD </strong><span style="display:none;">LOW</span></td><br><td class="xl63380" style="width:48pt;" width="64"><strong>LEFT ADD </strong><span style="display:none;">HIGH</span></td><br><td class="xl63380" style="width:48pt;" width="64"><strong>RIGHT AD</strong><span style="display:none;">D LOW</span></td><br><td class="xl63380" style="width:96pt;" colspan="2" width="128"><strong>RIGHT ADD HIGH</strong></td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">ALANNA CT</td><br><td align="right">251</td><br><td align="right">260</td><br><td align="right">250</td><br><td align="right">262</td><br><td>&nbsp;</td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">ASHBURN WAY</td><br><td align="right">1094</td><br><td align="right">1198</td><br><td align="right">1096</td><br><td align="right">1199</td><br><td>&nbsp;</td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">AUDRY DR</td><br><td align="right">1599</td><br><td align="right">1636</td><br><td align="right">1598</td><br><td align="right">1635</td><br><td>&nbsp;</td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">E HALL LN</td><br><td align="right">1352</td><br><td align="right">1383</td><br><td align="right">1351</td><br><td align="right">1382</td><br><td>&nbsp;</td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">E LITTLE DOGGIE DRAW</td><br><td align="right">2080</td><br><td align="right">2199</td><br><td align="right">2081</td><br><td align="right">2198</td><br><td>&nbsp;</td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">E ROAD 2 SOUTH</td><br><td align="right">1300</td><br><td align="right">1448</td><br><td align="right">1300</td><br><td align="right">1449</td><br><td>&nbsp;</td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">KACHINA</td><br><td align="right">2200</td><br><td align="right">2399</td><br><td align="right">2201</td><br><td align="right">2399</td><br><td>&nbsp;</td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">N JAMES DR</td><br><td align="right">900</td><br><td align="right">954</td><br><td align="right">900</td><br><td align="right">953</td><br><td>&nbsp;</td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">N KIMBERLY LN</td><br><td align="right">3300</td><br><td align="right">3499</td><br><td align="right">3301</td><br><td align="right">3499</td><br><td>&nbsp;</td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">N MARICOPA ST</td><br><td align="right">2770</td><br><td align="right">2999</td><br><td align="right">2769</td><br><td align="right">2999</td><br><td>&nbsp;</td><br></tr><br><tr style="height:15pt;"><br><td style="height:15pt;" height="20">W WILL DR</td><br><td align="right">101</td><br><td align="right">236</td><br><td align="right">100</td><br><td align="right">235</td><br><td><br><br>&nbsp;<br><br></td><br></tr><br><!--[if supportMisalignedColumns]--><br><tr style="display:none;"><br><td style="width:128pt;" width="170">&nbsp;</td><br><td style="width:48pt;" width="64">&nbsp;</td><br><td style="width:48pt;" width="64">&nbsp;</td><br><td style="width:48pt;" width="64">&nbsp;</td><br><td style="width:48pt;" width="64">&nbsp;</td><br><td style="width:48pt;" width="64">&nbsp;</td><br></tr><br><!--[endif]--><br></tbody><br></table>
+
+<p>&nbsp;</p>
+<p>Per a co-worker I put Camp Verde, Cottonwood, Clarkdale and Sedona into a zip file and put it on the fromYav directory under the cities FTP directory.  I did the same for PV, Chino, Prescott and Dewey Humboldt.</p>
+<p>The Python script takes a geodatabase with a roads feature class in it.&nbsp; It is set up to work with our schema e.g. address range field names, deletion of extraneous fields etc.&nbsp; I saved a version of it on our prod GIS server and included a copy of it here.<a href="http://blog.guerrillagis.net/wp-content/uploads/2010/06/Find_Address_Range_Overlaps.zip" target="_blank" rel="external">Find_Address_Range_Overlaps</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/page/25/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/archives/page/27/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

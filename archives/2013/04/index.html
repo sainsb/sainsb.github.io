@@ -1,0 +1,413 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2013/4 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2013/4</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-20T03:18:15.000Z"><a href="/2013/04/19/oracle-st_geom-notes/">Apr 19 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/19/oracle-st_geom-notes/">Oracle ST_GEOM notes</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Here’s the scenario:</p>
+<ul>
+<li><span style="line-height: 1.714285714; font-size: 1rem;">I’ve got a big feature class that I’m storing in the </span><a href="http://gis.stackexchange.com/questions/12646/why-has-web-mercator-auxiliary-sphere-become-the-web-map-standard" title="Web Mercator Auxiliary" target="_blank" rel="external">one true projection</a> in Oracle<span style="line-height: 1.714285714; font-size: 1rem;">.</span></li>
+<li>The data is stored in ST_Geometry == queryable spatially via SQL.</li>
+<li><span style="line-height: 1.714285714; font-size: 1rem;">I’m writing a stored function against the feature class to do a point in poly query.</span></li>
+<li><span style="line-height: 1.714285714; font-size: 1rem;">I want the stored function to take lat long.</span></li>
+<li>Since I can assume that the incoming data is in decimal degrees, I can use WGS 84 as the incoming point coord sys.</li>
+<li>Since Web Merc. Aux is associated with WGS 84 I can use the ST_TRANSFORM method.<br>This is what I came up with:<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">OR</span> <span class="keyword">replace</span> FUNCTION Optintriangleid (lng <span class="keyword">IN</span> <span class="keyword">NUMBER</span>, 
+                                            lat <span class="keyword">IN</span> <span class="keyword">NUMBER</span>) 
+RETURN <span class="keyword">NUMBER</span> 
+<span class="keyword">IS</span> 
+  rslt  <span class="keyword">NUMBER</span>(<span class="number">11</span>);</span> 
+  point ST_POINT; 
+<span class="operator"><span class="keyword">BEGIN</span> 
+    --assign the incoming lat lng point <span class="keyword">to</span> an ST_POINT <span class="keyword">in</span> WEB Merc projection 
+    <span class="keyword">SELECT</span> ST_POINT((sde.ST_ASTEXT(sde.ST_TRANSFORM(ST_POINT (lng, lat, <span class="number">4326</span>), 
+                                    <span class="number">300006</span>)) ), <span class="number">300006</span>) 
+    <span class="keyword">INTO</span>   point 
+    <span class="keyword">FROM</span>   dual;</span> 
+
+    <span class="comment">--spatial query the intersecting triangle out of the database </span>
+    <span class="operator"><span class="keyword">SELECT</span> tri_id 
+    <span class="keyword">INTO</span>   rslt 
+    <span class="keyword">FROM</span>   (<span class="keyword">SELECT</span> * 
+            <span class="keyword">FROM</span>   optintriangles 
+            <span class="keyword">WHERE</span>  sde.ST_ENVINTERSECTS (shape, point) = <span class="number">1</span>) 
+    <span class="keyword">WHERE</span>  sde.ST_RELATION_OPERATORS.ST_CONTAINS_F(shape, point) = <span class="number">1</span>;</span> 
+
+    RETURN rslt; 
+EXCEPTION 
+  WHEN no_data_found THEN 
+             RETURN -99; 
+<span class="operator"><span class="keyword">END</span>;</span>
+</pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>On a separate note,<br>To recompile a stored function in oracle via sql use this syntax:</p>
+<p><figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">ALTER</span> FUNCTION myfunc COMPILE;</span>
+</pre></td></tr></table></figure><br>too easy.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2013-04-09T04:07:57.000Z"><a href="/2013/04/08/arcgis-server-token-referrer-notes/">Apr 8 2013</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2013/04/08/arcgis-server-token-referrer-notes/">ArcGIS Server Token referrer notes</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>ESRI’s ArcGIS Server provides enhanced token authentication via a ‘referrer’ or IP address embedded in the token from which and only which traffic may flow.  Also in the token is the user name and time until expiration.  By embedding the referrer, one can utilize a token in JavaScript and be comforted that someone can’t just snag that token and append it to their own URLs to gain access since they’ll likely not know that it’s looking for a specific referrer.</p>
+<p>A neat idea. but it does’t work for a number of reasons:</p>
+<p>1) Referrer is easily spoofed. (and ArcGIS Server docs are available online to the would be haxxor)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+</pre></td><td class="code"><pre>import urllib2
+req = urllib2.Request('http://www.example.com/')
+req.add_header('Referer', 'http://www.python.org/')
+r = urllib2.urlopen(req)
+</pre></td></tr></table></figure>
+
+<p>2) When using a reverse proxy server, certain variables may not be proxied to the machine decrypting the token:<br>Indeed this didn’t work for us because all of our ArcGIS Server traffic was being routed/load balanced by a reverse proxy server that wasn’t passing the referrer to ArcGIS Server inside.  We got this sorted and then started to see pretty full data for the referrer in the IIS logs (inside). Note that ESRI’s tokens also support the use of an IP address.</p>
+<p>3)<del>Not all browsers will pass the referrer.</del>  Actually, while each browser does rewrite headers as it chooses, this was not exactly what was happening to me at the heat of the moment when I wrote this blog post.  Actually, sometimes an AJAX request will not pass a referrer.  p</p>
+<p><a href="http://blog.guerrillagis.net/?attachment_id=1904" target="_blank" rel="external"><img src="/images/c99abcb0ebeb7883c030296add7775304ad6ed6e.gif" alt="Chair throwing"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

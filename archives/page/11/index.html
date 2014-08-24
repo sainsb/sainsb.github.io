@@ -1,0 +1,866 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 11 | Archives | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">Archives</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-24T14:53:14.000Z"><a href="/2011/12/24/jagged-arrays/">Dec 24 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/24/jagged-arrays/">Jagged arrays and smooth rainbows</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I had never heard the term ‘<a href="http://msdn.microsoft.com/en-us/library/2s05feca.aspx" target="_blank" rel="external">Jagged Array</a>‘ before and having done this many times it’s nice to have a label.</p>
+<p>For awhile now, I’ve thought it would be fun to create a ‘color tuner’ circuit wherein, with an RGB LED and a potentiometer, one could dial through the colors of the rainbow.</p>
+<p>Here is the crappy video elucidating the result:</p>
+<p><iframe width="420" height="315" src="http://www.youtube.com/embed/ZIaL5GcpvJc" frameborder="0" allowfullscreen></iframe><br>Note that you can’t see that I’m dialing the potentiometer in order to cause the hue change (with one hand no less).</p>
+<p>In brief the circuit is using a 5K linear potentiometer, a Netduino (not plus), a cheap radio shack RGB LED and 3 470k resistors.  Since the RGB is common anode, I am ‘sinking’ voltage in three of the Netduino’s PWM pins and supplying 5V to the anode.  This means that the SetPulse and SetDutyCycle methods of the PWM pins will be inverted but it seems to work well given my equipment on hand. The potentiometer is regulating analog input into the Netduino.  I originally used <a href="http://forums.netduino.com/index.php?/topic/638-basic-analog-input-circuit-and-program/" target="_blank" rel="external">this link</a> to set up the simple analog input but <a href="http://davidsandor.com/post/2011/08/02/Netduino-Day-1-Variable-resistor-%28analog-input%29-controlling-onboard-LED-flashing.aspx" target="_blank" rel="external">this method</a> is even simpler.  The analog input comes in a range of 0 to 1023.  I perform a linear conversion (converting one range of numbers to a different range) <a href="http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio" target="_blank" rel="external">[as explained on SO]</a></p>
+<pre lang="python">
+NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
+
+Or a little more readable:
+OldRange = (OldMax - OldMin)
+NewRange = (NewMax - NewMin)
+NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
+</pre>
+
+<p> which is then used for a lookup in the jagged array.  The three values in the inner arrays are then fed into the SetPulse method of the LED.  While I originally had 16 colors set up, I ramped it up to 52.  It’s surprising how noticeable the jump still is from color to color.  Maybe I need to create 1023 different colors.  Anyway, here’s the source code with 16 colors for brevity, note the syntax on the inline jagged array initialization took a few extra minutes to figure out:</p>
+<pre lang="csharp">
+using System.Text;
+using Microsoft.SPOT;
+using System.Threading;
+using SecretLabs.NETMF.Hardware;
+using SecretLabs.NETMF.Hardware.Netduino;
+using System.Collections;
+
+namespace NDP_ColorTuner
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            PWM red = new PWM(Pins.GPIO_PIN_D6);
+            PWM blue = new PWM(Pins.GPIO_PIN_D5);
+            PWM green = new PWM(Pins.GPIO_PIN_D9);
+
+            AnalogInput a5 = new AnalogInput(Pins.GPIO_PIN_A0);
+            uint[][] colors = new uint[16][]{
+            new uint[] { 0,100,100 },new uint[] { 20,80,100 }, 
+           new uint[] { 40, 60, 100 },new uint[] { 60, 40, 100 }, 
+           new uint[] { 80, 20, 100 },new uint[] { 100, 0, 100 },
+           new uint[] { 100, 20, 80 },new uint[] { 100, 40, 60 }, 
+           new uint[] { 100, 60, 40 },new uint[] { 100, 80, 20 }, 
+            new uint[] { 100, 100, 0 }, new uint[] { 80, 100, 20 },
+            new uint[] { 60, 100, 40 }, new uint[] { 40, 100, 60 },
+            new uint[] { 20, 100, 80 }, new uint[] { 0, 100, 100 }
+        };
+
+            while (true)
+            {
+                int n = ((a5.Read() * 15 ) / 1023);
+
+                red.SetDutyCycle(colors[n][0]);
+                green.SetDutyCycle(colors[n][1]);
+                blue.SetDutyCycle(colors[n][2]);
+            }
+        }
+    }
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-08T08:00:46.000Z"><a href="/2011/12/08/shapely-manifesto/">Dec 8 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/08/shapely-manifesto/">Shapely Manifesto</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I just love the approach that <a href="http://sgillies.net/" target="_blank" rel="external">Sean Gillies</a> took with <a href="http://pypi.python.org/pypi/Shapely" target="_blank" rel="external">Shapely</a> - I’ve used the Python library for awhile now but had never read his ‘manifesto’ as it were - </p>
+<blockquote>
+<p>The first premise of Shapely is that Python programmers should be able to perform PostGIS type geometry operations outside of an RDBMS. Not all geographic data originate or reside in a RDBMS or are best processed using SQL. We can load data into a spatial RDBMS to do work, but if there’s no mandate to manage (the “M” in “RDBMS”) the data over time in the database we’re using the wrong tool for the job. The second premise is that the persistence, serialization, and map projection of features are significant, but orthogonal problems. You may not need a hundred GIS format readers and writers or the multitude of State Plane projections, and Shapely doesn’t burden you with them. The third premise is that Python idioms trump GIS (or Java, in this case, since the GEOS library is derived from JTS, a Java project) idioms.</p>
+<p>If you enjoy and profit from idiommatic Python, appreciate packages that do one thing well, and agree that a spatially enabled RDBMS is often enough the wrong tool for your computational geometry job, Shapely might be for you.</p>
+</blockquote>
+<p>Go Sean.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-07T05:15:33.000Z"><a href="/2011/12/06/more-notes-from-oracle-st_geometry/">Dec 6 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/06/more-notes-from-oracle-st_geometry/">More notes from Oracle ST_Geometry</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A few more notes in my quest to understand Oracle/ESRI’s ST_Geometry data type and predicate library.</p>
+<p>It turns out that the <a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/ST_Relate/006z00000099000000/" target="_blank" rel="external">ST_Relate</a> predicate performs better than many other predicates and just requires that you understand the <a href="http://en.wikipedia.org/wiki/DE-9IM" target="_blank" rel="external">dimensionally extended nine-intersection model (DE-9IM)</a>.</p>
+<p>In my quest to create an intersection query given street X &amp; Y, I came up with this:</p>
+<pre lang="SQL">
+Select sa.OBJECTID, sde.st_geometry(sde.st_astext(sde.st_startpoint(sb.shape)),5)
+ as shape, sa.streetname from (SELECT s2.OBJECTID, sde.st_startpoint(s2.shape) as shape,
+ s2.streetname FROM streets.streets s1, streets.streets s2
+ WHERE sde.st_envintersects (s1.shape, s2.shape) = 1 AND
+ s1.STREETNAME='CLEVELAND' AND s2.STREETNAME='HOLMAN' AND ROWNUM &lt;3) sa,
+ streets.streets sb WHERE sb.STREETNAME='CLEVELAND' AND
+ sde.st_relation_operators.st_relate_f(sa.shape, sde.st_startpoint(sb.shape), 'T*****FF*') = 1;
+</pre>
+
+<p>Also I’ve recently discovered <a href="http://blogs.esri.com/Dev/blogs/geodatabase/archive/2010/04/14/Query-Layers-_4000_-ArcGIS-10.aspx" target="_blank" rel="external">Query Layers in ArcMap</a> and have employed the above for testing purposes.<br>Here’s where it’s at:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/qL1.png" target="_blank" rel="external"><img src="/images/d4431cc7d309544457aa0635fab774b5bcaa4d5e.png" alt="" title="qL1"></a></p>
+<p>And here it is in action:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/ql2.png" target="_blank" rel="external"><img src="/images/9e7edc4dbd6781eee081a4a002bd7ad0396a6d25.png" alt="" title="ql2"></a></p>
+<p>Note that this thing is picky…It’s requirements:</p>
+<ul>
+<li><p>That the results set contains a field called ‘shape’ that contains st_Geometry - note not ST_point, ST_Linestring etc.  but the actual st_geometry -note how in my query above I convert the final resulting shape to ST_Geometry (and you have to specify the SRID number)</p>
+</li>
+<li><p>After you run your query, if you didn’t include the OID field in the select you can/must specify one….If you don’t specify a uid it will fail.</p>
+</li>
+<li><p>Your query must be a one liner</p>
+</li>
+</ul>
+<p>If your result actually displays it will take ~a minute to figure out how to display it and for each zoom/pan an additional minute to draw….Yes it runs very, very poorly, I’m not sure what’s going on under the hood but I imagine that, as with most ESRI software, I’m not using it in the way Jack intended…</p>
+<p>This <a href="http://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;ved=0CCkQFjAA&amp;url=http%3A%2F%2Fwww.scdhec.gov%2Fgis%2Fpresentations%2FESRI_Conference_08%2Ftws%2Fworkshops%2Ftw_1011.pdf&amp;ei=-6ffTrTcIpOMigLi5vm3CA&amp;usg=AFQjCNEuMzFFHhwOM2jc_KETsfrFmOxGkw" target="_blank" rel="external">powerpoint</a> has some excellent information about optimizing ST_Geometry queries and how the queries actually work in Oracle - eg. selectivity, full table scans, order of operations etc.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-07T01:33:55.000Z"><a href="/2011/12/06/notes-to-rlis/">Dec 6 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/06/notes-to-rlis/">Notes to RLIS</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>-MAF adjustments<br>-Data type precision/scale<br>-SOA architecture<br>-Server Object Extensions<br>-Address parser logic<br>-Locate street intersection<br>-MetroComp<br>-MetroFind<br>-MetroShape<br>-Why not all feature classes that we provide for free as shapefiles as unauthenticated services?<br>all we are doing is reinforcing the proprietary format of our data.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-03T06:51:55.000Z"><a href="/2011/12/02/oregon-state-plane-north-nad83-intl_feet-harn/">Dec 2 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/02/oregon-state-plane-north-nad83-intl_feet-harn/">Oregon State Plane North NAD83, INTL_FEET, HARN</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>CoordinateSystem.ProjectedCoordinateSystems.StatePlane.NAD1983HARNFeetIntlUS.NAD1983HARNStatePlaneOregonNorthFIPS3601FeetIntl Property<br>CoordinateSystem.ProjectedCoordinateSystems.StatePlane.NAD1983HARNFeetIntlUS Class  See Also  Send Feedback<br>Returns a new instance of the NAD 1983 HARN StatePlane Oregon North FIPS 3601 Feet Intl CoordinateSystem, which has an Id of 2913.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-03T02:09:24.000Z"><a href="/2011/12/02/notes-on-distributed-database-editing-using-ms-access-2010/">Dec 2 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/02/notes-on-distributed-database-editing-using-ms-access-2010/">Notes on distributed database editing (Using MS Access 2010)</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I was recently tasked with updating an inventory that was maintained in MS Access and that included roughly 10 different data providers.  The database had several one-to-one relationships, one one-to-many relationship and ~6 domain value lookup tables.<br>The database was split up into chunks based on data provider and sent out.  While I tried with all my power to get a custom CRUD interface off the ground prior to sending out, I just couldn’t get it to production quality in &lt; 2wks….so the included Access Form it was.<br>Nearly all data providers botched their data input.  Several could not figure out how to add records and the meaning/purpose of the primary key.  Several failed to include data in one of the tables, and several were either unable to open the db or could only open it in read-only mode and so returned spreadsheets…which turned out to be easier in a way.</p>
+<p><strong>Change detection</strong></p>
+<p>After a series of failed attempts to detect the changes made to the data by the providers I finally settled on the <strong>Find Unmatched Query Wizard</strong> under the <strong>Create </strong>tab in Access.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/findUnmatched.png" target="_blank" rel="external"><img src="/images/2c9b3a3e7a9b46227bbad5205e10857f2a109cad.png" alt="" title="findUnmatched"></a></p>
+<p>The weakness with this wizard is that it only allows you to join one field to detect changes (a la primary key).  However, at the end there’s a dialog that allows you to either run the query or modify it before running.  Choose to modify and join all fields.  Then be sure to change the join properties to (number 2) “Include all records from the left table (changed) and only those records from the right table (original) where the joined fields are equal.  The query then looks for records where the right table’s pk is null.  I believe this is a version of a Left Outer join but due to the duplicate records, I’m not really sure what this thing would be classified. Here’s what it looks like in the Access query designer.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/LeftJoin.png" target="_blank" rel="external"><img src="/images/8837a08c4079918aab8b84f7bed4bc18c47e2873.png" alt="" title="LeftJoin"></a></p>
+<p>This process will find all changed records but there’s a gotcha, of course, involving nulls.  Since the join operation uses the ‘=’ sign, nulls don’t compute.  Therefore if 2 records match from the changed and the original <em>but</em> there’s a null in them, the record will ‘red herring’ in the this query.  <strong>The solution</strong> to this is to simply ensure you have no null values in your data preferably <em><strong>before</strong></em> sending out.  I simply changed all of mine to ‘UNKN’ - once this is accomplished you can join all fields using the above process and get true changed records.</p>
+<p>A few other notes to self from this process:</p>
+<ul>
+<li>to convert a field to upper case update tbl set field = UCase(field)</li>
+<li>Don’t use a string value for your primary key, the former convention was MYAGENCY<em>1,MYAGENCY_2 etc.  it made sorting a pain in the ass so I removed the MYAGENCY</em> -thankfully converting the data type went smoothly and the string numbers converted to long without grief.</li>
+<li><p>Regarding one-to-one relationships - here was a<a href="http://stackoverflow.com/questions/2521760/what-are-advantages-of-using-a-one-to-one-table-relationship-mysql" target="_blank" rel="external"> stub I found on Stack Overflow regarding one-to-ones in MySQL</a>, so it seems like the three main reasons why you might use one-to-ones are:</p>
+<ol>
+<li>To extend a table with strong dependencies (ie a vendor table) without affecting the schema.</li>
+<li>To extend a table with an ORM, class mapping etc. See #1</li>
+<li>If performance is an issue and you are only accessing a few fields 90% of the time<br>So for our purposes I removed them</li>
+</ol>
+</li>
+<li><p>Often I wish I could paste a series of queries in Access’ SQL Query view but unfortunately the app only allows <strong>one query at a time</strong>…this blows.  To combat this I did a little research and a little crafting and came up with scripts similar to this:</p>
+<pre lang="vb">
+Option Compare Database
+
+sub foo()
+
+DoCmd.SetWarnings False
+
+' have to add a reference to Microsoft DAO 3.6 Object Library under 'Tools'
+Dim dbf As Database
+Set dbf = CurrentDb
+DoCmd.SetWarnings False 'otherwise you'll get dialogued to death.
+Dim qryDef As QueryDef
+
+Set qryDef = dbf.CreateQueryDef("ID1", "INSERT INTO tbl1 SELECT a,b,c,d From tbl2 ") : DoCmd.OpenQuery ("ID1")
+Set qryDef = dbf.CreateQueryDef("ID2", "INSERT INTO tbl1 SELECT a,b,c,d From tbl3 ") : DoCmd.OpenQuery ("ID2")
+'Ad infinitum
+
+'To delete the queries you just created
+for i = 1 to CurrentDb().queryDefs.Count
+CurrentDb().queryDefs.Delete (CurrentDb.queryDefs(0).Name)
+next
+
+End Sub
+</pre>
+</li>
+<li><p>Don’t use captions/aliases in your fields, it makes creating queries in SQL view a pain if you’re referencing the table view to construct the query.</p>
+</li>
+</ul>
+<h2 id="Geocoding">Geocoding</h2>
+<p>After geocoding my data, I discovered a heinous amount of duplication.  My workflow went something like -&gt; geocode to points -&gt; intersect with parcel base -&gt; Summarize (count) instances of the same parcel -&gt; Export to table where count of parcel &gt; 1 (eg, where multiple points geocoded to the same parcel.)  By selecting these points I could then compare attributes and discover duplication.  For those points that failed to geocode to the MAF (inside a parcel) - I manually went through and searched for the obvious nearby parcel, moved the point, then updated the address for future geocodes.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-03T01:40:36.000Z"><a href="/2011/12/02/arcgis-server-performance-tests/">Dec 2 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/02/arcgis-server-performance-tests/">ArcGIS Server Performance tests</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I had a few free moments this morning to run some simple performance tests on our QA server instance.</p>
+<p>I specifically wanted to test pooling and isolation.  So here ya go.</p>
+<p>The test consisted of 200 asynchronous (simultaneous) query requests to a feature class stored locally in a file geodatabase. All tests were performed immediately after restarting the service to emulate the server in it’s ‘resting’ state. (That wasn’t intentional but rather incidental)…</p>
+<p>The 5 rounds of testing included the service set at:</p>
+<ol>
+<li>a min. of 1 instance and a max of 2 instances under high isolation</li>
+<li>a min. of 1 instance and a max of 2 instances under low isolation(8 instances per process)</li>
+<li>a min. of 1 instance and a max of 10 instances under high isolation</li>
+<li>a min. of 5 instance and a max of 10 instances under high isolation</li>
+<li>a min. of 5 instance and a max of 10 instances under low isolation(8 instances per process)<br>&nbsp;</li>
+</ol>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/chart2.png" target="_blank" rel="external"><img src="/images/b2874273ee3053e2dab08cb652222c91fdab80b0.png" alt="" title="chart2"></a></p>
+<p>Here were the performance signatures:</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/perfsig.png" target="_blank" rel="external"><img src="/images/0ca1133df2983469edf4b49c81700a5ef57b615f.png" alt="" title="perfsig"></a></p>
+<p><strong>Observations:</strong></p>
+<p>1. Low isolation provides no benefit under this configuration.  That is to say, isolation may make a difference under higher loads, differing data sources etc.  From my testing, I saw no significant improvement</p>
+<p>2.The min. 1, max 10 test displayed a steep climb at first as instances were (I’m assuming) created but performed just as well as the tests with 5 standing instances.</p>
+<p><strong>Conclusion</strong></p>
+<p>Therefore, leave your services under high isolation and don’t worry about minimum instances.  I believe I saw a recommendation for 0 minimum instances in the forums.  According to the testing this would prove accurate as it does not appear to be very expensive to fire up an instance/instances under load.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-02T02:14:03.000Z"><a href="/2011/12/01/shapefiles-and-data-types/">Dec 1 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/01/shapefiles-and-data-types/">Don&#39;t waste your time with Precision and Scale</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>In writing a tool to parse the data types out of a dbf for a shapefile comparison I’m working on - I’m getting some rather odd behavior…As good ol’ <a href="http://forums.esri.com/Thread.asp?c=93&amp;f=982&amp;t=75881" target="_blank" rel="external">Ianko explains it</a> in the forums:</p>
+<blockquote>
+<p>From the help:<br>“Precision is the number of digits in a number.”<br>“Scale is the number of digits to the right of the decimal point in a number”<br>Precision of 10 should store numbers with max 10 digits:1234567890<br>Precision of 10 and Scale of 5 should store<br>12345.12345<br>**<br>The interesting fact is that these rules behave differently on shapefiles(dbf) and Geodatabases and some times the results are strange.<br>For example:</p>
+<ul>
+<li>a field defined as Long with precision of 10 on GDB will not accept a value of 12345678901 (correct), on a shapefile(dbf) it will be calculated to 1230000000.</li>
+<li>field defined as Double with precision of 10 and scale of 5 will convert 123456.12345 to 123500 on a dbf file and will be accepted if the table is in a GDB. In fact the same field in a GDB will accept 1234567890.12345 !!!</li>
+</ul>
+<p>Another interesting fact is that a field defined in ArcCatalog as Double with Precision of 10 and Scale of 5 will be reported in ArcMap as follows:</p>
+<ul>
+<li>if the table is DBF - correctly</li>
+<li>if the table is in a personal GDB - precision of 0 and scale of 0 **</li>
+</ul>
+</blockquote>
+<p>To add to this I’m seeing ESRI call a Double with 19 Precision and 11 scale (The SHAPE_AREA and SHAPE_LENGTH fields specifically) a Double with 0 precision and 0 scale.<a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/fieldAnomaly.png" target="_blank" rel="external"><img src="/images/723c726ed70abe35d07774ef1547b1ecb6bd73f5.png" alt="" title="fieldAnomaly"></a><br>WOW is that black magic or what?<br>When parsed under the hood the dbf reports that this field is actually a float with a precision of 19 and a scale of 11.<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/reailityNites.png" target="_blank" rel="external"><img src="/images/25a179cc15d08c492ccc54a1e287cf27f3286c19.png" alt="" title="reailityNites"></a><br>We know that scale can at most be precision-1.<br>Here’s some more black magic:<br><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/12/precScale.png" target="_blank" rel="external"><img src="/images/7c82b1ef2f9ae6237011f29ee246bf494af795c7.png" alt="" title="precScale"></a><br>So to rehash this, why does ESRI let you create a Double type with 0 precision and 0 scale?</p>
+<p>maybe <a href="http://forums.esri.com/thread.asp?c=93&amp;f=987&amp;t=98086" target="_blank" rel="external">this</a> explains it:</p>
+<blockquote>
+<p>Field precision and scale<br>The precision and scale of a field describe the maximum size and precision of data that can be stored in the field. The precision describes the number of digits that can be stored in the field, while the scale describes the number of decimal places for float and double fields. When creating a new field in a geodatabase feature class or table, you can specify the field’s type, precision, and scale. When the field is actually created in the database, the field type may be changed based on the precision and scale values you specify.</p>
+<p>Use the following guidelines for choosing the correct field type for a given precision and scale:</p>
+<p><strong>When you create a float, double, or integer field and specify 0 for precision and scale, the geodatabase will attempt to create a binary type field if the underlying database supports it. Personal geodatabases support only binary type fields, and precision and scale are ignored.</strong><br>When you create float and double fields and specify a precision and scale, if your precision is greater than 6, use a double; otherwise use a float. If you create a double field and specify a precision of 6 or less, a float field is created in the database. If you create a float field and specify a precision greater than 6, a double field is created.<br>If you specify a scale of 0 and a precision of 10 or less, you should be creating integer fields. When creating integer fields, your precision should be 10 or less or your field may be created as double.</p>
+</blockquote>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-11-29T04:30:41.000Z"><a href="/2011/11/28/visio-key/">Nov 28 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/11/28/visio-key/">Visio key</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>7784V-J3P3V-F49W7-8Q9KX-JGG6C</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-11-24T08:15:23.000Z"><a href="/2011/11/24/background-processing-dark-side/">Nov 24 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/11/24/background-processing-dark-side/">Background Processing dark side</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/11/error.png" target="_blank" rel="external"><img src="/images/5811681a7d5a64be7c53acaf5aae6a20dc47ffd8.png" alt="" title="error"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/page/10/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/archives/page/12/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

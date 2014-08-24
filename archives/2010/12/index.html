@@ -1,0 +1,750 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Archives: 2010/12 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2010/12</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-28T01:08:56.000Z"><a href="/2010/12/27/composite-formatting/">Dec 27 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/27/composite-formatting/">Composite Formatting</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Sick of the concatenation fingerwork?</p>
+<p><a href="http://msdn.microsoft.com/en-us/library/txafckwd.aspx" target="_blank" rel="external">http://msdn.microsoft.com/en-us/library/txafckwd.aspx</a></p>
+<pre lang="csharp">
+string myName = "Fred";
+String.Format("Name = {0}, hours = {1:hh}", myName, DateTime.Now);
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-24T07:19:47.000Z"><a href="/2010/12/23/tiled-vectors/">Dec 23 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/23/tiled-vectors/">Tiled vectors</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>What is featureserver?</p>
+<p>What if a tileserver could select features from a database and create tiled vectors on the fly? 256x256 tiles. Using .NET or something of the ilk…and then adaptively caches those tiles.</p>
+<p>It seems that <a href="http://featureserver.org/" target="_blank" rel="external">Featureserver</a> serves vectors via REST….not images as previously thought…</p>
+<p>This would mean that geometry would not be available but could potentially speed up display.  An open source dynamic layer server.</p>
+<ul>
+<li>Get map size, scale and extent.</li>
+<li>Select features from db that intersect extent.</li>
+<li>run linear interpolation on each coordinate. (bottleneck)</li>
+<li>Plot on image.</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-18T06:41:12.000Z"><a href="/2010/12/17/preliminary-workflow-for-reconciling-busline-geom-with-rlis-streets/">Dec 17 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/17/preliminary-workflow-for-reconciling-busline-geom-with-rlis-streets/">Preliminary workflow for reconciling busline geom with RLIS Streets</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <ul>
+<li>Create new field in buslines- [rte_dir]</li>
+<li>Calc new field with [rte] &amp; “-“ &amp; [dir]</li>
+<li>Split buslines feature class on [rte_dir]</li>
+<li>Create envelope for each feature class (route+dir)</li>
+<li>Select RLIS Streets that intersect each envelope</li>
+<li>Run feature vertices to points on Selected RLIS Streets using MidPoint</li>
+<li>Select by location points that intersect bus route using 10 ft buffer(?)</li>
+<li>Export selected points to table</li>
+<li>Join table to RLIS Streets</li>
+<li>Select where joined table LOCAL_IDS are not null.</li>
+<li>Export selected segments</li>
+<li>Visual QA/QC to make sure extraneous segments were not picked up and that we have a continuous path from start to finish.</li>
+<li>Merge all features to generate total route geometry (and to allow for re-segmentation)</li>
+<li>Generate endpoints for busline</li>
+<li>Split new busline geom by endpoints</li>
+<li>There should now be 3 segments, delete the shortest 2.</li>
+<li>Explode original busline fc</li>
+<li>Visual QA/QC to make sure bus stop segmentation rules intact</li>
+<li>Run Feature vertices to points on exploded busline fc (end points)</li>
+<li>Remove duplicate points (using IRelationOperator)</li>
+<li>Split newly created busline geometry on points</li>
+<li>Merge? Leave as unique features? Somehow combine into one multi-part feature while preserving segmentation (as in the source data)?</li>
+<li>Topology for final QA/QC</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-16T23:32:44.000Z"><a href="/2010/12/16/a-few-thoughts-on-geojson/">Dec 16 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/16/a-few-thoughts-on-geojson/">A few thoughts on geoJSON</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I’ve noticed that the spec for EZRI’s JSON format as well as the more ‘open’ spec for geoJSON both have a weakness. And that weakness is a field mapping for each feature.  With ArcGIS we do not ever have a dataset with internally differing schema.</p>
+<p><em>So when geoJSON goes like this:</em></p>
+<pre lang="javascript">{ "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature",
+      "geometry": {"type": "Point", "coordinates": [102.0, 0.5]},
+      "properties": {"prop0": "value0"}
+      },
+    { "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [102.0, 0.0], [103.0, 1.0], [104.0, 0.0], [105.0, 1.0]
+          ]
+        },
+      "properties": {
+        "prop0": "value0",
+        "prop1": 0.0
+        }
+      },
+    { "type": "Feature",
+       "geometry": {
+         "type": "Polygon",
+         "coordinates": [
+           [ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0],
+             [100.0, 1.0], [100.0, 0.0] ]
+           ]
+       },
+       "properties": {
+         "prop0": "value0",
+         "prop1": {"this": "that"}
+         }
+       }
+     ]
+   }</pre>
+The prop0 and prop1 are redundant... in this case with a few features and abbreviated field names it is obviously no big deal.
+The issue arrives when we want to load 250 features with 10, 10 character field names.  This amounts to 2490 redundant key entries for field names. Why?
+
+_The same thing goes for EZRI's format:::_
+<pre lang="javascript">
+{"geometryType":"esriGeometryPoint",
+"spatialReference":{"wkid":4326},
+"features":[{"geometry":{"x":-83.1021268329999,"y":42.383135812,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Detroit"}},
+{"geometry":{"x":-87.6850202569999,"y":41.837084233,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Chicago"}},
+{"geometry":{"x":-73.9434298479999,"y":40.6699031900001,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"New York"}},
+{"geometry":{"x":-75.1343024059999,"y":40.006932985,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Philadelphia"}},
+{"geometry":{"x":-118.412114405,"y":34.112106538,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Los Angeles"}},
+{"geometry":{"x":-117.136669444,"y":32.8149979820001,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"San Diego"}},
+{"geometry":{"x":-96.7655292159999,"y":32.794279906,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Dallas"}},
+{"geometry":{"x":-95.3869428549999,"y":29.7689275690001,
+"spatialReference":{"wkid":4326}},
+"attributes":{"CITY_NAME":"Houston"}}]}
+</pre>
+
+<p>In this case even more burdensome with the repeating spatialReference Key/Val per feature as well as the field mapping.</p>
+<p>I propose a new JSON format.  One which more closely resembles a SQL statement without the field mappings.  Store field values in an array for each feature.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-16T02:34:29.000Z"><a href="/2010/12/15/wednesday-thoughts/">Dec 15 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/15/wednesday-thoughts/">ESRI Silverlight API and KML</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Have been tirelessly playing around with the EZRI SL API. The new support for the kmlLayer is very impressive…no longer do we see horrible, granulated, rasters with pathetic response time but rather smooth, rapidly rendered vectors on the map. With cross-domain requests via a proxy provided by EZRI! Whoopee!!</p>
+<pre lang="xml">
+<esri:kmllayer id="KmlLayer" url="http://www.redtrails.com/data/mfh.kmz" proxyurl="http://serverapps.esri.com/SilverlightDemos/ProxyPage/proxy.ashx" maximumresolution=".0001">
+</esri:kmllayer></pre>
+
+<p>MaximumResolution = scale dependency = since the rendering engine doesn’t respect the Network Link scales…Although the rendering engine seems to handle more geom than expected it has it’s limitations…</p>
+<p>On top of this we have KML MapTips! WOW!</p>
+<pre lang="xml">
+<esri:kmllayer.maptip>
+<border cornerradius="13" borderbrush="#CC444444" borderthickness="0" margin="0" background="#EE222222">
+<stackpanel orientation="Horizontal">
+<textblock text="{Binding Converter={StaticResource MyDictionaryConverter},
+ConverterParameter=name, Mode=OneWay}" foreground="#FFFFFFFF" fontsize="16" fontfamily="Verdana" fontweight="Bold" margin="5,5,0,3">
+</textblock></stackpanel>
+</border>
+</esri:kmllayer.maptip>
+</pre>
+
+<p>now if we could pull the geometry directly out of the kml…</p>
+<p><pre lang="csharp"><br>Graphic g = new Graphic();<br>ESRI.ArcGIS.Client.Geometry.Polygon p = new ESRI.ArcGIS.Client.Geometry.Polygon();<br>p = e.Graphic.Geometry;<br>MessageBox.Show(p.Rings[0].X)<br></pre><br>oooh yeah….</p>
+<p>Huge, huge potential here for the next rendition of Redtrails as well.. What I’m looking for now is to improve the MDI interface to build agile apps on.  The glass nav and floatable windows UI seems to work quite well.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-08T03:27:49.000Z"><a href="/2010/12/07/multi-modal-thoughts/">Dec 7 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/07/multi-modal-thoughts/">Multi-modal thoughts</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <h2 id="Thought_1">Thought 1</h2>
+<p>Tri-Met evangelizes OSM as the ultimate routing source data due to it’s lack of segmentation, or rather it’s integrity(?). This is all well and good but means that there can really be no place for granular Metro datasets such as bike_rtes and <a href="http://help.openstreetmap.org/questions/1236/should-i-map-sidewalks" target="_blank" rel="external">sidewalks</a> which enhance the accuracy of the network at a segment level.</p>
+<p>It would seem that the integrity of OSM data will steadily degrade over time as more detail is added (see figure 1). At this point it seems impossible to attribute segments within a way with bicycle hazard rating, sidewalk, other granular attributes. <span style="color:#993300;"><em>**Update - this was confirmed by Jack N., there’s no way to attribute without further segmentation.</em></span></p>
+<h2 id="Thought_2-">Thought 2.</h2>
+<p>Transit geometry does not need to coincide with street geometry only the junctions where inter-modal transfers take place (which, if derived from transit linework means that both geometries must coincide…Snake eat tail…NOW!). In Network Analyst this translates to a requirement of coincident geometries, and an override of endpoint connectivity of streets.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-04T03:16:32.000Z"><a href="/2010/12/03/thoughts-on-the-future-of-silverlight/">Dec 3 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/03/thoughts-on-the-future-of-silverlight/">Thoughts on the future of Silverlight</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Just blasted a few hours researching the future of Silverlight…The key take-aways came from <a href="http://stackoverflow.com/questions/1231484?page=2&amp;tab=votes#tab-top" target="_blank" rel="external">this Stack Overflow post</a></p>
+<ul>
+<li><a href="http://www.joelonsoftware.com/articles/LeakyAbstractions.html" target="_blank" rel="external">The law of leaky abstractions</a></li>
+<li>Can’t compare Flash and Silverlight - Silverlight is written against the .NET framework.</li>
+<li>Silverlight is like Java Applets all over again.</li>
+<li>The user doesn’t care how easy or hard the programmer has it.</li>
+<li>Conventional web as a <em>stack</em> of js+HTML+CSS</li>
+<li>Open source as not being free but at the price of a religion.</li>
+<li>It appears that no other mapping API allows the overlay of a non-map-service-based raster image on the map (as 15 mins of research showed)</li>
+<li>And finally this complete SO answer:<br><div><blockquote>
+<p>The natural order of things is for proprietary  systems to break new ground and for standards to come behind and take  what was learned from the proprietary systems and make them ubiquitious.   Standards can immortalize a technology, but they take a long time to  develop and can’t be iterated on as quickly as solutions developed by  one company.</p>
+<p>Those developers who want to be on the cutting edge and can afford to  have their customers take dependencies on proprietary systems are going  to do so, and others will wait and settle on open standards.  There’s a  place for both.  I tend to think that apps that provide high value to a  relatively constrained set of people will tend toward Silverlight, and  apps that provide a little value to a ton of people will tend toward  HTML 5.</p>
+<p>I hear a lot of people say “why use Silverlight when HTML 5 enables a  lot of the same scenarios and is open?”  The fact is that when HTML 5  gains widespread adoption, Silverlight (or whatever the next hotness is)  is going to be way ahead of where it is today.</p>
+</blockquote>
+</div></li>
+</ul>
+<p>Enough whining for now…</p>
+<p></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-03T23:33:37.000Z"><a href="/2010/12/03/simple-xaml-notes/">Dec 3 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/03/simple-xaml-notes/">Simple XAML notes</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Was struggling to get the MDI Window resizing correctly.  Pinned down it’s funky behavior to the fact that it was wrapped in a grid rather than a canvas.  Was using a grid for it’s auto-sizing capabilities.  When using a canvas things don’t auto-size as well. Found a little snippet that magically works out of the box:</p>
+<p><pre lang="csharp"><br>myMap.Width = App.Current.Host.Content.ActualWidth;<br>myMap.Height = App.Current.Host.Content.ActualHeight;<br>navBar.Width = App.Current.Host.Content.ActualWidth;<br></pre><br>Use a canvas for the layout and include Grids where you need them - if you want them to stretch to 100% - use above code in the LayoutRoot SizeChanged event.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

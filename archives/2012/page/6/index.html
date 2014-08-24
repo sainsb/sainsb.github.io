@@ -1,0 +1,771 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 6 | Archives: 2012 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2012</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-02-02T06:16:01.000Z"><a href="/2012/02/01/cross-thread-ui-update-in-silverlightwpf/">Feb 1 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/02/01/cross-thread-ui-update-in-silverlightwpf/">Cross-thread UI update in Silverlight/WPF</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>There appear to be any number of ways to update the UI thread from a background thread in Silverlight/WPF-land.<br>This seems to be the simplest.</p>
+<pre lang="csharp">
+private void DoStuffOnBackgroundThread()
+{
+    Dispatcher.BeginInvoke(new Action<string>(write), "Updated UI");
+}
+
+private void write(string msg)
+{
+    Dispatcher.VerifyAccess();
+    txtControl.Text=msg;
+}
+</string></pre>
+
+<p>In order to pass additional/different params to the Action delegate you would do something like this:</p>
+<pre lang="csharp">
+private void DoStuffOnBackgroundThread()
+{
+    Dispatcher.BeginInvoke(new Action<int, int,="" string="">(write), 1,2,"Updated UI");
+}
+
+private void write(int foo, int bar, string msg)
+{
+    Dispatcher.VerifyAccess();
+    txtControl.Text=msg;
+}
+</int,></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-27T04:44:35.000Z"><a href="/2012/01/26/what-were-you-doing/">Jan 26 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/26/what-were-you-doing/">What were you doing?</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Trying to help you…</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/01/ttry8ing.png" target="_blank" rel="external"><img src="/images/0593f0575206937db61168ca6daf0be64821321a.png" alt="" title="ttry8ing"></a>Note that for the sake of professionalism I’ve removed the previous image.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-26T00:19:50.000Z"><a href="/2012/01/25/net-geoprocessing-tools/">Jan 25 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/25/net-geoprocessing-tools/">.Net Geoprocessing tools in the Toolbox</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I had no idea you could do <a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/conceptualhelp/index.html#//00010000049w000000" target="_blank" rel="external">this</a>.  Now I want to do it too. ;)</p>
+<p>I’ve created many a custom GP tool with Python but never with .Net - Before reading the docs I had trouble understanding how one would ‘include’ or ‘capture’ the tool in a custom toolbox.</p>
+<p>It turns out the trick is registering the dll with esriRegAsm.exe and adding it to the “Geoprocessor Function Factory component category”.  Here’s a <a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/conceptualhelp/index.html#/Sample_Calculate_area_geoprocessing_function_tool/0001000002r6000000/" target="_blank" rel="external">sample tool</a>.  Miraculously, just like ESRI claims, after compiling and registering with EsriRegAsm.exe the tool will be available for selection when adding a tool to a toolbox:</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/01/NetGPTool2.png" target="_blank" rel="external"><img src="/images/974cbc3cff05b4991861bd883e3b967b35672cc9.png" alt="" title=".NetGPTool"></a></p>
+<p>Digging into the code it looks like within the namespace there’s a function and a function factory.  Both include COM registration; the former implements IGPFunction2 and the latter implements the IGPFunctionFactory interface.  Within the IGPFunction2 interface we have:</p>
+<table style="border:1px solid #444;border-collapse:collapse;" cellpadding="2"><br><tbody><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000294000000.htm" target="_blank" rel="external">DialogCLSID</a></td><br><td class="t">The class identifier (CLSID) of the custom dialog object to use when invoking the geoprocessing function.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000295000000.htm" target="_blank" rel="external">DisplayName</a></td><br><td class="t">Displayed name of the geoprocessing function.</td><br></tr><br><br><tr valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000296000000.htm" target="_blank" rel="external">Execute</a></td><br><td class="t">Executes the geoprocessing function using the given array of parameter values.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000297000000.htm" target="_blank" rel="external">FullName</a></td><br><td class="t">The function name object of the geoprocessing function.</td><br></tr><br><br><tr valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000298000000.htm" target="_blank" rel="external">GetRenderer</a></td><br><td class="t">Returns the custom renderer to use for the specified parameter.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000299000000.htm" target="_blank" rel="external">HelpContext</a></td><br><td class="t">The context identifier of the topic within the help file for this function object.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029m000000.htm" target="_blank" rel="external">HelpFile</a></td><br><td class="t">Name of the (CHM) file containing help information for this function object.</td><br></tr><br><br><tr valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029n000000.htm" target="_blank" rel="external">IsLicensed</a></td><br><td class="t">Returns whether the geoprocessing function has all necessary licenses in order to execute.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029p000000.htm" target="_blank" rel="external">MetadataFile</a></td><br><td class="t">Name of the (XML) file containing the default metadata for this function object.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029q000000.htm" target="_blank" rel="external">Name</a></td><br><td class="t">Name of the geoprocessing function.</td><br></tr><br><br><tr valign="top"><br><td>Readonly Prop</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029r000000.htm" target="_blank" rel="external">ParameterInfo</a></td><br><td class="t">The list of parameters accepted by the geoprocessing function.</td><br></tr><br><br><tr id="m" valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000285000000.htm" target="_blank" rel="external">UpdateMessages</a></td><br><td class="t">Post validates the given set of values.</td><br></tr><br><br><tr id="m" valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n00000286000000.htm" target="_blank" rel="external">UpdateParameters</a></td><br><td class="t">Pre validates the given set of values.</td><br></tr><br><br><tr valign="top"><br><td>Method</td><br><td><a href="http://help.arcgis.com/en/sdk/10.0/arcobjects_net/componenthelp/002n/002n0000029s000000.htm" target="_blank" rel="external">Validate</a></td><br><td class="t">Validates the given array of parameter values.</td><br></tr><br><br></tbody><br></table>
+
+<p>Pretty cool stuff…Like I said, I never knew about this possibility.  Likely a more powerful option for custom geoprocessing tools on the desktop.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-25T07:09:47.000Z"><a href="/2012/01/24/arcobjects-runtime-manager/">Jan 24 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/24/arcobjects-runtime-manager/">ArcObjects Runtime manager</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I always forget where and how to do this whenever I want to use ArcObjects in a console app or something simple.  Nowadays you have to provide a ‘license’ manager to your use of ArcObjects.  I like how <a href="http://blogs.esri.com/Dev/blogs/arcgisdesktop/archive/2010/07/19/Bind-and-License-your-standalone-ArcGIS-Engine-or-Desktop-application.aspx" target="_blank" rel="external">here</a> [note the excellent banter in the comments section] they frame it as something you ‘can do’ as in a ‘new feature’!! OMFG! I’ve been asking for you to control my use of ArcObjects for sooooo long now… THANK YOU!!!.</p>
+<p>1. Throw a reference in to ESRI.ArcGIS.Version<br>2. Mix in this line:</p>
+<p><pre lang="csharp"><br> ESRI.ArcGIS.RuntimeManager.Bind(ESRI.ArcGIS.ProductCode.Desktop);<br></pre><br>you’re good to go….as long as you got a license ;)</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-24T06:33:24.000Z"><a href="/2012/01/23/c-soe-vs-python-gptool/">Jan 23 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/23/c-soe-vs-python-gptool/">C# SOE vs. Python GPTool</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Just watched <a href="http://www.screencast.com/users/bcdc/folders/Jing/media/02b42fea-adb8-4845-919d-ba619798905b" target="_blank" rel="external">an excellent video comparing the performance of C# Server Object Extensions(SOE) to Python geoprocessing services</a>.  I really like the tack he takes here: yes, the C# SOE is roughly twice as fast, but there are several other factors that should be taken into account.<br>For instance: </p>
+<ul>
+<li>Programmer productivity - The core Python script (using arcpy) is only a few lines of code.  Wrangling the input params and the response object is almost totally abstracted.*   Portability - While the python script requires a toolbox with a script (+ params) wrapper, it is relatively easier to publish than an SOE, which must be registered with the Server.  Though to be fair, once you understand how to register the SOE, it only takes a second; most of the pain is in decoding the documentation on how to do it.</li>
+</ul>
+<p>So now I see why Ismael Chivite advised devs to only build SOEs to when you need <em>atomic</em> functionality.  <a href="http://video.esri.com/watch/457/top-10-improvements-in-arcgis-10.1-for-server" target="_blank" rel="external">Are you ready for ArcGIS Server? I’m not.</a></p>
+<iframe frameborder="0" scrolling="no" width="480" height="270" src="http://video.esri.com/iframe/457/000000/width/480/0/00:00:00"></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-24T06:01:24.000Z"><a href="/2012/01/23/batch-geocoding/">Jan 23 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/23/batch-geocoding/">Batch geocoding</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Recently I was asked by an acquaintance of a friend what the best way to geocode millions of addresses would be.  The friend was trying to put together a bid for a company who wanted to know how much it would cost and how long it would take.</p>
+<p>I spent a while formulating my thoughts around this and here is what I came up with:</p>
+<h3 id="Option_A">Option A</h3>
+<p>Pay ESRI $5000 for the use of their geocoding engine ($50*25,000) + whatever their commercial software licensing fee is(~$2000?) for using ArcGIS Desktop (you can’t use a student/eval copy for commercial use right?)<br>•    Feel bad about paying ESRI an exorbitant amount of monay.<br>•    Feel good about the quality of the results.<br>•    Feel good about the legality/ethics of throwing 2.5 million records at their server.</p>
+<h3 id="Option_B">Option B</h3>
+<p>Pay Yahoo or Google or some other established company offering a geocoding web service whatever their commercial licensing fee is (I have no idea but likely less than ESRI’s) and roll your own custom client to consume their geocoder.<br>•    Feel good about not paying ESRI an exorbitant amount of monay.<br>•    Feel good about the quality of the results.<br>•    Feel good about the legality/ethics of throwing 2.5 million records at their server.</p>
+<h3 id="Option_C">Option C</h3>
+<p>Find a free geocoding engine (Oregon State’s, geocode.us) and roll your own custom client to consume their geocoder.<br>•    Feel good about not paying anyone an exorbitant amount of monay.<br>•    Feel unsure about the legality/ethics of throwing 2.5 million records at it.<br>•    Feel unsure about the quality of the results and perform some modest QA/QC.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-21T07:35:28.000Z"><a href="/2012/01/20/reading-from-a-resource-in-silverlight/">Jan 20 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/20/reading-from-a-resource-in-silverlight/">Reading from a resource in Silverlight</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This post is completely lifted from <a href="http://www.michaelsnow.com/2010/12/28/silverlight-reading-from-a-file-contained-in-your-xap/" target="_blank" rel="external">Michael Snow’s blog ‘Everything Silverlight’</a> - Go check it out. So here we go:<br>Add a reference to System.Windows.Resources<br>Add an image, a text file or what have you, to your project and mark it as a resource:</p>
+<pre lang="csharp">
+var uri = new Uri("[yourNamespace];component/[yourFile]", UriKind.Relative);
+var streamInfo = Application.GetResourceStream(uri); 
+</pre>
+
+<p>Here’s how to reference it:</p>
+<pre lang="csharp">
+if (null != streamInfo)
+{
+    var stream = streamInfo.Stream;
+    var sr = new StreamReader(stream);
+    string line = String.Empty;
+    while ((line = sr.ReadLine()) != null)
+    {
+    //doStuff
+    }
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-19T12:30:00.000Z"><a href="/2012/01/19/coding-humor/">Jan 19 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/19/coding-humor/">Coding humor and potpourri</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="https://www.destroyallsoftware.com/talks/wat" target="_blank" rel="external">This bit</a> on idiosyncratic Ruby and JavaScript is pretty entertaining.</p>
+<p>Tonight I was watching <a href="http://science.discovery.com/tv/sci-fi-science/" target="_blank" rel="external">Sci Fi Science with Michio Kaku - a pretty cool show on the discovery channel</a>…I think it might be a few years old by now.<br>At any rate, this particular show was on AI and robotics.  Toward the beginning, he’s listing off his ingredients for his perfect robot and there’s some dramatic text scrolling in the background.  I happened to glance at it to discover that it’s an Oracle Spatial stored proc of some sort…check it out won’t you?<br>[gallery]</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-18T05:26:24.000Z"><a href="/2012/01/17/javascript-iteratoris/">Jan 17 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/17/javascript-iteratoris/">Javascript iteratoris</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Assigning the Member in the iteratingCondition:</p>
+<pre lang="javascript">
+for (var i=0, each; each = arr[i]; i++) {
+    doSomething(each);
+}
+</pre>
+
+<p><a href="http://javascriptweblog.wordpress.com/2010/10/11/rethinking-javascript-for-loops/" target="_blank" rel="external">This post</a> has some pretty cool ideas on the for loop…</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-14T00:13:30.000Z"><a href="/2012/01/13/friday-link-explosion/">Jan 13 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/13/friday-link-explosion/">Friday link explosion</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Damn, <a href="http://www.prodevelop.es/es/blog/11/12/11/rendering-local-shapefiles-html5" target="_blank" rel="external">this guy beat me to the <a href="http://www.html5rocks.com/en/tutorials/file/dndfiles/" target="_blank" rel="external">HTML5 FileAPI</a> version of a JavaScript shapefile parser</a>.  Just Wow.  Pure client-side shapefile parsing.  Now we just need a little more love for the FileAPI in the ‘Modern Browser’.</p>
+<p>I never knew about <a href="http://javascript.about.com/library/blequals.htm" target="_blank" rel="external">equals, equals, equals in javascript</a>.  I’m not sure how that one slipped through the cracks.  Wanna strict compare? ===. wanna loose compare? ==. saweet.</p>
+<p><a href="http://geojason.info/google-vector-layers/demos/arcgis-server/" target="_blank" rel="external">A new and refreshing library supporting ArcGIS Server vectors in Google Maps</a>. This one could be useful…</p>
+<p>Just when I was about to close the book on ESRI (yeah right, like that’ll ever happen…) I see <a href="http://help.arcgis.com/en/webapi/javascript/arcgis/demos/exp/exp_rasterlayer.html" target="_blank" rel="external">this intriguing canvas map showing world elevations</a>.  Gonna have to get me some of that raster support.</p>
+<p>Visual Studio is the finest piece of software I have ever used.  I just discovered <a href="http://weblogs.asp.net/scottgu/archive/2010/04/08/javascript-intellisense-improvements-with-vs-2010.aspx" target="_blank" rel="external">javascript (why do they keep calling it JScript?) intellisense</a> and I am fully floored.  Thank you so much for this amazing product.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/2012/page/5/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/archives/2012/page/7/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

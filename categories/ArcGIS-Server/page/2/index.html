@@ -1,0 +1,859 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 2 | ArcGIS Server | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">ArcGIS Server</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-04-01T01:49:51.000Z"><a href="/2011/03/31/esri-rest-submit-job-bug-description/">Mar 31 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/03/31/esri-rest-submit-job-bug-description/">ESRI REST submit Job bug description</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Didn’t know where else to put this so…here it is!!!</p>
+<p><a href="http://metrosainsb.files.wordpress.com/2011/03/esribugdesc.docx" target="_blank" rel="external">ESRIBUGDESC</a></p>
+<p>Also came across a little buggy-type thing regarding publishing services that have a coordinate system title that doesn’t match documented here:</p>
+<p><a href="http://metrosainsb.files.wordpress.com/2011/03/projection-issues.docx" target="_blank" rel="external">Projection issues</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-03-31T01:35:27.000Z"><a href="/2011/03/30/silverlight-api-note-to-self/">Mar 30 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/03/30/silverlight-api-note-to-self/">Silverlight API note to self</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>When creating a featurelayer you need to spec what outfields you want or it’ll just grab 1(?) - not sure which 1 it will grab but…</p>
+<p>Anyway…the proper handling of this is:</p>
+<pre lang="csharp">
+OutFields of = new OutFields();
+of.Add(fieldName);
+fl.OutFields =of;
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-03-30T23:02:32.000Z"><a href="/2011/03/30/wkt-v-wkid-ags/">Mar 30 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/03/30/wkt-v-wkid-ags/">WKT v WKID :: AGS</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><pre lang="csharp"><br>FeatureLayer fl = new FeatureLayer();<br>fl.Url = “<a href="http://navigator.state.or.us/ArcGIS/rest/services/Framework/Admin_Bounds/MapServer/3" target="_blank" rel="external">http://navigator.state.or.us/ArcGIS/rest/services/Framework/Admin_Bounds/MapServer/3</a>“;<br>int[] foo = {3};<br>fl.ID = “tempFeatures”;<br>fl.Visible = true;<br>fl.InitializationFailed += new EventHandler&lt;EventArgs&gt;(fl_InitializationFailed);<br>map.Layers.Add(fl);<br></pre><br>with:</p>
+<p><pre lang="xml"></pre></p>
+<p><esri:map background="White" name="map"></esri:map></p>
+<p><esri:map.layers></esri:map.layers></p>
+<p><esri:arcgistiledmapservicelayer url="http://drc06/ArcGIS/rest/services/basemap_metro_region/MapServer"><br><br><br><br>==Fail.</esri:arcgistiledmapservicelayer></p>
+<p>Why?</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/03/boo.png" target="_blank" rel="external"><img src="/images/c92ea48bfb9a83eefa0141c460ae27ccc6477959.png" alt="" title="boo"></a></p>
+<p>Querying features with a WKT as the outSR fails at 9.31 - apparently it’s fixed at 10…</p>
+<p>but the large part of the problem revolves around ESRI’s parsing of the projected coordinate system of the data frame when publishing services.</p>
+<p>The Oregon Metro Projection is NAD_1983_HARN_StatePlane_Oregon_North_FIPS_3601</p>
+<p>this translates to WKID 2983 HOWEVER because we don’t go in and choose the predefined version of this coordinate system (whose string parses out as : NAD_1983_HARN_StatePlane_Oregon_North_FIPS_3601_Feet_Intl) the service can’t parse the spatial reference into a WKID.</p>
+<p>SAWEET!</p>
+<p>ESRI Forum article relieving much pressure is found here:</p>
+<p><a href="http://forums.arcgis.com/threads/15650-Map.ZoomToResolution-fails-to-change-map?p=48472#post48472" target="_blank" rel="external">http://forums.arcgis.com/threads/15650-Map.ZoomToResolution-fails-to-change-map?p=48472#post48472</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-03-30T05:25:51.000Z"><a href="/2011/03/29/rest-feature-query/">Mar 29 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/03/29/rest-feature-query/">REST Feature Query</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://navigator.state.or.us/ArcGIS/rest/services/Framework/Admin_Bounds/MapServer/6/query?returnGeometry=true&amp;spatialRel=esriSpatialRelIntersects&amp;where=1%3d1&amp;outSR=2838&amp;f=json" target="_blank" rel="external">http://navigator.state.or.us/ArcGIS/rest/services/Framework/Admin_Bounds/MapServer/6/query?returnGeometry=true&amp;spatialRel=esriSpatialRelIntersects&amp;where=1%3d1&amp;outSR=2838&amp;f=json</a></p>
+<p>Doesn’t mean much does it…</p>
+<p>BUT. behold this cruddy REST endpoint</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/03/rest_request.png" target="_blank" rel="external"><img src="/images/0322cbd264f87a972e31f7817c1a66ccf162d945.png" alt="" title="rest_request"></a></p>
+<p>Notice the where statement “””1=1””” Ahh glorious - extracts all features from the service in ESRI JSON - and can be used directly in a GP statement.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-03-22T04:13:54.000Z"><a href="/2011/03/21/featuredatagrid-snippet/">Mar 21 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/03/21/featuredatagrid-snippet/">Featuredatagrid snippet</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Grab a value from a rowclick/selected event in a Silverlight datagrid:</p>
+<pre lang="csharp">
+var myValue = e.Row.DataContext;
+object cellValue = myValue.GetType().GetProperty("ATTRIBUTE_NAME").GetValue(myValue, null);
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-03-15T07:00:12.000Z"><a href="/2011/03/15/a-few-notes-on-publishing-python-scripts-as-geoprocessing-services/">Mar 15 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/03/15/a-few-notes-on-publishing-python-scripts-as-geoprocessing-services/">AGS publishing geoprocessing services</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>The input must be a feature set as opposed to a feature class.</p>
+<p>The tool takes args in the same way traditional geoprocessing scripts do.</p>
+<p>Since we’re running the tool in a ‘static’ sense, none of the weighted overlay or workspace params need to be specified, just the input features. Rasters and workspace will be hardcoded.</p>
+<p>Server doesn’t lock the script or toolbox — you can edit the script while the service is <em>technically</em> running.  This makes debugging these things less painful.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-24T07:19:47.000Z"><a href="/2010/12/23/tiled-vectors/">Dec 23 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/23/tiled-vectors/">Tiled vectors</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>What is featureserver?</p>
+<p>What if a tileserver could select features from a database and create tiled vectors on the fly? 256x256 tiles. Using .NET or something of the ilk…and then adaptively caches those tiles.</p>
+<p>It seems that <a href="http://featureserver.org/" target="_blank" rel="external">Featureserver</a> serves vectors via REST….not images as previously thought…</p>
+<p>This would mean that geometry would not be available but could potentially speed up display.  An open source dynamic layer server.</p>
+<ul>
+<li>Get map size, scale and extent.</li>
+<li>Select features from db that intersect extent.</li>
+<li>run linear interpolation on each coordinate. (bottleneck)</li>
+<li>Plot on image.</li>
+</ul>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-12-16T02:34:29.000Z"><a href="/2010/12/15/wednesday-thoughts/">Dec 15 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/12/15/wednesday-thoughts/">ESRI Silverlight API and KML</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Have been tirelessly playing around with the EZRI SL API. The new support for the kmlLayer is very impressive…no longer do we see horrible, granulated, rasters with pathetic response time but rather smooth, rapidly rendered vectors on the map. With cross-domain requests via a proxy provided by EZRI! Whoopee!!</p>
+<pre lang="xml">
+<esri:kmllayer id="KmlLayer" url="http://www.redtrails.com/data/mfh.kmz" proxyurl="http://serverapps.esri.com/SilverlightDemos/ProxyPage/proxy.ashx" maximumresolution=".0001">
+</esri:kmllayer></pre>
+
+<p>MaximumResolution = scale dependency = since the rendering engine doesn’t respect the Network Link scales…Although the rendering engine seems to handle more geom than expected it has it’s limitations…</p>
+<p>On top of this we have KML MapTips! WOW!</p>
+<pre lang="xml">
+<esri:kmllayer.maptip>
+<border cornerradius="13" borderbrush="#CC444444" borderthickness="0" margin="0" background="#EE222222">
+<stackpanel orientation="Horizontal">
+<textblock text="{Binding Converter={StaticResource MyDictionaryConverter},
+ConverterParameter=name, Mode=OneWay}" foreground="#FFFFFFFF" fontsize="16" fontfamily="Verdana" fontweight="Bold" margin="5,5,0,3">
+</textblock></stackpanel>
+</border>
+</esri:kmllayer.maptip>
+</pre>
+
+<p>now if we could pull the geometry directly out of the kml…</p>
+<p><pre lang="csharp"><br>Graphic g = new Graphic();<br>ESRI.ArcGIS.Client.Geometry.Polygon p = new ESRI.ArcGIS.Client.Geometry.Polygon();<br>p = e.Graphic.Geometry;<br>MessageBox.Show(p.Rings[0].X)<br></pre><br>oooh yeah….</p>
+<p>Huge, huge potential here for the next rendition of Redtrails as well.. What I’m looking for now is to improve the MDI interface to build agile apps on.  The glass nav and floatable windows UI seems to work quite well.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-21T22:02:41.000Z"><a href="/2010/10/21/needs-assessment-user-interface-to-community-investment-strategy/">Oct 21 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/21/needs-assessment-user-interface-to-community-investment-strategy/">Needs Assessment :: User Interface to Community Investment Strategy</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Goals: </p>
+<ol>
+<li><div>To be able to run a single zonal statistics task on each of the inputs to the model thus dramatically reducing the time necessary for dynamic geoprocessing on ArcServer.</div>
+
+<pre><code><span class="number">1.</span>  Can possibly pre-process <span class="keyword">the</span> inputs <span class="keyword">but</span> would always have <span class="keyword">to</span> <span class="command">run</span> zonal stats <span class="function_start"><span class="keyword">on</span></span> <span class="keyword">the</span> new weighted composite raster.
+</code></pre><ol>
+<li>Can possibly set up to multithread locally or distribute task load across multiple SOCs if run on AGS. <span style="color:#943634;"><strong><em>Constraint:</em></strong></span> Task must be a discrete model without custom Python coding. Need to somehow accumulate values into the output attribute table.</li>
+</ol>
+</li>
+<li>Provide users with an interface allowing them to use slider bars to adjust the weight of the input layers, submit their formula and visualize the results.</li>
+<li>Allow users to visualize score breakdowns for each of the input geometries (centers, corridors, custom buffers etc.). Sparklines? Mini bar graphs?</li>
+<li>Document processes for the construction of each of the input rasters. Provide references to processes if applicable.</li>
+<li>Express map option geometry choices? Centers, channels, {buffer widths}?</li>
+</ol>
+<p>Relevant resources: </p>
+<ul>
+<li><div><a href="http://www.commonspace.us/" target="_blank" rel="external">http://www.commonspace.us/</a> - A flash application, allowing for dynamic adjustment of walking ranges. Cannot tell what server-side arch. They are using – does not appear to be AGS.</div>
+
+<pre><code>*   As quoted <span class="keyword">by</span> <span class="keyword">the</span> developers: - this <span class="keyword">is</span> a prototype <span class="keyword">and</span> <span class="keyword">is</span> <span class="keyword">not</span> a Azavea <span class="string">"product"</span>, per se, <span class="keyword">but</span> <span class="keyword">it</span> uses an early <span class="property">version</span> <span class="keyword">of</span> this new DecisionTree calculation engine we are creating.  In this case, <span class="keyword">it</span>'s doing <span class="keyword">the</span> routing, transitshed rasterization, raster-<span class="keyword">to</span>-vector translation <span class="keyword">and</span> vector polygon intersection <span class="keyword">in</span> this distributed geoprocessing environment.
+</code></pre></li>
+<li><a href="http://www.walkshed.org/nyc" target="_blank" rel="external">http://www.walkshed.org/nyc</a> - A JS application – uses jQuery, Google Maps and OpenLayers. Users can weight certain amenities in order to discover their walkshed.</li>
+<li><a href="http://resources.esri.com/help/9.3/arcgisserver/apis/silverlight/samples/start.htm" target="_blank" rel="external">http://resources.esri.com/help/9.3/arcgisserver/apis/silverlight/samples/start.htm#DriveTimes</a> – An ESRI SDK sample for 1,2, and 3 minute drivetimes – requires Road Network dataset.</li>
+<li><a href="http://gis.ashevillenc.gov/mapasheville/priorityplaces/" target="_blank" rel="external">http://gis.ashevillenc.gov/mapasheville/priorityplaces/</a> - A Flash application making use of the DecisionTree API and GeoServer.</li>
+</ul>
+<p><a href="http://webhelp.esri.com/arcgisserver/9.3/java/index.htm" target="_blank" rel="external">http://webhelp.esri.com/arcgisserver/9.3/java/index.htm#geoprocessing/gp_serv1903810197.htm</a> - Example drive time geoprocessing task. </p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2010-10-05T07:01:00.000Z"><a href="/2010/10/05/gtile-creator/">Oct 5 2010</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2010/10/05/gtile-creator/">GTile Creator</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Here is a screenshot of and code for the Google Maps Tile Creator.  I found it much better than ESRI’s crappy caching tools.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/GTileCreator.bmp" target="_blank" rel="external"><img src="/images/2c0278a6b1035438da58e1a2eb6f4f71078e9b06.bmp" alt="" title="GTileCreator"></a></p>
+<p>The plugin: (Straight from ArcScripts)</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2010/10/GTileCreator.zip" target="_blank" rel="external">GTileCreator</a></p>
+<p>And the script for converting the output of this code to ESRI cache directory format:</p>
+<pre lang="vb">On Error Resume Next
+    Dim fso, folder, files, NewsFile,sFolder
+    Dim StdIn, StdOut
+    Set StdIn = WScript.StdIn
+    Set StdOut = WScript.StdOut
+
+  Set fso = CreateObject("Scripting.FileSystemObject")
+  'Source Folder - where GTileCreator dumped your tiles.
+  sFolder = "V:\tempBen"
+  'Target Folder - in your arcGIS Server Cache directory.
+  tFolder = "S:\arcgisserver\arcgiscache\DG2007\Layers\_alllayers"
+
+  Set folder = fso.GetFolder(sFolder)
+  Set files = folder.Files
+For each folderIdx In files
+     dim fn  : fn=folderIdx.Name
+     dim fax : fax = split(folderIdx.Name,"_")
+     dim col : col=(fax(1))
+     dim row : row=(fax(2))
+     dim zoom : zoom=(fax(3))
+     dim zoomstr : zoomstr = replace(zoom, ".jpg","")
+     dim colstr : colstr=hex(col) & ""
+     dim rowstr : rowstr=hex(row) & ""
+
+     if len(zoomstr) &lt;2 then
+     while len(zoomstr) &lt;&gt; 2
+     zoomstr = "0" & zoomstr
+     wend
+     end if
+     zoomstr = "L" & zoomstr
+
+     while len(colstr) &lt;&gt; 8
+     colstr = "0" & colstr
+     wend
+         colstr = "C" & Lcase(colstr) & ".jpg"
+
+         while len(rowstr) &lt;&gt; 8
+         rowstr = "0" & rowstr
+         wend
+         rowstr = "R" & Lcase(rowstr)
+
+        If Not fso.FolderExists(tFolder & "\" & zoomstr) Then
+            fso.CreateFolder (tFolder & "\" & zoomstr)
+        End If
+
+        If Not fso.FolderExists(tFolder & "\" & zoomstr & "\" & rowstr) Then
+            fso.CreateFolder (tFolder & "\" & zoomstr & "\" & rowstr)
+        End If
+
+        'check if the file exists if it does - delete the source
+        tFile = tFolder & "\" & zoomstr & "\" & rowstr & "\" & colstr
+        If Not fso.FileExists(tfile) Then 'if it doesn't exist
+            set fil = fso.getFile(folderIdx)
+            if fil.size&gt;1700 then ' and it's greater than 1 kb
+                fil.Copy tFile, true ' then copy it over
+                StdOut.WriteLine ("copied file: " & fn)
+                StdOut.Writeline (vbtab & "to: " & tFile)
+            End If
+            fil.delete() ' then delete it
+            StdOut.Writeline vbtab & "Deleted: " & fn
+            set fil = nothing
+        Else ' if it does exist
+           set fil2 = fso.getFile(tfile) ' get the target file
+           set fil = fso.getFile(folderIdx) ' get the source file
+            if fil.size &gt; fil2.size then 'if the source is larger than the target
+                fil.Copy tFile, true ' so overwrite the target
+                StdOut.WriteLine ("copied larger file: " & fn)
+            End If
+            set fil=nothing
+            set fil2=nothing
+           fso.deletefile(folderIdx) ' then delete it
+           StdOut.Writeline zoomstr & "\" & rowstr & "\" & colstr & " exists"
+           StdOut.Writeline vbtab & "Deleted: " & fn
+        end If
+Next
+Set fso = Nothing</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/categories/ArcGIS-Server/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/categories/ArcGIS-Server/page/3/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

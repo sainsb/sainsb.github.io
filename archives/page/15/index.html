@@ -1,0 +1,774 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Page 15 | Archives | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">Archives</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-06-14T02:28:15.000Z"><a href="/2011/06/13/sdeoracle-python-2/">Jun 13 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/06/13/sdeoracle-python-2/">SDE/Oracle + Python 2</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Ok - this post doesn’t actually have much to do with the title but rather outlines my continuing work on our nearest facility service.<br>For redtrails.com nearest trail lookups, I use lat long and a query similar to this:</p>
+<pre lang="sql">
+ROUND( SQRT( POW((69.1 * (TRL_X-" . $coords[3] . ")),2) + POW((53 * (TRL_Y-" . $coords[2] . ")),2)),1)
+</pre>
+This query runs quickly and doesn't require any spatial functionality, it is just doing euclidean math on the grid.  However, the lat/long/Mercator projection leads to some major distortion.  While I could do some sine/cosine stuff it really isn't all high a priority.
+
+*However, for the closest facility service we're building, we wanted distance calculations to be as accurate as possible.  The thought occurred to me of duplicating the above logic but using a Oregon State Plane coordinates, thus minimizing distance distortion.  
+
+Worked like a champ, 
+<pre lang="sql">
+ROUND(SQRT(POW(ABS(xCOORD-[XCOORD]),2)+POW(ABS(yCOORD-[YCOORD]),2))/5280,2)
+</pre>
+
+<p>When comparing the formula results with ArcGIS makeNearestTable geoprocessing tool results I found no difference.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-06-13T23:12:31.000Z"><a href="/2011/06/13/sdeoracle-python/">Jun 13 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/06/13/sdeoracle-python/">SDE/Oracle + Python part 1.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Recently we’ve been building a closest facility web service using ArcGIS Server (gp Task) as the host and a file geodatabase as the data source.<br>After creating an empty feature class, populating it with the input point coordinates, hitting up GenerateNearTableAnalysis, instantiating a search cursor in order to do a sort (it’s a 9.3 server) etc. etc. It occurred to me that this very site performs a <a href="http://www.redtrails.com/search.php?foo=true&amp;s=Ridge&amp;loc=Augusta,%20MT&amp;c=100&amp;d=&amp;e=" target="_blank" rel="external">similar task</a> <em>including the geocode</em> at sub-second speeds leveraging MySQL’s primitive spatial functions.  So what if I move this logic to a true spatially enabled database something like Oracle/SDE?</p>
+<p>I looked in to what this might feel like coming from a published GP task:</p>
+<p>grab yourself an Oracle module for Python…<a href="http://cx-oracle.sourceforge.net/" target="_blank" rel="external">there are many flavors</a>…</p>
+<p>Check out <a href="http://www.oracle.com/technetwork/articles/dsl/python-091105.html" target="_blank" rel="external">this page</a> for connecting and basic queries.</p>
+<p>Here’s a first shot at connecting to a feature class in Oracle</p>
+<p><pre lang="python">import cx_Oracle<br>conn = cx_Oracle.connect(“user/pass@[TNSName]”)<br>curs = conn.cursor()and t</pre></p>
+<p>curs.execute(‘SELECT * from myFeatureClass where ROWNUM &lt; 5’)<br>print curs.description<br>for row in curs:<br>print row<br>conn.close()<br>Output:</p>
+<p>[(‘OBJECTID’, &lt;type ‘cx_Oracle.NUMBER’&gt;, 39, 22, 38, 0, 0), (‘DISTNO’, &lt;type ‘cx_Oracle.UNICODE’&gt;, 6, 12, 0, 0, 1), (‘DISTNAME’, &lt;type ‘cx_Oracle.UNICODE’&gt;, 25, 50, 0, 0, 1), (‘SHAPE’, &lt;type ‘cx_Oracle.NUMBER’&gt;, 39, 22, 38, 0, 1)]<br>(13, u’46’, u’OREGON TRAIL’, 4486)<br>(33, u’7’, u’REYNOLDS’, 5096)<br>(20, u’62’, u’OREGON CITY’, 4255)<br>(37, u’12’, u’NORTH CLACKAMAS’, 4281)<br>(22, u’62’, u’OREGON CITY’, 5165)</p>
+<p>I experienced a little difficulty understanding the connection string setup but Oracle SQL Developer can be useful for that.<br>Can’t play ST_Geometry games? Maybe your data is in <a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#//002n0000007m000000.htm" target="_blank" rel="external">SDE Binary</a>, as you can tell from the query output, ours is.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-06-10T11:39:06.000Z"><a href="/2011/06/10/is-this-the-writing-on-the-wall/">Jun 10 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/06/10/is-this-the-writing-on-the-wall/">Is this the writing on the wall?</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>saw this post on reddit today…</p>
+<p><a href="http://www.itnews.com.au/News/259910,silverlight-developers-rally-against-windows-8-plans.aspx" target="_blank" rel="external">http://www.itnews.com.au/News/259910,silverlight-developers-rally-against-windows-8-plans.aspx</a></p>
+<p>While I haven’t invested (relatively) all that much time in Silverlight/.NET development,  I’m certainly disappointed to see Microsoft and ipso facto ESRI bail on  Silverlight moving forward…</p>
+<p>HTML5 where are your mapping APIs that provide the same smoothness as Silverlight? Where are your javascript libraries that make SVG dev fun and straightforward?</p>
+<p>Scott Hanselman, what do you think?</p>
+<p><a href="http://www.hanselman.com/blog/ShouldIUseHTML5OrSilverlightOneMansOpinion.aspx" target="_blank" rel="external">http://www.hanselman.com/blog/ShouldIUseHTML5OrSilverlightOneMansOpinion.aspx</a></p>
+<p>Any opinions out there specifically regarding rich internet application (RIA) mapping APIs going forward?</p>
+<p>ESRI what do you think?</p>
+<p><a href="http://events.esri.com/uc/QandA/index.cfm?fuseaction=answer&amp;conferenceId=2F6DC1A1-1422-2418-883C3868A9004888&amp;questionId=3062" target="_blank" rel="external">http://events.esri.com/uc/QandA/index.cfm?fuseaction=answer&amp;conferenceId=2F6DC1A1-1422-2418-883C3868A9004888&amp;questionId=3062</a></p>
+<p><a href="http://arcscripts.esri.com/details.asp?dbid=16966" target="_blank" rel="external">http://arcscripts.esri.com/details.asp?dbid=16966</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-06-07T02:17:36.000Z"><a href="/2011/06/06/performance-comparison/">Jun 6 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/06/06/performance-comparison/">ArcGIS API Performance comparison</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I recently recovered this image - saw it in a powerpoint last year in Prescott given by the inimitable <a href="http://www.pierssen.com/" target="_blank" rel="external">Mark Cederholm</a> (it’s his image, please give me no credit)</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/06/perform_compare.png" target="_blank" rel="external"><img src="/images/09a05a0f90b21e575037c3ef66346308597caee2.png" alt="" title="perform_compare"></a></p>
+<p>Makes me want to revisit the C++ API…</p>
+<p>Check out the full powerpoint on rolling ArcObjects in Python at <a href="http://www.pierssen.com/arcgis/upload/misc/python_arcobjects.pdf" target="_blank" rel="external">http://www.pierssen.com/arcgis/upload/misc/python_arcobjects.pdf</a></p>
+<p>And, because I just can’t get enough:</p>
+<p><a href="http://comments.gmane.org/gmane.comp.python.comtypes.user/405" target="_blank" rel="external">PyPy+comtypes</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-27T02:04:52.000Z"><a href="/2011/05/26/cannot-project-into-memory/">May 26 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/26/cannot-project-into-memory/">Cannot project into memory?</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This sounds like an existential teleportation question but rather refers to a limitation or bug in ESRI software..<br>sigh…<br>bang head…<br>sigh…</p>
+<p><strong>ERROR 000944: Output feature class cannot be in the in_memory workspace.</strong></p>
+<p><a href="http://forums.arcgis.com/threads/23289-Trying-to-project-a-layer-in-a-Python-script" target="_blank" rel="external">Here’s the only forum post on the issue.</a></p>
+<p>Here’s a reproducible python script::</p>
+<h1 id="Begin_Python_script">Begin Python script</h1>
+<p>import arcpy<br>arcpy.management.Project(“C:/scratch/temp.shp”,”in_memory/foo”,”path to whatever coord system…”)</p>
+<h1 id="End_python_script">End python script</h1>
+<p>Fails with error msg::</p>
+<p>ERROR 000944: Output feature class cannot be in the in_memory workspace.<br>Failed to execute (Project).</p>
+<p>called ESRI and at least got them to update the forum post…appears to have started as a bug at 9.1 then converted to a real live error.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-27T01:36:27.000Z"><a href="/2011/05/26/cross-domain-ajax-with-jsonp-esri-gp-tasks/">May 26 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/26/cross-domain-ajax-with-jsonp-esri-gp-tasks/">Cross domain AJAX with JSONP + ESRI GP Tasks</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is one of the finest wikipedia articles I’ve come across in a while.</p>
+<p><a href="http://en.wikipedia.org/wiki/JSONP" target="_blank" rel="external">http://en.wikipedia.org/wiki/JSONP</a></p>
+<p>By fooling the browser into thinking that you’ve wrapped your javascript request in &lt;script&gt; tags, you can make the cross-domain calls you’ve always dreamed of.</p>
+<p>I discovered this issue yesterday when trying to make calls to an ArcGIS Server geoprocessing task.  When you submit a job to AGS, the server returns a 302 redirect to the job url and gives you the status.  This is kind of difficult for a number of reasons, b/c you have to handle the redirect and, for our purposes, the cross-domain call.  I finally discovered the JSONP datatype in the jQuery ajax call and it magically handled both issues!! yeah!</p>
+<p>This is the <a href="http://stackoverflow.com/questions/3506208/jquery-ajax-cross-domain" target="_blank" rel="external">Stack Overflow</a> that finally tipped me off to the JSONP datatype.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-27T01:20:45.000Z"><a href="/2011/05/26/hosting-silverlight-with-apache/">May 26 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/26/hosting-silverlight-with-apache/">Hosting Silverlight with Apache</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Apparently these links say you can do it…</p>
+<p><a href="http://stackoverflow.com/questions/729294/run-silverlight-with-apache-server-under-linux" target="_blank" rel="external">http://stackoverflow.com/questions/729294/run-silverlight-with-apache-server-under-linux</a></p>
+<p><a href="http://blogs.technet.com/b/jorke/archive/2007/09/11/silverlight-mime-types-in-iis6.aspx" target="_blank" rel="external">http://blogs.technet.com/b/jorke/archive/2007/09/11/silverlight-mime-types-in-iis6.aspx</a></p>
+<p><a href="http://blogs.msdn.com/b/tims/archive/2008/03/18/configuring-a-web-server-to-host-silverlight-content.aspx" target="_blank" rel="external">http://blogs.msdn.com/b/tims/archive/2008/03/18/configuring-a-web-server-to-host-silverlight-content.aspx</a></p>
+<p>As long as there is no .NET code involved in the host page…</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-13T06:24:40.000Z"><a href="/2011/05/12/using-arcpy-in-visual-studio-2010/">May 12 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/12/using-arcpy-in-visual-studio-2010/">Arcpy + Visual Studio 2010</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Overcame the odds today trying to create a happy-time IDE for arcpy scripting in Visual Studio 2010.</p>
+<p>My priorities:</p>
+<ol>
+<li>Intellisense + method signatures (for arcpy)</li>
+<li>Debugger</li>
+<li>Syntax highlighting</li>
+<li>To avoid having to install another major IDE (like Eclipse)<br>Based on the forums it seemed like most serious ArcGIS scriptographers are either using Eclipse, Komodo or good ol’ text editors.  I looked into Eclipse but I couldn’t figure out which one to install…I tried one off the cuff and attempted to run it but it wanted me to install Java this and Java that…While I’m not totally against that I figured I’d check my other options.</li>
+</ol>
+<p>And while I love Notepad++, I didn’t want to have to grok arcpy without some intellisense.</p>
+<p>I checked out IronPython and Ironclad (to make CPython modules work) …made a little progress with these but they seemed a little iffy.  It was then that I hit up a <a href="http://pragmaticgeographer.blogspot.com/" target="_blank" rel="external">collegiate colleague</a> who tipped me off to <a href="http://pytools.codeplex.com/" target="_blank" rel="external">Python Tools for Visual Studio</a>.</p>
+<p>Light install and got all kinds of new goodies in VS.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/projects.png" target="_blank" rel="external"><img src="/images/b5cacb33dbf47674ec5a08d5e20b5d38489189b1.png" alt="" title="projects"></a></p>
+<p>Don’t ask me what an IronPython Silverlight Web Page does or is…it sounds intriguing but 3-words = Kludgey as Hell.</p>
+<p>Anywho, I pointed my search paths to C:\Python26\ArcGIS10.0\ and tried out some intellisense….no love…was getting it for standard Python libraries and arcpy was showing up as a potential import but alas, no intellisense.</p>
+<p>Tried re-generating a Completion Database but alas, no luck.</p>
+<p>Read a little of the documentation (note that this was my last step :) ) about where the latter searches when  building the database and thought, what if I copy the arcpy files from here:</p>
+<p>C:\Program Files (x86)\ArcGIS\Desktop10.0\arcpy</p>
+<p>to here:</p>
+<p>C:\Python26\ArcGIS10.0\Lib</p>
+<p>Note that I <em>copied</em> them, I didn’t cut and paste them…regenerated the database and lo and behold…</p>
+<p>Intellisense goodness ++ (Note the <strong>full</strong> documentation at right)</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/success.png" target="_blank" rel="external"><img src="/images/f45f5aa700ff80691d6953a7209337f009fd3d80.png" alt="" title="success"></a></p>
+<p>A little signature help here?—&gt;</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/sig.png" target="_blank" rel="external"><img src="/images/b616035d3b1fc8c7c0df7b6d1353bb9cc5012ac9.png" alt="" title="sig"></a></p>
+<p>That’s more like it :)</p>
+<p>The debugger is slow but it works and it’s definitely not a dealbreaker - also some of the methods are accessed a little differently than you might see them elsewhere. (toy around with it, you’ll see what I mean)</p>
+<p>Python Tools for Visual Studio is in Beta but appears to have decent momentum.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-12T00:23:52.000Z"><a href="/2011/05/11/nk2edit/">May 11 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/11/nk2edit/">NK2Edit</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Handy little utility to build an NK2 file from your inbox.  Very useful when migrating to a new box as this file wasn’t copied over from my last box…<a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/nk2edit.zip" target="_blank" rel="external">nk2edit</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-05-11T22:46:28.000Z"><a href="/2011/05/11/mark-item-as-read-in-outlook-when-it-appears-in-the-reading-pane/">May 11 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/05/11/mark-item-as-read-in-outlook-when-it-appears-in-the-reading-pane/">Mark item as read in Outlook when it appears in the reading pane.</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><a href="http://blog.guerrillagis.net/wp-content/uploads/2011/05/Untitled.gif" target="_blank" rel="external"><img src="/images/4e2b90b519ff2decc721658b6a4826917b5a0f11.gif" alt="" title="Untitled"></a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+    <a href="/archives/page/14/" class="alignleft prev">Prev</a>
+  
+  
+    <a href="/archives/page/16/" class="alignright next">Next</a>
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,740 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Snippets++ | </title>
+  <meta name="author" content="Che Geovara">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title category">Snippets++</h2>
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-03-03T08:56:52.000Z"><a href="/2012/03/03/server-monitor/">Mar 3 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/03/03/server-monitor/">Server Monitor</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I’ve been wanting to build an external contraption to monitor our servers.  Something that I could just plug in via USB and get a 7seg display - something like <a href="http://www.youtube.com/watch?v=mAXKMwQUV5U" target="_blank" rel="external">this</a>.  In the process of researching what goes on software-wise I came across this glossy little app.  It’s built in WPF and uses the PerformanceCounter object in the System.Diagnostics library.  I stole 99% of the code from <a href="http://blog.lab49.com/archives/2028" target="_blank" rel="external">here</a> - an app built for monitoring stocks - strangely, what took the longest was adjusting the code to take the same value twice in a row.  I guess the developer was working with very large (decimal) numbers and so never ran across that.  Instead of creating a new class, I just modified the RandomTickerAdapter Class to suit my needs.  yes. I’m <em>really</em> lazy. </p>
+<p>Here’s the globals-&gt;</p>
+<pre lang="csharp">
+private readonly Stopwatch _stopwatch = new Stopwatch();
+private readonly string[] _symbols = new[] {"SERVER1", "SERVER2", "SERVER3"};
+private readonly double _timerSpeedMilliseconds = 3000;
+private readonly double _virtualSecondsPerSecond = 500000;
+private readonly PerformanceCounter a;
+private readonly PerformanceCounter b;
+private readonly PerformanceCounter c;
+private TimeSpan _realTimePassed = TimeSpan.Zero;
+private Timer _timer;
+private TimeSpan _virtualTimePassed = TimeSpan.Zero;
+private int counter;
+</pre>
+
+<p>And here’s what happens in the constructor-&gt;</p>
+<pre lang="csharp">
+_virtualSecondsPerSecond = virtualTimePerRealSecond.TotalSeconds;
+_timerSpeedMilliseconds = tickInterval.TotalMilliseconds;
+a = new PerformanceCounter("Processor", "% Processor Time", "_Total", "SERVER1");
+b = new PerformanceCounter("Processor", "% Processor Time", "_Total", "SERVER2");
+c = new PerformanceCounter("Processor", "% Processor Time", "_Total", "SERVER3");
+</pre>
+
+<p>The ticker starts a timer and raises the timer.elapsed event. Here’s basically what’s going on in the handler-&gt;</p>
+<pre lang="csharp">
+if (sec.Id == "SERVER1")
+  a.NextValue();
+Thread.Sleep(200);
+if (sec.Id == "SERVER1")
+  value = Convert.ToDouble(a.NextValue());
+
+//Pass value to UI.
+</pre>
+
+<p>You have to sleep the thread just a tad to get a valid number from the Performance Counter.</p>
+<p>Here’s a screenshot-</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/03/smon.png" target="_blank" rel="external"><img src="/images/0f3e7f441b4af1713d2475503488c059fae50665.png" alt="" title="smon"></a><br>The ‘capsules’ look like buttons because they are…I guess they were used because someone had a nice glass button style. ;)  With each tick if the value is greater than the median then the color will turn red and actually varies in intensity.  As it moves below the median it turns green.  The slider at the bottom allows you to zoom in on the linegraph.  Overall a very, very handy little tool.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-02-09T23:44:01.000Z"><a href="/2012/02/09/overriding-operators/">Feb 9 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/02/09/overriding-operators/">Overloading operators in .Net</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I recently switched my shapefile comparison routine over to windows forms from WPF/Silverlight.  I’ve been wanting to compare <strong>BIG</strong> data and I keep getting an OutofMemory exception when I run it in the XAML stack.  When I switched over to Windows Forms it still failed the memory test, BUT when I switched it over to 64 bit it took the 2gb+ hit to memory like a champ. I just had to fill in a few gaps.  The first one being a simple point class.  All I needed was X and Y, or so I thought.  I’d run through the shapefile and compare points but it took me awhile to realize that it was <em>always</em> inequal.  Well, it turns out that the System.Windows.Point object I was using in XAML land was A) a struct (cool) and B) overriding the equality and inequality operator.  I was able to discover the latter through the .Net metadata. <em>very cool</em></p>
+<p>Old object:</p>
+<pre lang="csharp">
+  public class Point
+    {
+        public Double X { get; set; }
+        public Double Y { get; set; }
+    }
+</pre>
+
+<p>New object:</p>
+<pre lang="csharp">
+  public struct Point
+    {
+        public Double X { get; set; }
+        public Double Y { get; set; }
+        public static bool operator ==(Point p1, Point p2)
+        {
+            return ((p1.X == p2.X) && (p1.Y == p2.Y));
+        }
+
+        public static bool operator !=(Point p1, Point p2)
+        {
+            return ((p1.X == p2.X) && (p1.Y == p2.Y));
+        }
+    }
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-02-08T04:25:22.000Z"><a href="/2012/02/07/linq-string-wildcard/">Feb 7 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/02/07/linq-string-wildcard/">LINQ string wildcard</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>With the amazing amount of functions we get from LINQ, it’s surprising, in a way, that we don’t have a ‘Like’ string comparator.</p>
+<p>So here’s the back story: I’ve got a grid sourced on an observablecollection that I want to support filtering.  I have a child window dialog that offers a series of criteria.</p>
+<p><a href="http://blog.guerrillagis.net/wp-content/uploads/2012/02/child.png" target="_blank" rel="external"><img src="/images/e52e2fae547cb43a69ba4adfab15a074744cb2fd.png" alt="" title="child"></a></p>
+<p>I’m using a LINQ extension statement to apply the criteria and then setting the DataContext of my grid to the result, for instance, here’s the event handler on a separate textbox setup to dynamically filter the data:</p>
+<pre lang="csharp">
+  private void TxtFilterTextChanged(object sender, TextChangedEventArgs e)
+        {
+            var t = sender as TextBox;
+            dg.DataContext = !string.IsNullOrEmpty(t.Text) 
+             ? projects.features.Where(
+              w => w.attributes.PROJECT_NAME.Contains(t.Text.ToUpper()))
+             : projects.features;
+        }
+</pre>
+
+<p>The criteria presents a different issue however because I may want to filter on multiple columns. How do I accommodate this?  Create a LINQ statement for every possible combination of the above?  I got to thinking about creating a query using LIKE statements and a wildcard of some sort.  something like : if combobox.value == nullorEmpty then use a wildcard == filterless.  Well, LINQ doesn’t have a like function nor a wildcard-ish operator but there’s a workaround.  <del>However, by using the Unicode character replacement ‘glyph’ \uFFFD I do have an effective wildcard.  Why is this so?  I don’t know…maybe someone can explain why .Net does this.  All I care is that I only have to write one LINQ statement.</del> WooT!</p>
+<pre lang="csharp">
+dg.DataContext = projects.features.Where(w => 
+                    w.attributes.CITY.StartsWith(
+                       (string)fd.cboCities.SelectedValue ?? "") &&
+                    w.attributes.COUNTY.StartsWith(
+                       (string)fd.cboCounties.SelectedValue ?? "")
+                       );
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-02-02T06:16:01.000Z"><a href="/2012/02/01/cross-thread-ui-update-in-silverlightwpf/">Feb 1 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/02/01/cross-thread-ui-update-in-silverlightwpf/">Cross-thread UI update in Silverlight/WPF</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>There appear to be any number of ways to update the UI thread from a background thread in Silverlight/WPF-land.<br>This seems to be the simplest.</p>
+<pre lang="csharp">
+private void DoStuffOnBackgroundThread()
+{
+    Dispatcher.BeginInvoke(new Action<string>(write), "Updated UI");
+}
+
+private void write(string msg)
+{
+    Dispatcher.VerifyAccess();
+    txtControl.Text=msg;
+}
+</string></pre>
+
+<p>In order to pass additional/different params to the Action delegate you would do something like this:</p>
+<pre lang="csharp">
+private void DoStuffOnBackgroundThread()
+{
+    Dispatcher.BeginInvoke(new Action<int, int,="" string="">(write), 1,2,"Updated UI");
+}
+
+private void write(int foo, int bar, string msg)
+{
+    Dispatcher.VerifyAccess();
+    txtControl.Text=msg;
+}
+</int,></pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-01-21T07:35:28.000Z"><a href="/2012/01/20/reading-from-a-resource-in-silverlight/">Jan 20 2012</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2012/01/20/reading-from-a-resource-in-silverlight/">Reading from a resource in Silverlight</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This post is completely lifted from <a href="http://www.michaelsnow.com/2010/12/28/silverlight-reading-from-a-file-contained-in-your-xap/" target="_blank" rel="external">Michael Snow’s blog ‘Everything Silverlight’</a> - Go check it out. So here we go:<br>Add a reference to System.Windows.Resources<br>Add an image, a text file or what have you, to your project and mark it as a resource:</p>
+<pre lang="csharp">
+var uri = new Uri("[yourNamespace];component/[yourFile]", UriKind.Relative);
+var streamInfo = Application.GetResourceStream(uri); 
+</pre>
+
+<p>Here’s how to reference it:</p>
+<pre lang="csharp">
+if (null != streamInfo)
+{
+    var stream = streamInfo.Stream;
+    var sr = new StreamReader(stream);
+    string line = String.Empty;
+    while ((line = sr.ReadLine()) != null)
+    {
+    //doStuff
+    }
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-12-24T14:53:14.000Z"><a href="/2011/12/24/jagged-arrays/">Dec 24 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/12/24/jagged-arrays/">Jagged arrays and smooth rainbows</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I had never heard the term ‘<a href="http://msdn.microsoft.com/en-us/library/2s05feca.aspx" target="_blank" rel="external">Jagged Array</a>‘ before and having done this many times it’s nice to have a label.</p>
+<p>For awhile now, I’ve thought it would be fun to create a ‘color tuner’ circuit wherein, with an RGB LED and a potentiometer, one could dial through the colors of the rainbow.</p>
+<p>Here is the crappy video elucidating the result:</p>
+<p><iframe width="420" height="315" src="http://www.youtube.com/embed/ZIaL5GcpvJc" frameborder="0" allowfullscreen></iframe><br>Note that you can’t see that I’m dialing the potentiometer in order to cause the hue change (with one hand no less).</p>
+<p>In brief the circuit is using a 5K linear potentiometer, a Netduino (not plus), a cheap radio shack RGB LED and 3 470k resistors.  Since the RGB is common anode, I am ‘sinking’ voltage in three of the Netduino’s PWM pins and supplying 5V to the anode.  This means that the SetPulse and SetDutyCycle methods of the PWM pins will be inverted but it seems to work well given my equipment on hand. The potentiometer is regulating analog input into the Netduino.  I originally used <a href="http://forums.netduino.com/index.php?/topic/638-basic-analog-input-circuit-and-program/" target="_blank" rel="external">this link</a> to set up the simple analog input but <a href="http://davidsandor.com/post/2011/08/02/Netduino-Day-1-Variable-resistor-%28analog-input%29-controlling-onboard-LED-flashing.aspx" target="_blank" rel="external">this method</a> is even simpler.  The analog input comes in a range of 0 to 1023.  I perform a linear conversion (converting one range of numbers to a different range) <a href="http://stackoverflow.com/questions/929103/convert-a-number-range-to-another-range-maintaining-ratio" target="_blank" rel="external">[as explained on SO]</a></p>
+<pre lang="python">
+NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
+
+Or a little more readable:
+OldRange = (OldMax - OldMin)
+NewRange = (NewMax - NewMin)
+NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
+</pre>
+
+<p> which is then used for a lookup in the jagged array.  The three values in the inner arrays are then fed into the SetPulse method of the LED.  While I originally had 16 colors set up, I ramped it up to 52.  It’s surprising how noticeable the jump still is from color to color.  Maybe I need to create 1023 different colors.  Anyway, here’s the source code with 16 colors for brevity, note the syntax on the inline jagged array initialization took a few extra minutes to figure out:</p>
+<pre lang="csharp">
+using System.Text;
+using Microsoft.SPOT;
+using System.Threading;
+using SecretLabs.NETMF.Hardware;
+using SecretLabs.NETMF.Hardware.Netduino;
+using System.Collections;
+
+namespace NDP_ColorTuner
+{
+    public class Program
+    {
+        public static void Main()
+        {
+            PWM red = new PWM(Pins.GPIO_PIN_D6);
+            PWM blue = new PWM(Pins.GPIO_PIN_D5);
+            PWM green = new PWM(Pins.GPIO_PIN_D9);
+
+            AnalogInput a5 = new AnalogInput(Pins.GPIO_PIN_A0);
+            uint[][] colors = new uint[16][]{
+            new uint[] { 0,100,100 },new uint[] { 20,80,100 }, 
+           new uint[] { 40, 60, 100 },new uint[] { 60, 40, 100 }, 
+           new uint[] { 80, 20, 100 },new uint[] { 100, 0, 100 },
+           new uint[] { 100, 20, 80 },new uint[] { 100, 40, 60 }, 
+           new uint[] { 100, 60, 40 },new uint[] { 100, 80, 20 }, 
+            new uint[] { 100, 100, 0 }, new uint[] { 80, 100, 20 },
+            new uint[] { 60, 100, 40 }, new uint[] { 40, 100, 60 },
+            new uint[] { 20, 100, 80 }, new uint[] { 0, 100, 100 }
+        };
+
+            while (true)
+            {
+                int n = ((a5.Read() * 15 ) / 1023);
+
+                red.SetDutyCycle(colors[n][0]);
+                green.SetDutyCycle(colors[n][1]);
+                blue.SetDutyCycle(colors[n][2]);
+            }
+        }
+    }
+}
+</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+    <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2011-03-21T22:46:20.000Z"><a href="/2011/03/21/retrieve-id-after-insert/">Mar 21 2011</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2011/03/21/retrieve-id-after-insert/">Retrieve ID after INSERT</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>A handy little note on retrieving the PK/UID after a new insert autogenerates the value in the db.</p>
+<p><a href="http://www.davidhayden.com/blog/dave/archive/2006/02/16/2803.aspx" target="_blank" rel="external">http://www.davidhayden.com/blog/dave/archive/2006/02/16/2803.aspx</a></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+  
+
+  <nav id="pagination">
+  
+  
+  <div class="clearfix"></div>
+</nav>
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>

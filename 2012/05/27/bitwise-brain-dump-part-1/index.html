@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Bitwise Brain Dump - Part. 1 | </title>
+  <meta name="author" content="Che Geovara">
+  
+  <meta name="description" content="This is a personal brain dump on binary numbers, bitwise operators and bitshifting.  This stuff has eluded me for quite some time and it feels good to">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="Bitwise Brain Dump - Part. 1"/>
+  <meta property="og:site_name" content="null"/>
+
+  
+    <meta property="og:image" content="undefined"/>
+  
+
+  <link href="/favicon.ico" rel="icon" type="image/x-ico">
+  <link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <img src='//sainsb.github.io/blog_logo.png' style='margin:15px;'/>
+  <h2 class="subtitle"></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="http://sainsb.github.io">Home</a></li>
+    
+      <li><a href="http://sainsb.github.io/archives">Archives</a></li>
+    
+      <li><a href="http://sainsb.github.io/about">About</a></li>
+    
+      <li><a href="http://sainsb.github.io/atom.xml">RSS</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2012-05-28T06:30:25.000Z"><a href="/2012/05/27/bitwise-brain-dump-part-1/">May 27 2012</a></time>
+      
+      
+  
+    <h1 class="title">Bitwise Brain Dump - Part. 1</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is a personal brain dump on binary numbers, bitwise operators and bitshifting.  This stuff has eluded me for quite some time and it feels good to have a better handle on it.   So…let’s dive on in.</p>
+<p><strong><span style="color:#555555;font-size:16px;">Numeric datatypes in C#</span></strong></p>
+<p>The <strong>int</strong> datatype is an alias for the System.Int32, a signed 32-bit integer.<br>This is what the number 1(as an <strong>int</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>00000000 00000000 00000000 00000001</em><br>This is what the number -2147483648 (the minimum value of an <strong>int</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>10000000 00000000 00000000 00000000</em><br>The <strong>long</strong> datatype is an alias for the System.Int64, a signed 64-bit integer.<br>Hence, this is what the 1(as a <strong>long</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000001</em><br>And this is what 9223372036854775807 (the maximum value of a <strong>long</strong>) looks like in binary:<br>&nbsp;&nbsp;&nbsp;&nbsp;<em>01111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111</em></p>
+<p>Here are the functions I used to extract and display each bit in the numbers above:</p>
+<pre lang="csharp">
+private static string showBits(int x)
+{
+    string s=x+": ";
+    int mask = 1 << 31;
+    for (var cnt = 1; cnt <= 0="" 8="=" 32;="" ++cnt)="" {="" s+="((x" &="" mask)="=" 0)="" ?="" '0'="" :="" '1';="" x="" <<="1;" if="" (cnt="" %="" &&="" cnt="" !="32)" ;="" }="" return="" s;="" private="" static="" string="" showbits(long="" x)="" s="x" +="" ":="" ";="" long="" mask="1L" 63;="" for="" (var="" <="64;" pre="">
+
+<p>Note the use of the variable <strong>mask</strong> here - known as a ‘bitmask’ we use the bitwise AND operation to ‘mask’ out all bits except the ones we care about….so our mask value in the int version of the showBits function looks like this: 10000000 00000000 00000000 00000000. </p>
+<p>Keep in mind the bitwise &amp; operator works like this:</p>
+<blockquote>
+<p>0 &amp; 0 == 0<br>    0 &amp; 1 == 0<br>    1 &amp; 0 == 0<br>    1 &amp; 1 == 1</p>
+</blockquote>
+<p>As we enter the loop with our integer value we mask out all bits except the far left.  Once we’ve used the ternary conditional to determine the value of the bit, we left-shift-assign (&lt;&lt;=) the value of x 1 bit.  Again, using the same mask, we are only looking at the left-most bit, apply the conditional, shift left 1 again etc. etc.</p>
+<p><strong><span style="color:#555555;font-size:16px;">In Action</span></strong></p>
+<p>I’ve recently run into several cases where these kind of bit-level operations came in handy.  The first, using the writeableBitmap class in C#. Without going into too much detail, we needed to convert an ARGB value in int form to a .Net Color type - so we needed the constituent RGB values.  Here’s the function:</p>
+<pre lang="csharp"> 
+public static Color ConvertIntToRGB(int rgb)
+{
+      return Color.FromArgb(255, (byte) ((rgb >> 16) & 0xff), (byte) ((rgb >> 8) & 0xff), (byte) ((rgb) & 0xff));
+}
+</pre>
+
+<p>So what’s going on here? For the Alpha value, we’re always using 255 so we can skip that; for the red value or, the second byte from the left, we shift the bits right 16 (2 bytes worth), apply (bitwise &amp;) a mask that looks like this: <em>00000000 00000000 00000000 11111111</em> in order to set all other bytes except the right-most to 0 and convert to a byte-length number.  For the green value, we do the same but we only shift the byte right one, and for blue, we don’t need to shift at all.</p>
+<p>These 2 links were invaluable for understanding this:</p>
+<ul>
+<li><a href="http://msdn.microsoft.com/en-us/library/s1ax56ch" target="_blank" rel="external">Value Types (C# reference)</a></li>
+<li><a href="http://www.arduino.cc/playground/Code/BitMath" target="_blank" rel="external">Arduino Playground - Bit Math Tutorial</a></li>
+</ul>
+<p>Stay tuned for part 2.</p>
+</=></pre>
+      
+    </div>
+    <footer>
+      
+        
+  
+  <div class="categories">
+    <a href="/categories/CNET/">C#.NET</a>, <a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a>, <a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a>
+  </div>
+
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:sainsb.github.io">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Categories</h3>
+  <ul class="entry">
+  
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
+  
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
+  
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
+      </li>
+    
+      <li>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2014 Che Geovara
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+</body>
+</html>
