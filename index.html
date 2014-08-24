@@ -65,6 +65,388 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2014-06-13T01:08:23.000Z"><a href="/2014/06/12/python-field-calculate-sequence/">Jun 12 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>This is a quick snippet that creates sequential numbers for unique values.<br>Note that it does require that the shapefile/feature class to be hard sorted on the value in question.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></td><td class="code"><pre>counter=<span class="number">2</span>
+oldval=<span class="string">''</span>
+<span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(newval)</span>:</span>
+ <span class="keyword">global</span> counter
+ <span class="keyword">global</span> oldval
+ <span class="keyword">if</span> oldval==<span class="string">''</span>:
+    oldval=newval
+ <span class="keyword">if</span> newval != oldval:
+    counter=counter+<span class="number">1</span>
+    oldval=newval
+ <span class="keyword">return</span> counter
+
+Goo = 
+foo(!TLID!)
+</pre></td></tr></table></figure>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-05-20T04:36:05.000Z"><a href="/2014/05/19/erd-relationship-symbols/">May 19 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>AKA Crow’s foot symbols.<br>A great graphic I found on <a href="http://stackoverflow.com/questions/1154382/anyone-have-an-erd-symbols-quick-reference" target="_blank" rel="external">Stack Overflow</a>.<br><img src="/images/9a496cc10b50994ed1c90b6075a894c173d967cd.png" alt="relationship_symbols"></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-05-08T21:52:13.000Z"><a href="/2014/05/08/positive-lookahead-assertion/">May 8 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I don’t claim to know regular expressions all that well, but I do love them for their power and simplicity.</p>
+<p><a href="http://stackoverflow.com/a/16293580/786590" target="_blank" rel="external">This stack overflow answer</a> to “How to remove duplicate rows in Notepad++” really caught my eye this morning.<br>It’s one way to replace duplicate rows in a text file in Notepad++; note that the top answer to the link utilizes the TextFX extension to Notepad++, which I love as well, but regular expressions can be used in a multitude of platforms and environments so I would argue that this answer is far more valuable.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre>^(.*?)$\s+?^(?=.*^\1$)
+</pre></td></tr></table></figure>
+
+<p><img src="/images/c802cafc8ded549e1bb934e7c43fec30a367c50f.png" alt="regex"></p>
+<p>As the author of the answer explains:<br><span style="background-color:#EEE;">^</span> matches the start of a row.<br><span style="background-color:#EEE;">(.<em>?)</em></span> matches any characters 0 or more times, but as few as possible (it matches exactly on row, this is needed because you have to check the “. matches newline” in the replace dialog.).  The matched row is stored, because of the parens around this section.<br><span style="background-color:#EEE;">$</span> matches the end of a row<br><span style="background-color:#EEE;">\s+?^</span> matches all whitespace characters (newlines) until the start of the next row.<br><span style="background-color:#EEE;">(?=.^\1$)</span> The positive lookahead assertion. The topic of the post.  Note that we’re using the \1 to reference the row/text found in the first part of the expression. As the author states, a row is only matched and removed when there is exactly the same row following it somewhere else in the file.</p>
+<p>Here’s <a href="http://www.regular-expressions.info/lookaround.html" target="_blank" rel="external">some more info on positive lookaheads</a> if you haven’t gotten enough.<br><br></p>
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/143349532&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true"></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-04-22T21:43:56.000Z"><a href="/2014/04/22/python-iterate-files-weak-sauce/">Apr 22 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I am seemingly always having to rake directories listing off this or that.<br>I’m posting this here for <em>my future self</em>…If you get something out of it, all the better.<br>It is not rocket science, it is not even science, it is not… you get the point.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></td><td class="code"><pre><span class="keyword">import</span> time, os
+<span class="keyword">for</span> dirname, dirnames, filenames <span class="keyword">in</span> os.walk(<span class="string">r'D:/eath_star/'</span>):
+    <span class="keyword">for</span> filename <span class="keyword">in</span> filenames:
+        <span class="keyword">if</span> filename==<span class="string">'tatooine_cantinas.shp'</span>:
+            file = os.path.join(dirname, filename)
+            created = time.ctime(os.path.getctime(file))
+            size = (os.path.getsize(file)/<span class="number">1024</span>)/<span class="number">1024</span>
+            <span class="keyword">print</span> file, str(size)+<span class="string">'mb'</span>, created
+</pre></td></tr></table></figure>
+
+<p>Convert all files in a directory using <a href="http://www.pythonware.com/products/pil/" target="_blank" rel="external">PIL</a>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="code"><pre><span class="keyword">import</span> Image, os
+
+<span class="keyword">for</span> dirname, dirnames, filenames <span class="keyword">in</span> os.walk(<span class="string">'D:/browse_graphic/'</span>):
+    <span class="keyword">for</span> filename <span class="keyword">in</span> filenames:
+        <span class="keyword">if</span> filename.endswith(<span class="string">'.png'</span>):
+            im = Image.open(dirname+os.sep+filename)
+            im.convert(<span class="string">'RGB'</span>).save(<span class="string">"d:/browse_graphic/"</span>+filename.replace(<span class="string">'png'</span>,<span class="string">'jpg'</span>))
+</pre></td></tr></table></figure>
+
+<p>DnB of the week:</p>
+<iframe width="100%" height="166" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/127830647&amp;color=ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_artwork=true"></iframe>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-04-21T23:25:35.000Z"><a href="/2014/04/21/python-cheats/">Apr 21 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/04/21/python-cheats/">Python cheats</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>I’m not an expert on Python’s list comprehensions or even built-in functions for that matter, but I often feel like I should be since I am amazed at how useful they can be.</p>
+<p>Stumbled across this one this morning:</p>
+<p><a href="http://stackoverflow.com/questions/3389574/check-if-multiple-strings-exist-in-another-string" target="_blank" rel="external">Check if multiple strings exist in another string</a></p>
+<p>The <a href="https://docs.python.org/2/library/functions.html#any" target="_blank" rel="external">built in ‘any’ function</a> Returns True if any element of the iterable is true:</p>
+<p>therefore if we try to do this:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre>a = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]
+str = <span class="string">"a123"</span>
+<span class="keyword">if</span> a <span class="keyword">in</span> str:
+  <span class="keyword">print</span> <span class="string">"some"</span>
+<span class="keyword">else</span>:
+  <span class="keyword">print</span> <span class="string">"none"</span>
+</pre></td></tr></table></figure>
+
+<p>it fails and we get this</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+</pre></td><td class="code"><pre><span class="prompt">&gt;&gt;&gt; </span>TypeError: <span class="string">'in &lt;string&gt;'</span> requires string <span class="keyword">as</span> left operand, <span class="keyword">not</span> list
+</pre></td></tr></table></figure>
+
+<p>Using a list comprehension we can easily overcome this:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+</pre></td><td class="code"><pre>a = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]
+str = <span class="string">"a123"</span>
+<span class="keyword">if</span> any(x <span class="keyword">in</span> str <span class="keyword">for</span> x <span class="keyword">in</span> a):
+	<span class="keyword">print</span> <span class="string">"some"</span>
+<span class="keyword">else</span>:
+	<span class="keyword">print</span> <span class="string">"none"</span>
+</pre></td></tr></table></figure>
+
+<p>Yay</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-04-21T21:53:28.000Z"><a href="/2014/04/21/this/">Apr 21 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/04/21/this/">This</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Tobin Bradley is a force of nature. I really enjoy his work.<br><a href="http://fuzzytolerance.info/blog/screencast-33-setting-up-a-cloud-mbtiles-server-with-benchmarks/" target="_blank" rel="external">This one in particular is pretty amazing.</a></p>
+<p>In his screencast he shows how to stand up a virtual Ubuntu server on Digital Ocean and install an mbtiles server.  The whole thing takes less than 15 minutes.<br>Insanely simple and amazingly effective.</p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2014-03-21T01:44:27.000Z"><a href="/2014/03/20/tilemill-polygon-compositing-operations/">Mar 20 2014</a></time>
       
       
@@ -161,25 +543,37 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2010-10-27T06:45:15.000Z"><a href="/2010/10/26/10-26-2010/">Oct 26 2010</a></time>
+        <time datetime="2014-03-14T00:27:30.000Z"><a href="/2014/03/13/spatial-views-in-oracle/">Mar 13 2014</a></time>
       
       
   
-    <h1 class="title"><a href="/2010/10/26/10-26-2010/">10.26.2010</a></h1>
+    <h1 class="title"><a href="/2014/03/13/spatial-views-in-oracle/">Spatial views in Oracle</a></h1>
   
 
     </header>
     <div class="entry">
       
-        <p>Spent the majority of the day hacking away at the python version of the CIS grid tool. of note:</p>
-<ul>
-<li>SUM statistics cannot be run in a dissolve if a field ‘SUM’ exists in the attribute table.</li>
-<li>an r”blhablhsdhld” in front of a python string converts it to a ‘raw’ string effectively removing string literals.</li>
-<li>another option of the above is to use repr() - seems equivalent to .toString in VB</li>
-<li>Psyco has not proven useful as of yet but perhaps will.</li>
-<li>Installed PythonWin - an excellent Python IDE.<br>Also spent a few minutes talking to Steve about application development within Metro and the DRC.</li>
-</ul>
-<p>An extraneous thought about Making a Great Place (for whom?) - eg. does the CIS take specific demographics into account when deciding what makes a great place?</p>
+        <p>Creating spatial views in Oracle SDE is pretty easy and can provide a slick means of limiting access to features, fields, spatial extents etc..<br>Following <a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/Creating_a_spatial_view_in_Oracle_using_SQL/002n000000t3000000/" target="_blank" rel="external">ESRI’s guidelines</a> on the creation of a spatial view, I cruised in to the database and whispered some primitive incantations.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">create</span> <span class="keyword">view</span> white_hats_vw <span class="keyword">as</span> <span class="keyword">select</span> * 
+<span class="keyword">from</span> nsa_employees <span class="keyword">where</span> alignment <span class="keyword">in</span> (<span class="string">'Lawful Good'</span>,<span class="string">'Neutral Good'</span>,<span class="string">'Chaotic Good'</span>)</span>
+</pre></td></tr></table></figure>
+
+<p><em>Note that you could do a lot more with the above statement, limit the spatial extent, join to other tables etc.
+</em>Note also that if this view is used for security-ish purposes, you’ll want to grant the appropriate (SELECT) privileges to your target user.</p>
+<p>Behold, a view is born:<br><img src="/images/d988c28c4f28e1766d405ab295a4a934490cfad3.png" alt="view21"></p>
+<p>So what can we do with this view?<br>When we ‘view’ it (pun intended) in ArcCatalog it looks like this:<br><img src="/images/8aa7253a272da3b8c33506d88f3fc62845991ca2.png" alt="view3"><br>A table with a square in it, to suggest that there is something ‘spatial’ about it.</p>
+<p>Can we preview it?<br>Yes, we can.<br><img src="/images/e18647e917f4af46a7c7dd69b6d186cead445e5f.png" alt="view9"><br>But that’s funny… the table with a square in it now resembles a polygon feature class… ok. innocent until proven guilty I guess.</p>
+<p>Can we ArcMap it? Yes we can. But since it’s not registered, ArcMap will need a unique ID to support selecting.  It’ll also need to know a few details about the geometry but it can infer these from the ST_Geometry field. </p>
+<p><img src="/images/0a1557381748533386a3254a36316c23dd135c19.png" alt="view5"></p>
+<p>Once we get past that dialog we seem to be golden with support for spatial selections, select by attributes, viewing the attribute table etc. etc.<br><img src="/images/7a63fe5bd18628355e8c037ddb115921a92d5d4e.png" alt="view10"></p>
+<p>So now what about distributing this view? Will your constituents need to deal with the likely confusing previous dialog?<br>Nope. Just save the view as a layer file and the Objectid and geom operators will be stored for future use.</p>
+<p>Note that another way to create a view is to right click on the database connection in ArcCatalog. - &gt;New -&gt; View<br><img src="/images/80d11a74d665d36e757a742968f7fe8b09bcf91f.png" alt="view7"></p>
+<p>We then receive this dialog:<br><img src="/images/a27ce7b8cb6629bc23c24c6688727d4fad884374.png" alt="view11"></p>
+<p>View name I can dig but ‘view definition’? I think a better name might be in order like SQL SELECT STATEMENT.  At any rate this is the select statement that the view will be based on.  Whereas above we began our sql statement with ‘CREATE VIEW’, here we merely include the select bits.  I haven’t played around with this one as much but my hunch is that some sparks might fly if you try to utilize st_geometry relational operators etc. etc.</p>
+<p>Good stuff, all is good except for the leftover uncertainty about registering views with SDE and then registering them with the geodatabase.  When right-clicking a view in ArcCatalog, we don’t have the option to register with the geodatabase.  Presumably due to the fact that it’s not registered with SDE.  Curiously, the <a href="http://help.arcgis.com/en/arcgisdesktop/10.0/help/index.html#/Creating_a_spatial_view_in_Oracle_using_SQL/002n000000t3000000/" target="_blank" rel="external">10.0 version of this method</a> includes the sdelayer - o register command line bits (at the very bottom of the page) to register with SDE while the 10.1 stub (link above) does not (mysterious!).  Until I need more functionality than being able to view, select and easily distribute my layer file, I will avoid that bridge.</p>
+<p>have fun, be safe.</p>
 
       
     </div>
@@ -214,55 +608,74 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2010-10-06T01:15:00.000Z"><a href="/2010/10/05/2-ways-to-add-a-row-to-a-standalone-table-programatically/">Oct 5 2010</a></time>
+        <time datetime="2014-03-13T03:33:01.000Z"><a href="/2014/03/12/get-the-date-a-table-was-created-in-oracle/">Mar 12 2014</a></time>
       
       
   
-    <h1 class="title"><a href="/2010/10/05/2-ways-to-add-a-row-to-a-standalone-table-programatically/">2 ways to add a row to a standalone table programatically.</a></h1>
+    <h1 class="title"><a href="/2014/03/12/get-the-date-a-table-was-created-in-oracle/">Get the date a table was created in Oracle</a></h1>
   
 
     </header>
     <div class="entry">
       
-        <pre lang="vb">
-Sub AddRow(ByVal pmap As IMap, ByVal Tbl As String, ByVal pftr As IFeature, ByVal prow As IRow)
-        Dim psatable2 As IStandaloneTable
-        psatable2 = ReturnTable(pmap, Tbl)
-        'Create new row
-        Dim addr_addr As String = pftr.Value(pftr.Fields.FindField("civic")) & _
-        " " & pftr.Value(pftr.Fields.FindField("pre_dir")) & " " & _
-               pftr.Value(pftr.Fields.FindField("street")) & " " & _
-               pftr.Value(pftr.Fields.FindField("suffix"))
-        Dim pCursor As ICursor
-        Dim pRowBuff As IRowBuffer
-        pRowBuff = psatable2.Table.CreateRowBuffer()
-        pRowBuff.Value(1) = prow.Value(prow.Fields.FindField("text_registrant_id")) & ""
-        pRowBuff.Value(2) = prow.Value(prow.Fields.FindField("text_name_first")) & " " & prow.Value(prow.Fields.FindField("text_name_last"))
-        pRowBuff.Value(3) = "" ' note that at this point we don't have a name in the master_addr_elec_join table
-        pRowBuff.Value(4) = Replace((prow.Value(prow.Fields.FindField("text_res_address_nbr")) & " " & prow.Value(prow.Fields.FindField("cde_street_dir_prefix")) & " " & prow.Value(prow.Fields.FindField("text_street_name")) & " " & prow.Value(prow.Fields.FindField("cde_street_type")) & " " & prow.Value(prow.Fields.FindField("cde_street_dir_suffix"))), "  ", " ") 'Voter Reg Addr
-        pRowBuff.Value(5) = Trim(addr_addr)
-        pRowBuff.Value(6) = prow.Value(prow.Fields.FindField("precinct_text_designation"))
-        pRowBuff.Value(7) = pftr.Value(pftr.Fields.FindField("prec_num"))
-        pRowBuff.Value(8) = "Match"
-        pCursor = psatable2.Table.Insert(True)
-        pCursor.InsertRow(pRowBuff)
-        ProgressBar1.Increment(1)
-        pCursor = Nothing
-    End Sub
+        <p>An interesting read if you’re into Oracle.<br>SDE kinda messes with this approach what with the delta tables, but it’s still an interesting read…<br><a href="http://stackoverflow.com/questions/4442323/how-to-find-out-when-a-particular-table-was-created-in-oracle" target="_blank" rel="external">http://stackoverflow.com/questions/4442323/how-to-find-out-when-a-particular-table-was-created-in-oracle</a></p>
 
-    Sub AddRow(ByVal pmap As IMap, ByVal Tbl As String, ByVal prow As IRow)
-        Dim psatable2 As IStandaloneTable
-        psatable2 = ReturnTable(pmap, Tbl)
-        'Create new row
-        Dim pRowBuff As IRowBuffer
-        Dim pCursor As ICursor
-        pRowBuff = psatable2.Table.CreateRowBuffer()
-        pRowBuff = prow
-        pCursor = psatable2.Table.Insert(True)
-        pCursor.InsertRow(pRowBuff)
-        ProgressBar1.Increment(1)
-        pCursor = Nothing
-    End Sub</pre>
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2014-03-06T05:08:28.000Z"><a href="/2014/03/05/sql-developer-explain-plan/">Mar 5 2014</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2014/03/05/sql-developer-explain-plan/">SQL Developer Explain Plan</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>In SQL Developer, feel free to hit F10 to crack open the Explain Plan window.  Watch out for too many Full Table Scans ;).</p>
+<p><figure class="highlight sql"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="operator"><span class="keyword">select</span> ttlid, atlid <span class="keyword">from</span> 
+(<span class="keyword">SELECT</span> t.shape <span class="keyword">as</span> taxshape,t.tlid <span class="keyword">as</span> ttlid, n.shape <span class="keyword">as</span> addpoint, n.tlid <span class="keyword">as</span> atlid
+                      <span class="keyword">FROM</span>   taxlots t, addpts n
+                      <span class="keyword">WHERE</span> sde.St_envintersects (t.shape, n.shape) = <span class="number">1</span>)
+              <span class="keyword">WHERE</span> sde.St_contains(taxshape, addpoint)=<span class="number">1</span></span>
+</pre></td></tr></table></figure><br>Explain yourself:<a href="http://blog.guerrillagis.net/wp-content/uploads/2014/03/ExplainPlan.png" target="_blank" rel="external"><img src="/images/240bb2e924963aa3277be620533e17186dd5ce37.png" alt="ExplainPlan"></a></p>
+
       
     </div>
     <footer>
@@ -282,6 +695,8 @@ Sub AddRow(ByVal pmap As IMap, ByVal Tbl As String, ByVal pftr As IFeature, ByVa
 <nav id="pagination">
   
   
+    <a href="/page/2/" class="alignright next">Next</a>
+  
   <div class="clearfix"></div>
 </nav></div></div>
     <aside id="sidebar" class="alignright">
@@ -297,9 +712,99 @@ Sub AddRow(ByVal pmap As IMap, ByVal Tbl As String, ByVal pftr As IFeature, ByVa
   <h3 class="title">Categories</h3>
   <ul class="entry">
   
-    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>2</small></li>
+    <li><a href="/categories/ArcGIS-Server/">ArcGIS Server</a><small>32</small></li>
   
-    <li><a href="/categories/Snippets++/">Snippets++</a><small>1</small></li>
+    <li><a href="/categories/C/">C#</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/">C#.NET</a><small>39</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/CNET/">C#.NET</a><small>5</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/">General GIS Warfare</a><small>80</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/General-GIS-Warfare/">General GIS Warfare</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/">General GIS Warfare</a><small>10</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Hardware/">Hardware</a><small>1</small></li>
+  
+    <li><a href="/categories/Hardware/">Hardware</a><small>6</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Oracle/">Oracle</a><small>2</small></li>
+  
+    <li><a href="/categories/Oracle/">Oracle</a><small>12</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Python/">Python</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/">Python</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/">Python</a><small>2</small></li>
+  
+    <li><a href="/categories/Python/">Python</a><small>17</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/">R</a><small>1</small></li>
+  
+    <li><a href="/categories/R/">R</a><small>7</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/RegEx/">RegEx</a><small>2</small></li>
+  
+    <li><a href="/categories/RegEx/">RegEx</a><small>3</small></li>
+  
+    <li><a href="/categories/CNET/RegEx/">RegEx</a><small>1</small></li>
+  
+    <li><a href="/categories/Snippets++/">Snippets++</a><small>21</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Snippets++/">Snippets++</a><small>7</small></li>
+  
+    <li><a href="/categories/CNET/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Python/R/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/R/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/Python/Snippets++/">Snippets++</a><small>3</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Python/Snippets++/">Snippets++</a><small>2</small></li>
+  
+    <li><a href="/categories/Uncategorized/">Uncategorized</a><small>25</small></li>
+  
+    <li><a href="/categories/Snippets++/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/Uncategorized/">Uncategorized</a><small>1</small></li>
+  
+    <li><a href="/categories/Web-Hackery/">Web Hackery</a><small>5</small></li>
+  
+    <li><a href="/categories/ArcGIS-Server/WebHackery/">WebHackery</a><small>4</small></li>
+  
+    <li><a href="/categories/CNET/General-GIS-Warfare/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/Snippets++/WebHackery/">WebHackery</a><small>2</small></li>
+  
+    <li><a href="/categories/CNET/Uncategorized/WebHackery/">WebHackery</a><small>1</small></li>
+  
+    <li><a href="/categories/WebHackery/">WebHackery</a><small>12</small></li>
+  
+    <li><a href="/categories/CNET/WebHackery/">WebHackery</a><small>3</small></li>
+  
+    <li><a href="/categories/General-GIS-Warfare/WebHackery/">WebHackery</a><small>4</small></li>
   
   </ul>
 </div>
@@ -311,15 +816,23 @@ Sub AddRow(ByVal pmap As IMap, ByVal Tbl As String, ByVal pftr As IFeature, ByVa
   <ul class="entry">
     
       <li>
-        <a href="/2014/03/20/tilemill-polygon-compositing-operations/">Tilemill - polygon compositing operations</a>
+        <a href="/2014/06/12/python-field-calculate-sequence/">Python field calculate sequence</a>
       </li>
     
       <li>
-        <a href="/2010/10/26/10-26-2010/">10.26.2010</a>
+        <a href="/2014/05/19/erd-relationship-symbols/">ERD Relationship Symbols</a>
       </li>
     
       <li>
-        <a href="/2010/10/05/2-ways-to-add-a-row-to-a-standalone-table-programatically/">2 ways to add a row to a standalone table programatically.</a>
+        <a href="/2014/05/08/positive-lookahead-assertion/">Positive lookahead assertion</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/22/python-iterate-files-weak-sauce/">Python iterate files (weak sauce)</a>
+      </li>
+    
+      <li>
+        <a href="/2014/04/21/python-cheats/">Python cheats</a>
       </li>
     
   </ul>
@@ -327,6 +840,21 @@ Sub AddRow(ByVal pmap As IMap, ByVal Tbl As String, ByVal pftr As IFeature, ByVa
 
 
   
+<div class="widget tag">
+  <h3 class="title">Tags</h3>
+  <ul class="entry">
+  
+    <li><a href="/tags/arcgis/">arcgis</a><small>1</small></li>
+  
+    <li><a href="/tags/arcpy/">arcpy</a><small>1</small></li>
+  
+    <li><a href="/tags/python/">python</a><small>1</small></li>
+  
+    <li><a href="/tags/regex/">regex</a><small>1</small></li>
+  
+  </ul>
+</div>
+
 </aside>
     <div class="clearfix"></div>
   </div>
