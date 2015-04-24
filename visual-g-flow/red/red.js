@@ -54,21 +54,13 @@ var RED = (function() {
             RED.nodes.addWorkspace(defaultWorkspace);
             RED.workspaces.add(defaultWorkspace);
             activeWorkspace = RED.workspaces.active();
+            }
 
-             }
-
-            // if the query string has ?info=className, populate info tab
-            // var info = getQueryVariable("info");
-            // if (info) {
-            //     $("#tab-info").html('<div class="node-help">'
-            //         +($("script[data-help-name|='"+info+"']").html()||"")+"</div>");
-            // }
         }, "html");
     }
 
     function loadFlows() {
 
-   
         return;
         $.ajax({
             headers: {
@@ -177,7 +169,6 @@ var RED = (function() {
         RED.comms.connect();
 
         $("#main-container").show();
-        $(".header-toolbar").show();
 
         loadNodeList();
     }
@@ -185,7 +176,7 @@ var RED = (function() {
     $(function() {
             
         if ((window.location.hostname !== "localhost") && (window.location.hostname !== "127.0.0.1")) {
-            document.title = document.title+" : "+window.location.hostname;
+            document.title = document.title;
         }
         
         //ace.require("ace/ext/language_tools");
@@ -2431,7 +2422,7 @@ RED.tabs = (function() {
             var tabCount = tabs.size();
             var tabWidth = (width-6-(tabCount*7))/tabCount;
             var pct = 100*tabWidth/width;
-            tabs.css({width:pct+"%"});
+            tabs.css({width:"120px"});
         }
         
         ul.find("li.red-ui-tab a").on("click",onTabClick).on("dblclick",onTabDblClick);
@@ -2528,6 +2519,7 @@ RED.workspaces = (function() {
     var workspaceIndex = 0;
 
     function addWorkspace(ws) {
+
         if (ws) {
             workspace_tabs.addTab(ws);
             workspace_tabs.resize();
@@ -4619,9 +4611,10 @@ RED.sidebar = (function() {
     function addTab(title,content,closeable) {
         $("#sidebar-content").append(content);
         $(content).hide();
-        sidebar_tabs.addTab({id:"tab-"+title,label:title,closeable:closeable});
-        //content.style.position = "absolute";
-        //$('#sidebar').tabs("refresh");
+        sidebar_tabs.addTab({id:"tab-"+title,label:'Welcome',closeable:closeable});
+        content.style.position = "absolute";
+  
+           sidebar_tabs.resize();
     }
 
     function removeTab(title) {
@@ -4638,7 +4631,6 @@ RED.sidebar = (function() {
                 sidebarSeparator.start = ui.position.left;
                 sidebarSeparator.chartWidth = $("#workspace").width();
                 sidebarSeparator.chartRight = winWidth-$("#workspace").width()-$("#workspace").offset().left-2;
-
 
                 if (!RED.menu.isSelected("menu-item-sidebar")) {
                     sidebarSeparator.opening = true;
@@ -5111,6 +5103,7 @@ RED.sidebar.info = (function() {
         if (!RED.sidebar.containsTab("info")) {
             RED.sidebar.addTab("info",content,false);
         }
+
         RED.sidebar.show("info");
     }
 
@@ -5237,6 +5230,7 @@ RED.sidebar.info = (function() {
     }
     
     RED.view.on("selection-changed",function(selection) {
+
         if (selection.nodes) {
             if (selection.nodes.length == 1) {
                 var node = selection.nodes[0];
@@ -5247,11 +5241,14 @@ RED.sidebar.info = (function() {
                 }
             }
         } else {
+            
             var subflow = RED.nodes.subflow(RED.workspaces.active());
             if (subflow) {
+
                 refresh(subflow);
             } else {
-                clear();
+                 //console.log('sdfs')
+                //clear();
             }
         }
     });

@@ -20,7 +20,7 @@
   limitations under the License.
 -->
 <head>
-<title>Geo-Node-Red</title>
+<title>Visual G-Flow</title>
 <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="vendor/jquery/css/smoothness/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" media="screen">
@@ -41,39 +41,40 @@ body, #header, .palette_label, #tab-info{font-family: 'Source Sans Pro', sans-se
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </a>
-                  <a class="brand" href="#">Geo-Node-Red</a>
+                   <img src='img/metro-logo.png' style='height:25px;margin:10px;' align='left'>
+                  <img src='img/logo.png' style='height:25px;margin:10px;' align='left'>
+                  <a class="brand" href="#">Visual G-Flow</a>
                   <div class="nav-collapse collapse navbar-responsive-collapse">
                     <ul class="nav">
-                      <li><a href="#"><i class="fa fa-play"></i>&nbsp;Run</a></li>
+                     
                       <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Import <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                           <li><a href="#">Import data</a></li>
                           <li><a href="#">Import flow</a></li>
-                         
                         </ul>
                       </li>
                        <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Export <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                           <li><a href="#">Export flow</a></li>
-                          <li><a href="#">Export graphic</a></li>                         
+                          <li><a href="#">Export graphic</a></li>
                         </ul>
                       </li>
+                       <li><a href="#"><i class="fa fa-play"></i>&nbsp;&nbsp;Run</a></li>
+                         <li><a href="#"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;Share</a></li>
                     </ul>
                     
                     <ul class="nav pull-right">
-                      <li><a href="#">Link</a></li>
                       <li class="divider-vertical"></li>
                       <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Code <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                          <li><a href="#">Action</a></li>
-                          <li><a href="#">Another action</a></li>
-                          <li><a href="#">Something else here</a></li>
-                          <li class="divider"></li>
-                          <li><a href="#">Separated link</a></li>
-                          <li><a id="btn-sidemenu" class="button" data-toggle="dropdown" href="#"><i class="fa fa-bars"></i></a></li>
+                          <li><a href="https://github.com/sainsb/visual-g-flow">Visual G-Flow</a></li>
+                          <li><a href="https://github.com/Turfjs/turf">Turf.js</a></li>
+                          <li><a href="http://nodered.org/">Node-Red</a></li>
+                          
+                          <li style='display:none;'><a id="btn-sidemenu" class="button" data-toggle="dropdown" href="#"><i class="fa fa-bars"></i></a></li>
                         </ul>
                       </li>
                     </ul>
@@ -118,7 +119,14 @@ body, #header, .palette_label, #tab-info{font-family: 'Source Sans Pro', sans-se
         <div id="sidebar-content">
             <div id="tab-info" style="padding-top: 4px; padding-left: 4px; padding-right: 4px; display: block;">
             <div style='padding:10px;'>
-            GISmo is a browser-based spatial data flow designer.  Export ETL documents and Execute data transformations.
+            Traditional geographic information systems (GIS) work involves complex data transformations and processes.  Several well-known visual process designers exist in the industry including FME and ArcGIS Modelbuilder.  
+            <br/><br/>
+            As with every type of data, GIS data has become increasingly housed and available via the web - but what is lacking is a <b>standardized declarative language for data transformations</b>.
+            <br/><br/>
+            Visual G-Flow is a browser-based spatial data process designer based on <a href='http://nodered.org' target='_blank'>node-red</a> and <a href='http://turfjs.org/' target='_blank'>Turf.js</a>. 
+            <br/><br/> The goal of Visual G-Flow is to allow for process design, execution and workflow documentation - in the browser.
+<br/><br/>
+
             </div>
             </div>
 
