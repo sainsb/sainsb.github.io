@@ -10,12 +10,10 @@
 	<!-- define a DIV into which the map will appear. Make it take up the whole window -->
 	<div style="width:100%; height:100%" id="map"></div>
 <script type='text/javascript'>
-var map = new L.Map('map', {center: new L.LatLng(41, -73.4277), zoom: 13, maxZoom:21});
-var osm = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+var map = new L.Map('map', {center: new L.LatLng(42.3964365, -71.1478352), zoom: 19, maxZoom:21});
 var ggl = new L.Google();
-var ggl2 = new L.Google('TERRAIN');
 map.addLayer(ggl);
-map.addControl(new L.Control.Layers( {'OSM':osm, 'Google':ggl, 'Google Terrain':ggl2}, {}));
 </script>
  
 </body>
