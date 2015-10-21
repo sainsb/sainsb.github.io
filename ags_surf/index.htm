@@ -8,20 +8,48 @@
     <meta name="generator" content="Bootply" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <link href="css/styles.css" rel="stylesheet">
+    
 </head>
 
 <body>
     <div class="container">
-        <h1>ArcGIS Server Meta Surfer</h1>
+    <div class='row'>
+    <div class='col-md-6'>
+    <h1>ArcGIS Server Meta Surfer</h1>
         <legend>Enter REST endpoint URL</legend>
+    </div>
+    <div class='col-md-6'>
+
+                    <div class="wrap">
+                      <div class="l">L</div>
+                      <div class="o">O</div>
+                      <div class="a">A</div>
+                      <div class="d">D</div>
+                      <div class="i">I</div>
+                      <div class="n">N</div>
+                      <div class="g">G</div>
+                    </div>
+     
+    </div>
+    </div>
+        
         <!-- Prepended text-->
         <div class='row'>
         <div class="form-group">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-addon">AGS URL</span>
                     <input id="txtURL" value='http://gis.clark.wa.gov/arcgis/rest/services/' class="form-control" placeholder="http://phat.servers.rule/ArcGIS/rest/services/" type="text">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-addon">AGS URL</span>
+                    <select id="selService"  class="form-control">
+                    </select>
                 </div>
             </div>
         </div>
@@ -39,6 +67,11 @@
            
                 <div class='legend GeocodeServer'></div></td><td>
                     GeocodeServer</td>
+
+                    <td>
+               <div class='legend GeometryServer'></div></td><td>
+                    GeometryServer
+               </td>
                     <td>
               
                 <div class='legend FeatureServer'></div></td><td>
@@ -55,29 +88,16 @@
                </tr>
                </table>
         </div>
-
+		<div class='row'>
+        	<br/>
+            
+        </div>
         <div class='row'>
             <div class='md-col-12'>
                 <div id='tree'></div>
             </div>
         </div>
-        <div class='row'>
-        <br/>
-            <div class='md-col-12'>
-                <ul>
-                    <li>Washington County, OR <a class='inputs'>http://mtbachelor.co.washington.or.us/arcgiswa2/rest/services/</a></li>
-                    <li>Multnomah County, OR <a class='inputs'>http://www3.multco.us/arcgispublic/rest/services</a></li>
-                    <li>Clackamas County, OR
-                        <a class='inputs'></a>
-                    </li>
-                    <li>City of Portland, OR <a class='inputs'>https://www.portlandmaps.com/arcgis/rest/services/</a></li>
-                    <li>Clark County, WA <a class='inputs'>http://gis.clark.wa.gov/arcgis/rest/services/</a></li>
-                    <li>Oregon Metro <a class='inputs'>http://gis.oregonmetro.gov/ArcGIS/rest/services/</a></li>
-                    <li>City of Gresham, OR <a class='inputs'>http://maps.greshamoregon.gov/arcgis/rest/services/</a></li>
-                    <li>Portland Public Schools <a class='inputs'>https://arcgis.pps.net/arcgis/rest/services/</a></li>
-                </ul>
-            </div>
-        </div>
+        
 
 	<!-- script references -->
 		<script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -87,13 +107,77 @@
 
     <script>
 
+    var services = [
+    	["",""],
+    	["Portland Public Schools", "https://arcgis.pps.net/arcgis/rest/services/"],
+    	["City of Gresham, OR", "http://maps.greshamoregon.gov/arcgis/rest/services"],
+    	["Oregon Metro", "http://gis.oregonmetro.gov/ArcGIS/rest/services/"],
+    	["Clark County, WA",  "http://gis.clark.wa.gov/arcgis/rest/services/"],
+    	["City of Portland, OR"  ,"https://www.portlandmaps.com/arcgis/rest/services/"],
+    	["Multnomah County, OR"  ,"http://www3.multco.us/arcgispublic/rest/services"],
+    	["Washington County, OR"  ,"http://mtbachelor.co.washington.or.us/arcgiswa2/rest/services/"],
+    	["NOAA"  ,"http://gis.srh.noaa.gov/ArcGIS/rest/services"],
+    	["USGS - Geosciences"  ,"http://rmgsc.cr.usgs.gov/ArcGIS/rest/services"],
+    	["USGS - EROS"  ,"http://isse.cr.usgs.gov/ArcGIS/rest/services"],
+    	["Surdex Inc."  ,"http://cpat.surdex.com/ArcGIS/rest/services"],
+    	["Indiana State University"  ,"http://129.79.145.13/ArcGIS/rest/services"],
+    	//["State of California"  ,"http://atlas.resources.ca.gov/ArcGIS/rest/services"],
+    	["EPA"  ,"http://geodata.epa.gov/arcgis/rest/services"],
+    	["USDA"  ,"http://gis.apfo.usda.gov/ArcGIS/rest/services"],
+    	["State of Oregon"  ,"http://navigator.state.or.us/ArcGIS/rest/services"],
+    	["ESRI - ArcGIS Online"  ,"http://sampleserver1.arcgisonline.com/ArcGIS/rest/services"],
+    	["City of Lincoln, NE"  ,"http://ags.lincoln.ne.gov/ArcGIS/rest/services"],
+    	["Coeur d'Alene Tribe"  ,"http://gis.cdatribe-nsn.gov/ArcGIS/rest/services"],
+    	["US Fish and Wildlife Service"  ,"http://gis.fws.gov/ArcGIS/rest/services"],
+    	["State of Montana"  ,"http://gisservice.mt.gov/arcgis/rest/services"],
+    	["City of Washington DC"  ,"http://maps.dcgis.dc.gov/DCGIS/rest/services"],
+    	["Idaho Water Rights"  ,"http://maps.idwr.idaho.gov/ArcGIS/rest/services"],
+    	["City of New Braunfels, TX"  ,"http://maps.nbtexas.org/ArcGIS/rest/services"],
+    	["UCLA"  ,"http://maps.ucla.edu/ArcGIS/rest/services"],
+    	["ESRI - ArcGIS Online 2"  ,"http://maps1.arcgisonline.com/ArcGIS/rest/services"],
+    	["Outdoor Nebraska"  ,"http://outdoornebraska.ne.gov/ArcGIS/rest/services"],
+    	["Public Safety templates?"  ,"http://publicsafetytemplates.esri.com/ArcGIS/rest/services"],
+    	["ESRI - ArcGIS Online 3"  ,"http://sampleserver3.arcgisonline.com/arcgis/rest/services"],
+    	["ESRI - ArcGIS Online 4"  ,"http://server.arcgisonline.com/ArcGIS/rest/services"],
+    	["USDA SNAP/EBT Locator"  ,"http://www.snapretailerlocator.com/ArcGIS/rest/services"],
+    	["ESRI - ArcGIS Online 5"  ,"http://tasks.arcgisonline.com/ArcGIS/rest/services"],
+    	["National Map"  ,"http://services.nationalmap.gov/ArcGIS/rest/services"],
+    	["State of Texas"  ,"http://tnmap.tn.gov/ArcGIS/rest/services"],
+    	["NOAA Office for Coastal Management"  ,"http://www.csc.noaa.gov/arcgis/rest/services"],
+    	["Washington DC"  ,"http://www.dcgis.org/arcgis/rest/services"],
+    	["US BLM Geocommunicator"  ,"http://www.geocommunicator.gov/ArcGIS/rest/services"],
+    	["Kansas Applied Remote Sensing"  ,"http://www.kars.ku.edu/ArcGIS/rest/services"],
+    	["State of Nebraska"  ,"http://www.nebraskamap.gov/ArcGIS/rest/services"],
+    	["LA County, CA"  ,"http://gis.lacounty.gov/ArcGIS/rest/services"],
+    	["California Department of Fish and Game"  ,"http://imaps.dfg.ca.gov/arcgis/rest/services"],
+    	["California Sediment Database"  ,"http://spatialservices.conservation.ca.gov/arcgis/rest/services"],
+    	["San Diego Association of Governments, CA"  ,"http://gis.sandag.org/GIS/rest/services"]
+    ];
+
     var root_url = "";
 
     var tree = [];
 
+    for(var svc in services){
+        $('#selService').append('<option value="'+services[svc][1]+'" >'+services[svc][0]+'</option>');
+    }
+
+    $('#selService').on('change', function(){
+        
+    	$('#txtURL').val($(this).val());
+    	var e = jQuery.Event("keydown");
+		e.which = 13; // # Some key code value
+		$("#txtURL").trigger(e);
+    });
+
     $('#txtURL').on('keydown', function(e) {
     	var code = e.keyCode || e.which;
     	if (code == 13) {
+            $('#tree').fadeOut(100, function(){
+                $('#tree').empty()
+            });
+            
+            $('.wrap').fadeIn(200);
 
     		tree = [];
 
@@ -106,12 +190,10 @@
     			}
 
     			if (root_url.indexOf("?f=json") != -1) {
-    				root_url = root_url.replace('?f=json', '');
+    				root_url = root_url.replace('?f=pjson', '');
     			}
 
-    			$.getJSON(root_url + '?f=json').then(function(data) {
-
-    				
+                $.ajax(root_url + '?f=pjson', {dataType: "jsonp"}).then(function(data) {
 
     				var core = {
     					text: 'root',
@@ -121,7 +203,7 @@
                     var root_defs = [];
 
                     if(typeof data.folders != 'undefined'){
-    				    root_defs.push(processFolders(data.folders, core));
+    				    root_defs.push(processFolders(data.folders));
                     }
 
                     if(typeof data.services != 'undefined'){
@@ -173,6 +255,8 @@
     						}
     						e.stopPropagation();
     					});
+    					$('#tree').fadeIn(100);
+                        $('.wrap').fadeOut(200);
     				});
     			});
     		} else {
@@ -220,7 +304,7 @@
 
     			var nested_deferred = $.Deferred();
 
-    			$.getJSON(root_url + v + '/?f=json').then(function(data) {
+                $.ajax(root_url + v + '/?f=pjson', {dataType: "jsonp"}).then(function(data) {
 
     				var froot_defs = [
     					processFolders(data.folders),
@@ -262,11 +346,11 @@
 
     				var nested_deferred = $.Deferred();
 
-    				$.getJSON(root_url + v.name + '/' + v.type + '/?f=json', function(data) {
+    				$.ajax(root_url + v.name + '/' + v.type + '/?f=pjson',{dataType: 'jsonp', success: function(data) {
     					var url = root_url + v.name + '/' + v.type + '/';
     					var s = serviceHelper(v, data, url, branch.text);
     					nested_deferred.resolve(s);
-    				});
+    				}});
 
     				return nested_deferred.promise();
     			}();
