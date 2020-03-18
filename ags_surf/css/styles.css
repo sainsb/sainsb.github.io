@@ -192,6 +192,13 @@ body {
           animation-delay: 1.3125s;
 }
 
+.s {
+  -webkit-animation: shrinkgrow 1.75s ease-in-out infinite;
+          animation: shrinkgrow 1.75s ease-in-out infinite;
+  -webkit-animation-delay: 1.3125s;
+          animation-delay: 1.3125s;
+}
+
 @-webkit-keyframes shrinkgrow {
   0% {
     -webkit-transform: scale(0);
